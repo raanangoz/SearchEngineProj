@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="500.0" maxWidth="800.0" minHeight="500.0" minWidth="500.0" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainPageView">
+    <children>
+        <ImageView fitHeight="500.0" fitWidth="500.0" pickOnBounds="true">
+            <image>
+                <Image url="@../resource/blue.png" />
+            </image>
+        </ImageView>
+        <Label ellipsisString="" layoutX="19.0" prefHeight="118.0" prefWidth="434.0" text="Search Engine" textFill="WHITE" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font size="66.0" />
+            </font>
+            <effect>
+                <Glow level="0.8" />
+            </effect>
+        </Label>
+      <Button fx:id="Browse_w" layoutX="380.0" layoutY="131.0" mnemonicParsing="false" onAction="#Browse_working" text="Browse" />
+      <Button fx:id="Browse_s" layoutX="380.0" layoutY="195.0" mnemonicParsing="false" onAction="#Browse_saving" text="Browse" />
+      <!--<TextField fx:id="work_path" layoutX="42.0" layoutY="131.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\IRWorkK" />-->
+      <!--<TextField fx:id="save_path" layoutX="42.0" layoutY="195.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\IRWorkK\test2" />-->
+      <TextField fx:id="work_path" layoutX="42.0" layoutY="131.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="D:\documents\users\itzikd\Downloads\SearchEngineIR-master" />
+      <TextField fx:id="save_path" layoutX="42.0" layoutY="195.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="D:\documents\users\itzikd\Downloads\SearchEngineIR-master\test2" />
+      <CheckBox fx:id="stemming_option" layoutX="42.0" layoutY="256.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Stemmimg" />
+      <SplitMenuButton fx:id="splitMenuButton" layoutX="320.0" layoutY="252.0" mnemonicParsing="false" text="File's Language">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Hebrew" />
+          <MenuItem mnemonicParsing="false" text="English" />
+            <MenuItem mnemonicParsing="false" text="French" />
+            <MenuItem mnemonicParsing="false" text="Spanish" />
+        </items>
+      </SplitMenuButton>
+      <Button fx:id="parse_b" layoutX="35.0" layoutY="319.0" mnemonicParsing="false" onAction="#parse" prefHeight="56.0" prefWidth="121.0" text="Parse">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Button>
+      <Button fx:id="reset_b" layoutX="145.0" layoutY="411.0" mnemonicParsing="false" onAction="#reset" text="Reset Button">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Button>
+      <Button fx:id="showdic_b" layoutX="195.0" layoutY="325.0" mnemonicParsing="false" onAction="#show_dic" prefHeight="43.0" prefWidth="111.0" text="Show Dictonary" />
+      <Button fx:id="load_b" layoutX="352.0" layoutY="325.0" mnemonicParsing="false" onAction="#load_dic" prefHeight="43.0" prefWidth="111.0" text="Load Dictonary" />
+      <Label layoutX="45.0" layoutY="110.0" text="Working path" />
+      <Label layoutX="45.0" layoutY="172.0" text="Save path" />
+    </children>
+</AnchorPane>
