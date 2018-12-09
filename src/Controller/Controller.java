@@ -46,5 +46,13 @@ public class Controller {
     public void writeLastDocsToDisk(String savePath) throws SearcherException, IOException {
         model.writeLastDocsToDisk(savePath);
     }
+
+    public int getNumberOfIndexed() {
+        return model.getNumberOfIndexed();
+    }
+
+    public int getDicSize(){
+        return model.getDicSize();
+    }
 }
 

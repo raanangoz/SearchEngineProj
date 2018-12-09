@@ -78,15 +78,22 @@ public class MainPageView implements Initializable {
                 alert.setHeaderText("Please select a file in save and work path");
                 alert.showAndWait();
             } else {
-//                double t = System.currentTimeMillis();
+                double t = System.currentTimeMillis();
                 controller.parse(workPath, savePath, checkbox_value);
 //                double y = System.currentTimeMillis() - t;
 //                System.out.println("total time to parse = " + ((y) / 1000) + " seconds");
 //                double l = System.currentTimeMillis();
                 controller.writeLastDocsToDisk(savePath);
                 controller.mergePartialPosting(workPath, savePath);
+                int coutIndexed = controller.getNumberOfIndexed();
+                int uniqterms=controller.getDicSize();
 //                System.out.println("total time to merge = " + ((System.currentTimeMillis() - l) / 1000) + " seconds");
 //                System.out.println("total time to run program = " + ((System.currentTimeMillis() - t) / 1000) + " seconds");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Done");
+                alert.setHeaderText("total time to run program : " + ((System.currentTimeMillis() - t) / 1000) + " seconds. \n" +
+                        "total number of parsed documents is : "+coutIndexed);
+                alert.showAndWait();
             }
         } catch (SearcherException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -167,13 +174,13 @@ public class MainPageView implements Initializable {
         } catch (SearcherException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
-            alert.setHeaderText(e.getMessage() + "to load dictionary");
+            alert.setHeaderText(e.getMessage() + " to load dictionary");
             alert.showAndWait();
 
         } catch (RuntimeException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Fail");
-            alert.setHeaderText("Dictionary does not exist");
+            alert.setHeaderText(" Dictionary does not exist");
             alert.showAndWait();
         }
     }

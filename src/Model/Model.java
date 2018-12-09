@@ -74,4 +74,12 @@ public class Model {
     public void writeLastDocsToDisk(String savePath) {
         readFile.p.getIndexer().writePartialPostToDisk(savePath);
     }
+
+    public int getNumberOfIndexed() {
+        return readFile.getNumberOfParsedDocs();
+    }
+
+    public int getDicSize() {
+        return readFile.p.getIndexer().getDicSize();
+    }
 }

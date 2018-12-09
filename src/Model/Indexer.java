@@ -24,6 +24,11 @@ public class Indexer {
         currentDoc.setDocTerms(terms);
     }
 
+    public int getDicSize() {
+        int size=dictionary.length;
+        return size;
+    }
+
     public int getDF(String term) {
         int location = correctCellDictionary(term);
         if (null != dictionary[location].get(term))
