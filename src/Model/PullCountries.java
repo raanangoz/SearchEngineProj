@@ -26,12 +26,4 @@ public class PullCountries {
     public HashMap<String, Country> getCountries() {
         return Countries;
     }
-
-//    // TODO: 05/12/2018   Itzik remove test class
-//    public static void main(String[] args) throws IOException {
-//        HttpRequest http = new HttpRequest("https://restcountries.eu/rest/v2/all");
-//        PullCountries c = new PullCountries(http.getJsonObject()); //all my information is here
-//        System.out.println(c.getCountryByCapital("Tokyo").getCountryName());
-//        System.out.println(" ");
-//    }
 }

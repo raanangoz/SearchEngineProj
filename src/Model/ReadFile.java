@@ -105,7 +105,6 @@ public class ReadFile {
                 }
 
                 if (st.startsWith("<F P=104>")) {
-                    // TODO: 07/12/2018 add this also  Itzik
                     String CountrysWholeText = st;
                     String[] wordLine = CountrysWholeText.split("\\s+");
                     if (wordLine.length > 3)

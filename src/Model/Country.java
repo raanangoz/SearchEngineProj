@@ -10,7 +10,6 @@ public class Country {
     private String Capital_City;
     private String Currency;
     private String Population;
-    // TODO: 07/12/2018 get numebr of city's  Itzik
     public static int numberofcity = 0;
     private static HashMap<String, String> cityDocList = new HashMap<>();
     private static HashMap<String, String> cityDocLocation = new HashMap<>();
@@ -39,23 +38,6 @@ public class Country {
                 x = x / 1000000000;
                 word = x + "B";
             }
-//
-//            int i;
-//            for(i = 0 ; i < word.length();i++){
-//                if(word.charAt(i)=='.') {
-//                    newword += word.charAt(i);
-//                    i++;
-//                    break;
-//                }
-//                newword+=word.charAt(i);
-//            }
-//            int count=2;
-//            for(; i<word.length();i++){
-//                if (count==0)
-//                    break;
-//                count--;
-//                newword+=word.charAt(i);
-//            }
         }
         return word;
     }
@@ -67,12 +49,13 @@ public class Country {
         this.cityDocList = docs;
     }
 
+    //<editor-fold desc="Getter and Setter">
     public static void setCityDocsList(String city, String doc) {
         if (cityDocList.containsKey(city))
             cityDocList.put(city, cityDocList.get(city) + " " + doc);
         else {
             cityDocList.put(city, doc);
-            // TODO: 07/12/2018 get numebr of city's  Itzik
+            //get numebr of city's  Itzik
             numberofcity++;
         }
     }
@@ -103,4 +86,5 @@ public class Country {
     public HashMap<String, String> getDocs() {
         return cityDocList;
     }
+    //</editor-fold>
 }

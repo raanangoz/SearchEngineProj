@@ -18,10 +18,6 @@ public class Doc implements Serializable {
     int documentLength;
     private LinkedHashMap<String, Integer>[] docTerms;
 
-    public int getDocumentLength() {
-        return documentLength;
-    }
-
     public Doc(String docName, String text, String DocNo) {
         this.docName = docName;
         this.text = text;
@@ -35,6 +31,11 @@ public class Doc implements Serializable {
     public void freeDocTerms() {
         for (int i = 0; i < docTerms.length; i++)
             docTerms[i].clear();
+    }
+
+    //<editor-fold desc="Getter and Setter">
+    public int getDocumentLength() {
+        return documentLength;
     }
 
     public LinkedHashMap<String, Integer>[] getDocTerms() {
@@ -135,4 +136,5 @@ public class Doc implements Serializable {
     public void setDocCountry(String docCity) {
         this.city = docCity;
     }
+    //</editor-fold>
 }

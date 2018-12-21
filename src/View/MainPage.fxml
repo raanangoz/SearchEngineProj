@@ -31,8 +31,8 @@
       <Button fx:id="Browse_s" layoutX="380.0" layoutY="195.0" mnemonicParsing="false" onAction="#Browse_saving" text="Browse" />
       <!--<TextField fx:id="work_path" layoutX="42.0" layoutY="131.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\IRWorkK" />-->
       <!--<TextField fx:id="save_path" layoutX="42.0" layoutY="195.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\IRWorkK\test2" />-->
-      <TextField fx:id="work_path" layoutX="42.0" layoutY="131.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="D:\documents\users\itzikd\Downloads\SearchEngineIR-master" />
-      <TextField fx:id="save_path" layoutX="42.0" layoutY="195.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="D:\documents\users\itzikd\Downloads\SearchEngineIR-master\test2" />
+      <TextField fx:id="work_path" layoutX="42.0" layoutY="131.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="D:\" />
+      <TextField fx:id="save_path" layoutX="42.0" layoutY="195.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="D:\" />
       <CheckBox fx:id="stemming_option" layoutX="42.0" layoutY="256.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Stemmimg" />
       <SplitMenuButton fx:id="splitMenuButton" layoutX="320.0" layoutY="252.0" mnemonicParsing="false" text="File's Language">
         <items>
