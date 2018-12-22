@@ -2,8 +2,6 @@ package Model;
 
 import Model.Excpetions.SearcherException;
 import Model.Excpetions.SuccessException;
-
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,6 +16,7 @@ public class LoadedDictionary {
     private HashMap<String, Integer>[] dictionary;
 
     public LoadedDictionary(String savePath){
+        dictionary = new HashMap[27];
         this.savePath=savePath;
     }
     public static LoadedDictionary getInstance(String savePath) {
