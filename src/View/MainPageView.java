@@ -230,8 +230,10 @@ public class MainPageView implements Initializable {
         controller.runQueryFile(queryText);
     }
 
+    // TODO: 22/12/2018 fix this  Itzik
     public void language_pick(HashMap<String, String> countryListDoc) {
         for (Map.Entry<String, String> entry : countryListDoc.entrySet())
             LanguageMenu.getItems().add(new CheckMenuItem(entry.getKey()));
+//        if((CheckMenuItem)LanguageMenu.getItems().get(1))
     }
 }
