@@ -23,6 +23,7 @@ public class MainPageView implements Initializable {
     public CheckBox stemming_option; //stemming checkbox
     public TextField work_path; //text field for working path
     public TextField save_path; //text field for saving path
+    public TextField query_path; //query path
     public SplitMenuButton splitMenuButton; //language menu
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
     private Controller controller = Controller.getInstance();
@@ -41,16 +42,16 @@ public class MainPageView implements Initializable {
         UpdateTextField(save_path);
     }
 
-    private void UpdateTextField(TextField save_path) {
+    private void UpdateTextField(TextField Path) {
         try {
             DirectoryChooser chooser = new DirectoryChooser();
             chooser.setTitle("Choose Folder");
             File selectedDirectory = chooser.showDialog(null);
-            save_path.setText(selectedDirectory.getPath());
+            Path.setText(selectedDirectory.getPath());
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
-            alert.setHeaderText("Please select a file");
+            alert.setHeaderText("Please select a folder");
             alert.showAndWait();
         }
     }
@@ -75,7 +76,7 @@ public class MainPageView implements Initializable {
             if (savePath.equals("") || workPath.equals("")) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error");
-                alert.setHeaderText("Please select a file in save and work path");
+                alert.setHeaderText("Please select a folder in save and work path");
                 alert.showAndWait();
             } else {
                 double t = System.currentTimeMillis();
@@ -86,13 +87,13 @@ public class MainPageView implements Initializable {
                 controller.writeLastDocsToDisk(savePath);
                 controller.mergePartialPosting(workPath, savePath);
                 int coutIndexed = controller.getNumberOfIndexed();
-                int uniqterms=controller.getDicSize();
+                int uniqterms = controller.getDicSize();
 //                System.out.println("total time to merge = " + ((System.currentTimeMillis() - l) / 1000) + " seconds");
 //                System.out.println("total time to run program = " + ((System.currentTimeMillis() - t) / 1000) + " seconds");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
                 alert.setHeaderText("total time to run program : " + ((System.currentTimeMillis() - t) / 1000) + " seconds. \n" +
-                        "total number of parsed documents is : "+coutIndexed);
+                        "total number of parsed documents is : " + coutIndexed);
                 alert.showAndWait();
             }
         } catch (SearcherException e) {
@@ -113,7 +114,7 @@ public class MainPageView implements Initializable {
             if (savePath.equals("")) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error");
-                alert.setHeaderText("Please select a file in save and work path");
+                alert.setHeaderText("Please select a folder in save and work path");
                 alert.showAndWait();
             } else
                 controller.resetButton(savePath);
@@ -183,6 +184,28 @@ public class MainPageView implements Initializable {
             alert.setHeaderText(" Dictionary does not exist");
             alert.showAndWait();
         }
+    }
+
+    public void Browse_query(ActionEvent actionEvent) {
+        UpdateTextField(query_path);
+    }
+
+    public void run_query(ActionEvent actionEvent) {
+        String queryPath = query_path.getText();
+        //if path left empty
+        if (queryPath.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please select a folder in save and work path");
+            alert.showAndWait();
+        } else {
+//            controller.runQuery(queryPath);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Done");
+        }
+    }
+
+    public void run_query_file(ActionEvent actionEvent) {
     }
 }
 
