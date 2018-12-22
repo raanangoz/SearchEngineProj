@@ -1,7 +1,6 @@
 package View;
 
 import Controller.Controller;
-import Model.Country;
 import Model.Excpetions.SearcherException;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -12,9 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
-
-import static Model.Country.getDocs;
 
 
 public class MainPageView implements Initializable {
@@ -40,6 +38,7 @@ public class MainPageView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        LanguageMenu.setText("Language");
     }
 
     //update work path textfield
@@ -103,7 +102,10 @@ public class MainPageView implements Initializable {
 //                double l = System.currentTimeMillis();
                 controller.writeLastDocsToDisk(savePath);
                 controller.mergePartialPosting(workPath, savePath);
+
                 HashMap<String, String> countryDocsList = controller.getCountryList();
+                language_pick(countryDocsList);
+
                 int coutIndexed = controller.getNumberOfIndexed();
                 int uniqterms = controller.getDicSize();
 //                System.out.println("total time to merge = " + ((System.currentTimeMillis() - l) / 1000) + " seconds");
@@ -226,5 +228,10 @@ public class MainPageView implements Initializable {
     public void run_query_file(ActionEvent actionEvent) {
         String queryText = query_path.getText();
         controller.runQueryFile(queryText);
+    }
+
+    public void language_pick(HashMap<String, String> countryListDoc) {
+        for (Map.Entry<String, String> entry : countryListDoc.entrySet())
+            LanguageMenu.getItems().add(new CheckMenuItem(entry.getKey()));
     }
 }

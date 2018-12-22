@@ -2,9 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
@@ -35,14 +33,6 @@
       <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />
       <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />
       <CheckBox fx:id="stemming_option" layoutX="14.0" layoutY="206.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Stemmimg" />
-      <SplitMenuButton fx:id="splitMenuButton" layoutX="202.0" layoutY="205.0" mnemonicParsing="false" text="File's Language">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Hebrew" />
-          <MenuItem mnemonicParsing="false" text="English" />
-            <MenuItem mnemonicParsing="false" text="French" />
-            <MenuItem mnemonicParsing="false" text="Spanish" />
-        </items>
-      </SplitMenuButton>
       <Button fx:id="parse_b" layoutX="35.0" layoutY="339.0" mnemonicParsing="false" onAction="#parse" prefHeight="56.0" prefWidth="121.0" text="Parse">
          <font>
             <Font size="26.0" />
@@ -62,12 +52,6 @@
       <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="D:\" />
       <Button fx:id="run_query" layoutX="336.0" layoutY="251.0" mnemonicParsing="false" onAction="#run_query" text="Run Query" />
       <Button fx:id="run_query_file" layoutX="401.0" layoutY="295.0" mnemonicParsing="false" onAction="#run_query_file" text="Run Query File" />
-      <SplitMenuButton fx:id="LanguageMenu" layoutX="349.0" layoutY="206.0" mnemonicParsing="false" text="File's Language">
-         <items>
-            <CheckMenuItem mnemonicParsing="false" text="test" />
-            <CheckMenuItem mnemonicParsing="false" text="test2" />
-            <CheckMenuItem mnemonicParsing="false" text="test3" />
-         </items>
-      </SplitMenuButton>
+      <SplitMenuButton fx:id="LanguageMenu" layoutX="276.0" layoutY="211.0" mnemonicParsing="false" text="File's Language" />
     </children>
 </AnchorPane>
