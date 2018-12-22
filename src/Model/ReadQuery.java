@@ -6,16 +6,16 @@ import java.io.File;
 import java.io.FileReader;
 
 public class ReadQuery {
-    public ParseQuery p;
+    public ParseQuery pq;
 
     public ReadQuery(String queryText) {
-        p = new ParseQuery(queryText);
+        pq = new ParseQuery(queryText);
     }
 
 
     public void ParseQueryString(String queryText) {
-        Query PQ = new Query("",queryText,"","");
-        p.parse(PQ);
+        Query q = new Query("",queryText,"","");
+        pq.parse(q);
     }
 
     public void ParseQueryFile(File f) {
