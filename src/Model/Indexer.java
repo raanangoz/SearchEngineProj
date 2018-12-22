@@ -16,8 +16,6 @@ public class Indexer {
         dictionary = new HashMap[27];
         for (int i = 0; i < dictionary.length; i++)
             dictionary[i] = new HashMap<>();
-
-
     }
 
     private void saveTermsOnDoc(Doc currentDoc, LinkedHashMap<String, Integer>[] terms) {

@@ -15,7 +15,7 @@ public class ReadQuery {
 
     public void ParseQueryString(String queryText) {
         Query PQ = new Query("",queryText,"","");
-        p.parse(PQ);
+//        p.parse(PQ);
     }
 
     public void ParseQueryFile(File f) {
@@ -34,7 +34,7 @@ public class ReadQuery {
                 }
                 if (st.equals("</top>")) {
                     Query PQ = new Query("",ParseMe,"","");
-                    p.parse(PQ);
+//                    p.parse(PQ);
                 }
             }
         } catch (

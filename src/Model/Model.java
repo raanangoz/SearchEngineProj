@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Model {
@@ -96,5 +97,9 @@ public class Model {
             readQuery.ParseQueryFile(queryFile);
         } catch (Exception e) {
         }
+    }
+
+    public HashMap<String, String> getCountrList() {
+        return Country.getDocs();
     }
 }

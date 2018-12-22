@@ -83,7 +83,7 @@ public class Country {
         return Population;
     }
 
-    public HashMap<String, String> getDocs() {
+    public static HashMap<String, String> getDocs() {
         return cityDocList;
     }
     //</editor-fold>

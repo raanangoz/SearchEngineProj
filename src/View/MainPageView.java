@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Controller;
+import Model.Country;
 import Model.Excpetions.SearcherException;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -10,7 +11,10 @@ import javafx.stage.DirectoryChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+
+import static Model.Country.getDocs;
 
 
 public class MainPageView implements Initializable {
@@ -28,6 +32,7 @@ public class MainPageView implements Initializable {
     public TextField query_path; //query path
     public TextField query_text; //query text
     public SplitMenuButton splitMenuButton; //language menu
+    public SplitMenuButton LanguageMenu; //language menu
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
     //</editor-fold>
 
@@ -98,6 +103,7 @@ public class MainPageView implements Initializable {
 //                double l = System.currentTimeMillis();
                 controller.writeLastDocsToDisk(savePath);
                 controller.mergePartialPosting(workPath, savePath);
+                HashMap<String, String> countryDocsList = controller.getCountryList();
                 int coutIndexed = controller.getNumberOfIndexed();
                 int uniqterms = controller.getDicSize();
 //                System.out.println("total time to merge = " + ((System.currentTimeMillis() - l) / 1000) + " seconds");
