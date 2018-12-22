@@ -6,9 +6,7 @@ import Model.Excpetions.SearcherException;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
 public class Model {
@@ -102,5 +100,8 @@ public class Model {
 
         } catch (Exception e) {
         }
+    }
+    public HashMap<String, String> getCountrList() {
+        return Country.getDocs();
     }
 }
