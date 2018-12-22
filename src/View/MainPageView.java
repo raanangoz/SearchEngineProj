@@ -31,7 +31,7 @@ public class MainPageView implements Initializable {
     public SplitMenuButton LanguageMenu; //language menu
 
     List<CheckMenuItem> allCountryList=new ArrayList<>(); //list of countrys
-
+    public boolean checkRunAgain=false;
     public Menu menu;
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
     //</editor-fold>
@@ -242,7 +242,9 @@ public class MainPageView implements Initializable {
     public void language_pick(HashMap<String, String> countryListDoc) {
         for (Map.Entry<String, String> entry : countryListDoc.entrySet())
             allCountryList.add(new CheckMenuItem(entry.getKey()));
-        LanguageMenu.getItems().addAll(allCountryList);
+        if (checkRunAgain==false)
+            LanguageMenu.getItems().addAll(allCountryList);
+        checkRunAgain=true;
 //        if((CheckMenuItem)LanguageMenu.getItems().get(1))
     }
 
