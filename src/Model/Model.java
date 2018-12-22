@@ -14,6 +14,7 @@ public class Model {
 
     private static Model singleton = null;
     ReadFile readFile = new ReadFile("", "", false);
+    ReadQuery readQuery = new ReadQuery("");
 
     private Model() {
     }
@@ -81,5 +82,19 @@ public class Model {
 
     public int getDicSize() {
         return readFile.p.getIndexer().getDicSize();
+    }
+
+    public void runQuery(String queryText) {
+        readQuery.ParseQueryString(queryText);
+    }
+
+    public void runQueryFile(String queryText) {
+        try {
+            File queryFile = new File(queryText);
+            if (!queryFile.exists())
+                System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
+            readQuery.ParseQueryFile(queryFile);
+        } catch (Exception e) {
+        }
     }
 }

@@ -24,6 +24,7 @@ public class MainPageView implements Initializable {
     public TextField work_path; //text field for working path
     public TextField save_path; //text field for saving path
     public TextField query_path; //query path
+    public TextField query_text; //query text
     public SplitMenuButton splitMenuButton; //language menu
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
     private Controller controller = Controller.getInstance();
@@ -191,21 +192,23 @@ public class MainPageView implements Initializable {
     }
 
     public void run_query(ActionEvent actionEvent) {
-        String queryPath = query_path.getText();
+        String queryText = query_text.getText();
         //if path left empty
-        if (queryPath.equals("")) {
+        if (queryText.equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText("Please select a folder in save and work path");
             alert.showAndWait();
         } else {
-//            controller.runQuery(queryPath);
+            controller.runQuery(queryText);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Done");
         }
     }
 
     public void run_query_file(ActionEvent actionEvent) {
+        String queryText=query_path.getText();
+        controller.runQueryFile(queryText);
     }
 }
 

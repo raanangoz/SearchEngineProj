@@ -1,37 +1,35 @@
-//package Model;
-//
-//import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.util.*;
-//import java.util.regex.Pattern;
-//
-//public class ParseQuery {
-//    private static LinkedHashMap<String, Integer>[] termsQuery;
-//
-//    boolean stemmer = false;
-//    private Indexer indexer;
-//    boolean finishedDoc;//over the doc
-//    private int i;
-//    private static HashSet<String> stopWords;
-//    String workpath;
-//    String savepath;
-//    private Map<String, String> stemResult;
-//    // all docs until decide to move to disk
-//
-//
-//    public ParseQuery(String workPath, String savePath, boolean stemmer) {
-//
-//        int postingCounter = 0;
-//        indexer = new Indexer();
-//        this.stemmer = stemmer;
-//        i = 0;
-//        finishedDoc = false;
-//        stopWords = new HashSet<>();
-//        this.workpath = workPath;
-//        this.savepath = savePath;
-//        stemResult = new HashMap<>();
-//    }
-//
+package Model;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
+import java.util.regex.Pattern;
+
+public class ParseQuery {
+    private static LinkedHashMap<String, Integer>[] termsQuery;
+
+    boolean stemmer = false;
+    private Indexer indexer;
+    boolean finishedDoc;//over the doc
+    private int i;
+    private static HashSet<String> stopWords;
+    String queryText;
+    private Map<String, String> stemResult;
+//     all docs until decide to move to disk
+
+
+    public ParseQuery(String queryText) {
+
+        int postingCounter = 0;
+        indexer = new Indexer();
+        this.stemmer = stemmer;
+        i = 0;
+        finishedDoc = false;
+        stopWords = new HashSet<>();
+        stemResult = new HashMap<>();
+        this.queryText=queryText;
+    }
+
 //    public Indexer getIndexer() {
 //        return this.indexer;
 //    }
@@ -554,4 +552,4 @@
 //            else
 //                return 26;
 //        }
-//    }
+    }

@@ -54,5 +54,13 @@ public class Controller {
     public int getDicSize(){
         return model.getDicSize();
     }
+
+    public void runQuery(String queryPath) {
+        model.runQuery(queryPath);
+    }
+
+    public void runQueryFile(String queryText) {
+        model.runQueryFile(queryText);
+    }
 }
 
