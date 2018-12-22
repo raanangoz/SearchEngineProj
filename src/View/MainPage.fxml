@@ -28,8 +28,8 @@
         </Label>
       <Button fx:id="Browse_w" layoutX="337.0" layoutY="101.0" mnemonicParsing="false" onAction="#Browse_working" text="Browse" />
       <Button fx:id="Browse_s" layoutX="337.0" layoutY="160.0" mnemonicParsing="false" onAction="#Browse_saving" text="Browse" />
-      <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments" />
-      <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Desktop\FinalSEEngine\posts" />
+      <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />
+      <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />
       <!--<TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />-->
       <!--<TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />-->
       <CheckBox fx:id="stemming_option" layoutX="14.0" layoutY="206.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Stemmimg" />
