@@ -66,6 +66,8 @@ public class Model {
 
     public void loadDic(String savePath) throws SearcherException, IOException {
         readFile.p.getIndexer().loadDic(savePath);
+        LoadedDictionary loadedDictionary = LoadedDictionary.getInstance(savePath);
+        loadedDictionary.loadDic();
     }
 
     public void merg_func(String workPath, String savePath) {

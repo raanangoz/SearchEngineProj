@@ -398,7 +398,7 @@ public class Searcher {
             if (term.charAt(0) >= 'A' && term.charAt(0) <= 'Z') {//check the lower / uppercase rule.
                 int i = correctDictionaryCell(term);
                 String lowerTerm = term.toLowerCase();
-                if (indexer.getDictionary()[i].get(lowerTerm) != null) {
+                if (LoadedDictionary.getInstance(savepath).getDictionary()[i].get(lowerTerm) != null) {
 
                     // TODO: 21/12/2018 Raanan needs to go over this, add to termlist  Raanan
                     int c = 0;
@@ -406,7 +406,7 @@ public class Searcher {
                         c = termsQuery.get(lowerTerm);
                         termsQuery.put(lowerTerm, ++c);
                     } else {
-                        if (indexer.getDictionary()[i].get(lowerTerm) != null) {
+                        if (LoadedDictionary.getInstance(savepath).getDictionary()[i].get(lowerTerm) != null) {
                             termsQuery.put(lowerTerm, 1);
                         } else {
                             if (termsQuery.get(term.toUpperCase()) != null) {
