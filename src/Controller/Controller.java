@@ -4,6 +4,7 @@ import Model.Excpetions.SearcherException;
 import Model.Model;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Controller {
     private Model model;
@@ -61,6 +62,10 @@ public class Controller {
 
     public void runQueryFile(String queryText) {
         model.runQueryFile(queryText);
+    }
+
+    public HashMap<String, String> getCountryList() {
+        return model.getCountrList();
     }
 }
 
