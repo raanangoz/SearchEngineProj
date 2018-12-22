@@ -210,15 +210,18 @@ public class MainPageView implements Initializable {
 
     //run query from text
     public void run_query(ActionEvent actionEvent) {
+
         String queryText = query_text.getText();
+        String workPath = work_path.getText();
+        String savePath = save_path.getText();
         //if path left empty
-        if (queryText.equals("")) {
+        if (savePath.equals("") || workPath.equals("") || queryText.equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText("Please select a folder in save and work path");
             alert.showAndWait();
         } else {
-            controller.runQuery(queryText);
+            controller.runQuery(queryText,workPath,savePath,checkbox_value);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Done");
         }
@@ -226,8 +229,11 @@ public class MainPageView implements Initializable {
 
     //run query from file
     public void run_query_file(ActionEvent actionEvent) {
+        //TODO ADD HERE IF's like in quest string
         String queryText = query_path.getText();
-        controller.runQueryFile(queryText);
+        String workPath = work_path.getText();
+        String savePath = save_path.getText();
+        controller.runQueryFile(queryText,workPath,savePath,checkbox_value);
     }
 
     public void language_pick(HashMap<String, String> countryListDoc) {
