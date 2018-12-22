@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 
 
 public class MainPageView implements Initializable {
+
+    //<editor-fold desc="buttons">
     public Button Browse_s; //browse button to load save path
     public Button Browse_w; //browse button to load working path
     public Button parse_b; //parse button
@@ -27,6 +29,8 @@ public class MainPageView implements Initializable {
     public TextField query_text; //query text
     public SplitMenuButton splitMenuButton; //language menu
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
+    //</editor-fold>
+
     private Controller controller = Controller.getInstance();
 
     @Override
@@ -43,6 +47,12 @@ public class MainPageView implements Initializable {
         UpdateTextField(save_path);
     }
 
+    //update query path textfield
+    public void Browse_query(ActionEvent actionEvent) {
+        UpdateTextField(query_path);
+    }
+
+    //gets path from filechoser and updates the field text
     private void UpdateTextField(TextField Path) {
         try {
             DirectoryChooser chooser = new DirectoryChooser();
@@ -62,6 +72,7 @@ public class MainPageView implements Initializable {
         checkbox_value = stemming_option.isSelected();
     }
 
+    //merge function
     public void merge_func(ActionEvent actionEvent) {
         String workPath = work_path.getText();
         String savePath = save_path.getText();
@@ -129,6 +140,7 @@ public class MainPageView implements Initializable {
 
     }
 
+    //show dictionary function
     public void show_dic(ActionEvent actionEvent) {
         try {
             String savePath = save_path.getText();
@@ -170,6 +182,7 @@ public class MainPageView implements Initializable {
 //        }
     }
 
+    //load dictionary
     public void load_dic(ActionEvent actionEvent) {
         try {
             controller.loadDic(save_path.getText());
@@ -187,10 +200,7 @@ public class MainPageView implements Initializable {
         }
     }
 
-    public void Browse_query(ActionEvent actionEvent) {
-        UpdateTextField(query_path);
-    }
-
+    //run query from text
     public void run_query(ActionEvent actionEvent) {
         String queryText = query_text.getText();
         //if path left empty
@@ -206,10 +216,9 @@ public class MainPageView implements Initializable {
         }
     }
 
+    //run query from file
     public void run_query_file(ActionEvent actionEvent) {
-        String queryText=query_path.getText();
+        String queryText = query_path.getText();
         controller.runQueryFile(queryText);
     }
 }
-
-
