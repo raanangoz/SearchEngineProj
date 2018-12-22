@@ -8,14 +8,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Model {
 
     private static Model singleton = null;
     ReadFile readFile = new ReadFile("", "", false);
-    ReadQuery readQuery = new ReadQuery("");
+    //TODO WORKPATH FOR READQUERY
+    ReadQuery readQuery = new ReadQuery();
 
     private Model() {
     }
@@ -86,7 +87,10 @@ public class Model {
     }
 
     public void runQuery(String queryText) {
-        readQuery.ParseQueryString(queryText);
+        Query q = readQuery.ParseQueryString(queryText);
+        List <Query> queries = new LinkedList<>();
+        queries.add(q);
+
     }
 
     public void runQueryFile(String queryText) {
@@ -94,12 +98,9 @@ public class Model {
             File queryFile = new File(queryText);
             if (!queryFile.exists())
                 System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
-            readQuery.ParseQueryFile(queryFile);
+            List <Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
+
         } catch (Exception e) {
         }
-    }
-
-    public HashMap<String, String> getCountrList() {
-        return Country.getDocs();
     }
 }
