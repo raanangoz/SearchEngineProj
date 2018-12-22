@@ -268,8 +268,6 @@ public class Parse {
 
             }
         }
-
-
     }
 
     private ArrayList<Integer> containsSlash(String first) {
@@ -590,7 +588,6 @@ public class Parse {
         }
         return false;
     }
-
 
     /**
      * @param word

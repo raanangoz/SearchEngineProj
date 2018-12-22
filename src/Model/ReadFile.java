@@ -4,31 +4,29 @@ package Model;
 import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class ReadFile {
     public Parse p;
     private static int fileIndex;
     private int numbOfDocsParsed;
-    private int maxcount = 0;
-    private String cityname = "";
 
     public ReadFile(String workPath, String savePath, boolean checkbox_value) {
         p = new Parse(workPath, savePath, checkbox_value);
         fileIndex = 1;
         numbOfDocsParsed = 0;
         int i = 0;
-
     }
 
     public int getNumberOfParsedDocs() {
         return numbOfDocsParsed;
     }
-
 
     public static int getFileIndex() {
         return fileIndex;
@@ -56,8 +54,6 @@ public class ReadFile {
                 sendDocParse(file);
             fileIndex++;
         }
-
-
         return resultList;
     }
 
@@ -81,7 +77,6 @@ public class ReadFile {
                     DocCountry = new StringBuilder();
                 }
                 if (st.equals("<TEXT>")) {
-
                     while (((st = br.readLine()) != null) && (!st.equals("</TEXT>"))) {
                         if (st.startsWith("<F P=104>")) {
                             String CountrysWholeText = st;
