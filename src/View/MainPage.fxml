@@ -17,7 +17,7 @@
         <ImageView fitHeight="500.0" fitWidth="500.0" pickOnBounds="true">
             <image>
                 <Image url="@../resource/blue.png" />
-                
+
             </image>
         </ImageView>
         <Label ellipsisString="" layoutX="19.0" layoutY="-20.0" prefHeight="118.0" prefWidth="434.0" text="Search Engine" textFill="WHITE" textOverrun="CLIP" wrapText="true">
