@@ -10,9 +10,7 @@ import javafx.stage.DirectoryChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class MainPageView implements Initializable {
@@ -31,6 +29,10 @@ public class MainPageView implements Initializable {
     public TextField query_text; //query text
     public SplitMenuButton splitMenuButton; //language menu
     public SplitMenuButton LanguageMenu; //language menu
+
+    List<CheckMenuItem> allCountryList=new ArrayList<>(); //list of countrys
+
+    public Menu menu;
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
     //</editor-fold>
 
@@ -233,7 +235,21 @@ public class MainPageView implements Initializable {
     // TODO: 22/12/2018 fix this  Itzik
     public void language_pick(HashMap<String, String> countryListDoc) {
         for (Map.Entry<String, String> entry : countryListDoc.entrySet())
-            LanguageMenu.getItems().add(new CheckMenuItem(entry.getKey()));
+            allCountryList.add(new CheckMenuItem(entry.getKey()));
+        LanguageMenu.getItems().addAll(allCountryList);
 //        if((CheckMenuItem)LanguageMenu.getItems().get(1))
+    }
+
+    //return selected countrys
+    public List<String> getCountryForSearch(List<CheckMenuItem> allCountryList) {
+        List<String> selectedCountrys = new LinkedList<>();
+        for (int i=0; i<allCountryList.size(); i++)
+        {
+            if(allCountryList.get(i).isSelected()==true)
+                selectedCountrys.add(allCountryList.get(i).getText());
+        }
+        for(int i=0; i<selectedCountrys.size(); i++)
+            System.out.println(selectedCountrys.get(i));
+        return selectedCountrys;
     }
 }
