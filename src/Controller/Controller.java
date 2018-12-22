@@ -5,6 +5,7 @@ import Model.Model;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public class Controller {
     private Model model;
@@ -60,8 +61,8 @@ public class Controller {
         model.runQuery(queryPath,workPath, savePath, checkbox_value);
     }
 
-    public void runQueryFile(String queryText,String workPath, String savePath, boolean checkbox_value) {
-        model.runQueryFile(queryText, workPath, savePath, checkbox_value);
+    public void runQueryFile(String queryText,String workPath, String savePath, boolean checkbox_value,List<String> chosenCities) {
+        model.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
     }
 
     public HashMap<String, String> getCountryList() {

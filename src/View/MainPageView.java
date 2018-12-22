@@ -235,7 +235,8 @@ public class MainPageView implements Initializable {
         String queryText = query_path.getText();
         String workPath = work_path.getText();
         String savePath = save_path.getText();
-        controller.runQueryFile(queryText,workPath,savePath,checkbox_value);
+        List <String> chosenCities = getCountryForSearch(allCountryList);
+        controller.runQueryFile(queryText,workPath,savePath,checkbox_value,chosenCities);
     }
 
     // TODO: 22/12/2018 fix this  Itzik

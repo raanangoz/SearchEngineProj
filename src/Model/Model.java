@@ -99,13 +99,14 @@ public class Model {
     }
 
     // TODO: 12/22/2018  queryText
-    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value) {
+    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String>chosenCities) {
         try {
             File queryFile = new File(queryText);
             if (!queryFile.exists())
                 System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
             List <Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
-//            System.out.println("hi");
+            Ranker ranker = new Ranker();
+            List <Doc> orderedRanked = ranker.getOrderedDocs(queriesToRanker,chosenCities);
         }
         catch (Exception e) {
         }
