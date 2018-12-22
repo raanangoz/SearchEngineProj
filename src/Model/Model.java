@@ -105,6 +105,7 @@ public class Model {
             if (!queryFile.exists())
                 System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
             List <Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
+//            System.out.println("hi");
         }
         catch (Exception e) {
         }

@@ -16,6 +16,8 @@ public class LoadedDictionary {
 
     public LoadedDictionary(String savePath){
         dictionary = new HashMap[27];
+        for (int i = 0; i < dictionary.length; i++)
+            dictionary[i] = new HashMap<>();
         this.savePath=savePath;
     }
 
@@ -35,6 +37,7 @@ public class LoadedDictionary {
                 term += (words[i]+" ");
 
             }
+            term=term.substring(0,term.length()-1);
             DF = Integer.parseInt(words[i + 1]);
             //TF = Integer.parseInt(words[i + 3]);
 
