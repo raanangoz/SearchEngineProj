@@ -14,7 +14,7 @@ public class Model {
     private static Model singleton = null;
     ReadFile readFile = new ReadFile("", "", false);
     //TODO WORKPATH FOR READQUERY
-//    ReadQuery readQuery = new ReadQuery();
+    ReadQuery readQuery = new ReadQuery("","",false);
 
     private Model() {
     }
@@ -65,9 +65,14 @@ public class Model {
     }
 
     public void loadDic(String savePath) throws SearcherException, IOException {
-        readFile.p.getIndexer().loadDic(savePath);
-        LoadedDictionary loadedDictionary = LoadedDictionary.getInstance(savePath);
-        loadedDictionary.loadDic();
+//TODO remove?        readFile.p.getIndexer().loadDic(savePath);
+        LoadedDictionary loadedDictionary = new LoadedDictionary(savePath);
+        try {
+            loadedDictionary.loadDic();
+        }
+        catch (Exception e) {
+            loadedDictionary = null;
+        }
     }
 
     public void merg_func(String workPath, String savePath) {
@@ -86,21 +91,22 @@ public class Model {
         return readFile.p.getIndexer().getDicSize();
     }
 
-    public void runQuery(String queryText) {
-//        Query q = readQuery.ParseQueryString(queryText);
+    public void runQuery(String queryText, String workPath, String savePath, boolean checkbox_value) {
+        Query q = readQuery.ParseQueryString(queryText);
         List <Query> queries = new LinkedList<>();
-//        queries.add(q);
+        queries.add(q);
 
     }
 
-    public void runQueryFile(String queryText) {
+    // TODO: 12/22/2018  queryText
+    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value) {
         try {
             File queryFile = new File(queryText);
             if (!queryFile.exists())
                 System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
-//            List <Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
-
-        } catch (Exception e) {
+            List <Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
+        }
+        catch (Exception e) {
         }
     }
     public HashMap<String, String> getCountrList() {

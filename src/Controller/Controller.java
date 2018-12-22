@@ -56,12 +56,12 @@ public class Controller {
         return model.getDicSize();
     }
 
-    public void runQuery(String queryPath) {
-        model.runQuery(queryPath);
+    public void runQuery(String queryPath,String workPath, String savePath, boolean checkbox_value) {
+        model.runQuery(queryPath,workPath, savePath, checkbox_value);
     }
 
-    public void runQueryFile(String queryText) {
-        model.runQueryFile(queryText);
+    public void runQueryFile(String queryText,String workPath, String savePath, boolean checkbox_value) {
+        model.runQueryFile(queryText, workPath, savePath, checkbox_value);
     }
 
     public HashMap<String, String> getCountryList() {

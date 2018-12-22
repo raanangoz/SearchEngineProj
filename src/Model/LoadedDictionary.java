@@ -2,8 +2,6 @@ package Model;
 
 import Model.Excpetions.SearcherException;
 import Model.Excpetions.SuccessException;
-
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,16 +12,11 @@ import java.util.HashMap;
 public class LoadedDictionary {
 
     private String savePath;
-    private static LoadedDictionary singleton = null;
-    private HashMap<String, Integer>[] dictionary;
+    private static HashMap<String, Integer>[] dictionary;
 
     public LoadedDictionary(String savePath){
+        dictionary = new HashMap[27];
         this.savePath=savePath;
-    }
-    public static LoadedDictionary getInstance(String savePath) {
-        if (singleton == null)
-            singleton = new LoadedDictionary(savePath);
-        return singleton;
     }
 
     public void loadDic() throws SearcherException, IOException {
@@ -39,7 +32,7 @@ public class LoadedDictionary {
             words = st.split(" ");
             int i;
             for (i = 0; i < words.length && !words[i].equals("DF"); i++) {
-                term += (words[i]);
+                term += (words[i]+" ");
 
             }
             DF = Integer.parseInt(words[i + 1]);
@@ -64,7 +57,7 @@ public class LoadedDictionary {
             return 26;
     }
 
-    public HashMap<String, Integer>[] getDictionary() {
+    public static HashMap<String, Integer>[] getDictionary() {
         return dictionary;
     }
 }

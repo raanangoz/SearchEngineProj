@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Searcher {
-    private Map<String,Integer> termsQuery;
+    private Map<String, Integer> termsQuery;
     boolean stemmer = false;
     boolean finishedParsingQ;
     private int i;
@@ -14,13 +14,14 @@ public class Searcher {
     String queryText;
     String workpath;
     String savepath;
+
     public Searcher(String workpath, String savepath, boolean stemmer) {
         this.stemmer = stemmer;
         i = 0;
         finishedParsingQ = false;
         stopWords = new HashSet<>();
-        this.workpath=workpath;
-        this.savepath=savepath;
+        this.workpath = workpath;
+        this.savepath = savepath;
 
     }
 
@@ -377,8 +378,7 @@ public class Searcher {
         return null;
     }
 
-    private void addToTerms(String term){
-
+    private void addToTerms(String term) {
         if (!stopWords.contains(term)) {
             if (!term.equals("")) {
                 if (stemmer) {
@@ -396,116 +396,95 @@ public class Searcher {
                         term = term.toUpperCase();
                 }
             }
+            int c = 0;
             if (term.charAt(0) >= 'A' && term.charAt(0) <= 'Z') {//check the lower / uppercase rule.
                 int i = correctDictionaryCell(term);
                 String lowerTerm = term.toLowerCase();
-                if (LoadedDictionary.getInstance(savepath).getDictionary()[i].get(lowerTerm) != null) {
+                if (LoadedDictionary.getDictionary()[i].get(lowerTerm) != null) {
 
                     // TODO: 21/12/2018 Raanan needs to go over this, add to termlist  Raanan
-                    int c = 0;
+
                     if (termsQuery.get(lowerTerm) != null) {
                         c = termsQuery.get(lowerTerm);
                         termsQuery.put(lowerTerm, ++c);
-                    } else {
-                        if (LoadedDictionary.getInstance(savepath).getDictionary()[i].get(lowerTerm) != null) {
-                            termsQuery.put(lowerTerm, 1);
-                        } else {
-                            if (termsQuery.get(term.toUpperCase()) != null) {
-                                c = termsQuery.get(term.toUpperCase());
-                                termsQuery.put(term.toUpperCase(), ++c);
-                            } else {
-                                termsQuery.put(term.toUpperCase(), 1);
-                            }
-                        }
-                    }
-                } else if (term.charAt(0) >= 'a' && term.charAt(0) <= 'z') {
-                    if (termsQuery.get(term) == null) {
-                        termsQuery.put(term, 1);
-                    } else {
-                        Integer c = termsQuery.get(term);
-                        termsQuery.put(term, ++c);
-                    }
-                } else {
-                    //number, special chars..
 
-                    if (termsQuery.get(term) != null) {
-                        int c = termsQuery.get(term);
-                        termsQuery.put(term, ++c);
                     } else {
-                        termsQuery.put(term, 1);
+                        termsQuery.put(lowerTerm, 1);
                     }
+                }
+                else {
+                    if (termsQuery.get(term.toUpperCase()) != null) {
+                        c = termsQuery.get(term.toUpperCase());
+                        termsQuery.put(term.toUpperCase(), ++c);
+                    } else {
+                        termsQuery.put(term.toUpperCase(), 1);
+                    }
+                }
+            } else if (term.charAt(0) >= 'a' && term.charAt(0) <= 'z') {
+                if (termsQuery.get(term) == null) {
+                    termsQuery.put(term, 1);
+                } else {
+                    c = termsQuery.get(term);
+                    termsQuery.put(term, ++c);
+                }
+            } else {
+                //number, special chars..
+
+                if (termsQuery.get(term) != null) {
+                    c = termsQuery.get(term);
+                    termsQuery.put(term, ++c);
+                } else {
+                    termsQuery.put(term, 1);
                 }
             }
         }
     }
 
-
-    /**
-     * @param word
-     * @return "million" etc..
-     */
-    private static String wordToMillions (String word){
-        String[] bigNumbers = new String[]{"Thousand", "Million", "Billion", "Trillion", "thousand", "million", "billion", "trillion", "m", "b", "bn"};
-        for (String number : bigNumbers) {
-            if (word.equals(number)) {
+    private static String wordToMillions(String word){
+        String[]bigNumbers=new String[]{"Thousand","Million","Billion","Trillion","thousand","million","billion","trillion","m","b","bn"};
+        for(String number:bigNumbers){
+            if(word.equals(number)){
                 return translateWordToMillion(word);
-
             }
         }
         return null;
     }
 
-    /**
-     * called from isBigNumber function
-     * words like million are parsed to M
-     *
-     * @param word
-     * @return
-     */
-    private static String translateWordToMillion (String word){
+    private static String translateWordToMillion(String word){
         //if (word.equals("Thousand")||word.equals("thousand"))
         //    return ",000";
-        if (word.equals("Million") || word.equals("million"))
-            return " M ";
-        else if (word.equals("Billion") || word.equals("billion"))
-            return ",000 M ";
-        else if (word.equals("Trillion") || word.equals("trillion"))
-            return ",000,000 M ";
+        if(word.equals("Million")||word.equals("million"))
+            return" M ";
+        else if(word.equals("Billion")||word.equals("billion"))
+            return",000 M ";
+        else if(word.equals("Trillion")||word.equals("trillion"))
+            return",000,000 M ";
         return null;
     }
 
-    /**
-     * @param w
-     * @return true if word contains a digit
-     */
-    private static boolean containDigit (String w){
-        for (int i = 0; i < w.length(); i++) {
-            if (w.charAt(i) >= '0' && w.charAt(i) <= '9')
+    private static boolean containDigit(String w){
+        for(int i=0;i<w.length();i++){
+            if(w.charAt(i)>='0'&&w.charAt(i)<='9')
                 return true;
         }
         return false;
     }
 
+    public static boolean isInteger(String word){
 
-    /**
-     * @param word
-     * @return a word like 100/100m/
-     */
-    public static boolean isInteger (String word){
+        String ans=word.replaceAll("[,]","");// remove ","
 
-        String ans = word.replaceAll("[,]", "");// remove ","
-
-        if (Pattern.matches("[0-9]+", ans))
+        if(Pattern.matches("[0-9]+",ans))
             return true;
 
         return false;
     }
 
-    public static int correctDictionaryCell (String termToFind){
-        if (termToFind.charAt(0) >= 'a' && termToFind.charAt(0) <= 'z')
-            return (int) termToFind.charAt(0) - 97;
-        else if (termToFind.charAt(0) >= 'A' && termToFind.charAt(0) <= 'Z')
-            return (int) termToFind.charAt(0) - 65;
+    public static int correctDictionaryCell(String termToFind){
+        if(termToFind.charAt(0)>='a'&&termToFind.charAt(0)<='z')
+            return(int)termToFind.charAt(0)-97;
+        else if(termToFind.charAt(0)>='A'&&termToFind.charAt(0)<='Z')
+            return(int)termToFind.charAt(0)-65;
         else
             return 26;
     }
