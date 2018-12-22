@@ -350,7 +350,7 @@ public class Searcher {
         return null;
     }
 
-    
+
     private static String isMonth(String word) {
         String[] months = new String[]{
                 "Jan", "JAN", "January", "JANUARY",
