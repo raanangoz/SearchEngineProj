@@ -1,18 +1,34 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Query implements Serializable {
     String queryNum;
     String queryTitle;
     String queryDesc;
     String queryNarr;
+    Map<String,Integer> terms;
+
+
+    public Map<String, Integer> getTerms() {
+        return terms;
+    }
+
+    public void setTerms(Map<String, Integer> terms) {
+        this.terms = terms;
+    }
 
     public Query(String queryNum, String queryTitle, String queryDesc, String queryNarr) {
         this.queryNum = queryNum;
         this.queryTitle = queryTitle;
         this.queryDesc = queryDesc;
         this.queryNarr = queryNarr;
+        this.terms = new HashMap<>();
+
     }
 
     //<editor-fold desc="Getter and Setter">
