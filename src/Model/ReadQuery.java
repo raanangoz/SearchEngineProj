@@ -10,14 +10,15 @@ import java.util.List;
 public class ReadQuery {
 
     private Searcher pq;
+
     public ReadQuery(String workPath, String savePath, boolean checkbox_value) {
         //TODO WORKPATH ETC...
-        pq = new Searcher(workPath,savePath,checkbox_value);
+        pq = new Searcher(workPath, savePath, checkbox_value);
     }
 
 
     public Query ParseQueryString(String queryText) {
-        Query q = new Query("",queryText,"","");
+        Query q = new Query("", queryText, "", "");
         q = pq.parse(q);
         return q;
     }
@@ -27,8 +28,8 @@ public class ReadQuery {
         List<Query> queries = new LinkedList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(f.getAbsolutePath()))) {
             String st;
-            String ParseMe="";
-            String[] wordLine={};
+            String ParseMe = "";
+            String[] wordLine = {};
             int i = 0;
             while ((st = br.readLine()) != null) {
                 if (st.equals("<top>")) {
@@ -38,7 +39,7 @@ public class ReadQuery {
                     ParseMe = st;
                 }
                 if (st.equals("</top>")) {
-                    Query q = new Query("",ParseMe.substring(8),"","");
+                    Query q = new Query("", ParseMe.substring(8), "", "");
                     q = pq.parse(q);
                     queries.add(q);
                 }

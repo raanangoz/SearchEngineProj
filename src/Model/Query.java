@@ -2,8 +2,6 @@ package Model;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class Query implements Serializable {
@@ -11,7 +9,7 @@ public class Query implements Serializable {
     String queryTitle;
     String queryDesc;
     String queryNarr;
-    Map<String,Integer> terms;
+    Map<String, Integer> terms;
 
 
     public Map<String, Integer> getTerms() {

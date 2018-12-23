@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Ranker {
 
-    public Ranker(){
+    public Ranker() {
 
     }
 

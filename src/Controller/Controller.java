@@ -68,5 +68,8 @@ public class Controller {
     public HashMap<String, String> getCountryList() {
         return model.getCountrList();
     }
-}
 
+    public  List<String> loadCity(String savePath) throws IOException {
+        return model.loadCity(savePath);
+    }
+}

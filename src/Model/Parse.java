@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Parse {
-    private static LinkedHashMap<String, Integer> [] terms;
+    private static LinkedHashMap<String, Integer>[] terms;
 
     boolean stemmer = false;
     private Indexer indexer;
@@ -16,9 +16,9 @@ public class Parse {
     String workpath;
     String savepath;
     private static Map<String, List<Integer>> maxtfandterm = new HashMap<String, List<Integer>>();
-    private Map<String,String> stemResult;
-    public String cityname="";
-    public int maxcount=0;
+    private Map<String, String> stemResult;
+    public String cityname = "";
+    public int maxcount = 0;
     // all docs until decide to move to disk
 
 
@@ -30,29 +30,29 @@ public class Parse {
         i = 0;
         finishedDoc = false;
         stopWords = new HashSet<>();
-        this.workpath=workPath;
-        this.savepath=savePath;
+        this.workpath = workPath;
+        this.savepath = savePath;
         stemResult = new HashMap<>();
     }
 
-    public Indexer getIndexer(){
+    public Indexer getIndexer() {
         return this.indexer;
     }
 
-    public static void saveTFandUniq(Doc currentDoc){
+    public static void saveTFandUniq(Doc currentDoc) {
         List<Integer> TfandUniq = new ArrayList<Integer>();
         TfandUniq.add(currentDoc.getMostFrequentTermValue());
         TfandUniq.add(currentDoc.getNumberOfDifferentWords());
         TfandUniq.add(currentDoc.getDocumentLength());
-        String temp=currentDoc.getDocNo();
-        maxtfandterm.put(currentDoc.getDocNo(),TfandUniq) ;
+        String temp = currentDoc.getDocNo();
+        maxtfandterm.put(currentDoc.getDocNo(), TfandUniq);
     }
 
     public static Map<String, List<Integer>> getMaxtfandterm() {
         return maxtfandterm;
     }
 
-    public static void clearData(){
+    public static void clearData() {
         stopWords.clear();
         // TODO: 30/11/2018 what else to clear  Itzik
 
@@ -60,13 +60,13 @@ public class Parse {
 
     void stopWordsFunc(String workpath) {
         try {
-            Scanner textFile = new Scanner(new File(this.workpath+"\\corpus\\stop_words.txt"));
+            Scanner textFile = new Scanner(new File(this.workpath + "\\corpus\\stop_words.txt"));
 
             while (textFile.hasNext()) {
                 String newStopWord = textFile.next().trim();
                 // now dictionary is not recreated each time
                 stopWords.add(newStopWord);
-                stopWords.add(newStopWord.substring(0,1).toUpperCase()+newStopWord.substring(1));
+                stopWords.add(newStopWord.substring(0, 1).toUpperCase() + newStopWord.substring(1));
             }
 
             textFile.close();
@@ -80,7 +80,7 @@ public class Parse {
     public void parse(Doc currentDoc) {
         stopWordsFunc(this.savepath);
         terms = new LinkedHashMap[27];
-        for (int i = 0 ; i < terms.length ; i++)
+        for (int i = 0; i < terms.length; i++)
             terms[i] = new LinkedHashMap();
 
         String first = "";
@@ -92,7 +92,7 @@ public class Parse {
         String[] words = currentDoc.text.split("\\s+|--+");
 
         String charToDel = "~`!@#^&*(){}|+=[]';:?";
-        charToDel+='"';
+        charToDel += '"';
         String pat = "[" + Pattern.quote(charToDel) + "]";
         int count = 0;
         String cityName = currentDoc.getCity();
@@ -121,32 +121,28 @@ public class Parse {
                     }
                 }
         }
-        for (i = 0; i < words.length+4; i++) {
+        for (i = 0; i < words.length + 4; i++) {
 
-            try{
+            try {
                 fourth = words[i + 3];
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 fourth = "";
             }
-            try{
+            try {
                 third = words[i + 2];
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 third = "";
             }
-            try{
+            try {
                 second = words[i + 1];
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 second = "";
             }
-            try{
+            try {
                 first = words[i];
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 finishedDoc = false;
-                indexer.finishDocAlgorithm(currentDoc,terms,savepath);
+                indexer.finishDocAlgorithm(currentDoc, terms, savepath);
 
                 break;
             }
@@ -173,10 +169,7 @@ public class Parse {
                         third.equals("dollars") || third.equals("Dollars") ||
                         fourth.equals("dollars") || fourth.equals("Dollars")) {
                     parseToDollars(first, second, third, fourth);
-                }
-
-
-                else if (first.charAt(first.length() - 1) == '%' ||
+                } else if (first.charAt(first.length() - 1) == '%' ||
                         (second.equals("percent") || second.equals("percentage"))) {
                     parseToPercents(first, second);
                 }
@@ -203,21 +196,17 @@ public class Parse {
                                 addToTerms(first);
                             }
                             */
-                    }
-                    else{
+                    } else {
                         addToTerms(first);
                     }
-                }
-                else if(isFloat(first)){
+                } else if (isFloat(first)) {
                     first = changeFloatToTerm(first);
                     addToTerms(first);
 
-                }
-                else if ((length = isLength(first))!= null){
+                } else if ((length = isLength(first)) != null) {
                     addToTerms(length);
 
-                }
-                else{
+                } else {
                     addToTerms(first);
                 }
             }//contain digit
@@ -229,7 +218,7 @@ public class Parse {
                 i += 3;
 
 
-            } else if ((month = isMonth(first)) != null ) {
+            } else if ((month = isMonth(first)) != null) {
                 // MM YY
                 if (Pattern.matches("[0-9]+", second) && second.length() > 2) {
                     addToTerms(second + "-" + month);
@@ -237,65 +226,60 @@ public class Parse {
 
                 }
                 //MM DD
-                else if (Pattern.matches("[0-9]+", second) && second.length() <= 2 ) {
+                else if (Pattern.matches("[0-9]+", second) && second.length() <= 2) {
                     addToTerms(month + "-" + second);
                     i++;
                 }
-            }
-
-
-            else if (containsSlash(first)!=null){
-                ArrayList <Integer> positions;
+            } else if (containsSlash(first) != null) {
+                ArrayList<Integer> positions;
                 positions = containsSlash(first);
                 int begin = 0;
                 int end = 0;
-                for(int i = 0 ; i < positions.size();i++) {
-                    end=positions.get(i);
-                    addToTerms(first.substring(begin,end));
-                    begin = end+1;
+                for (int i = 0; i < positions.size(); i++) {
+                    end = positions.get(i);
+                    addToTerms(first.substring(begin, end));
+                    begin = end + 1;
                 }
 
                 addToTerms(first.substring(begin));
                 addToTerms(first);
 
-            }
-            else
+            } else
                 addToTerms(first);
 
-            if(finishedDoc) {
+            if (finishedDoc) {
                 finishedDoc = false;
-                indexer.finishDocAlgorithm(currentDoc, terms,savepath);
+                indexer.finishDocAlgorithm(currentDoc, terms, savepath);
 
             }
         }
     }
 
     private ArrayList<Integer> containsSlash(String first) {
-        ArrayList <Integer> positions = new ArrayList<>();
-        for(int i = 1; i < first.length()-1;i++){
-            if (first.charAt(i)=='/')
+        ArrayList<Integer> positions = new ArrayList<>();
+        for (int i = 1; i < first.length() - 1; i++) {
+            if (first.charAt(i) == '/')
                 positions.add(i);
         }
-        if(positions.size()!=0)
+        if (positions.size() != 0)
             return positions;
         return null;
     }
 
     private String isLength(String first) {
         String term = first.replaceAll("[,]", "");
-        if(Pattern.matches("[0-9]+-kilometers",term)||Pattern.matches("[0-9]+-Kilometers",term)||
-                Pattern.matches("[0-9]+-kilometer",term)||Pattern.matches("[0-9]+-Kilometer",term)){
-            for (int i = 0 ; i < first.length();i++){
-                if (first.charAt(i)=='-')
-                    return first.substring(0,i)+"-"+"km";
+        if (Pattern.matches("[0-9]+-kilometers", term) || Pattern.matches("[0-9]+-Kilometers", term) ||
+                Pattern.matches("[0-9]+-kilometer", term) || Pattern.matches("[0-9]+-Kilometer", term)) {
+            for (int i = 0; i < first.length(); i++) {
+                if (first.charAt(i) == '-')
+                    return first.substring(0, i) + "-" + "km";
             }
 
-        }
-        else if (Pattern.matches("[0-9]+-centimeters",term)||Pattern.matches("[0-9]+-centimeter",term)||
-                Pattern.matches("[0-9]+-Centimeters",term)||Pattern.matches("[0-9]+-Centimeter",term)){
-            for (int i = 0 ; i < first.length();i++){
-                if (first.charAt(i)=='-')
-                    return first.substring(0,i)+"-"+"cm";
+        } else if (Pattern.matches("[0-9]+-centimeters", term) || Pattern.matches("[0-9]+-centimeter", term) ||
+                Pattern.matches("[0-9]+-Centimeters", term) || Pattern.matches("[0-9]+-Centimeter", term)) {
+            for (int i = 0; i < first.length(); i++) {
+                if (first.charAt(i) == '-')
+                    return first.substring(0, i) + "-" + "cm";
             }
 
         }
@@ -304,19 +288,19 @@ public class Parse {
     }
 
     private String changeFloatToTerm(String first) {
-        if(first.length()>4) {
-            if (first.charAt(0) == '.' || first.charAt(1) == '.' || first.charAt(2) == '.'||first.charAt(3) == '.') {
+        if (first.length() > 4) {
+            if (first.charAt(0) == '.' || first.charAt(1) == '.' || first.charAt(2) == '.' || first.charAt(3) == '.') {
                 return first;
             } else {
-                if (first.length()>5){
-                    int f=0;
-                    for(int i = 4;i<first.length();i++){
-                        if (first.charAt(i)=='.') {
+                if (first.length() > 5) {
+                    int f = 0;
+                    for (int i = 4; i < first.length(); i++) {
+                        if (first.charAt(i) == '.') {
                             f = i;
                             break;
                         }
                     }
-                    return first.substring(0,f-3)+'.'+first.substring(f-3,f)+first.substring(f+1)+'K';
+                    return first.substring(0, f - 3) + '.' + first.substring(f - 3, f) + first.substring(f + 1) + 'K';
                 }
             }
         }
@@ -325,15 +309,14 @@ public class Parse {
 
     private boolean isFloat(String first) {
         int countPoints = 0;
-        for(int i = 0; i<first.length();i++){
-            if(!((first.charAt(i)>='0') && first.charAt(i)<='9'))
-                if(!(first.charAt(i)=='.')) {
+        for (int i = 0; i < first.length(); i++) {
+            if (!((first.charAt(i) >= '0') && first.charAt(i) <= '9'))
+                if (!(first.charAt(i) == '.')) {
                     return false;
-                }
-                else
+                } else
                     countPoints++;
         }
-        if(countPoints!=1)
+        if (countPoints != 1)
             return false;
         return true;
     }
@@ -343,15 +326,14 @@ public class Parse {
     }
 
     private boolean parseToPercents(String first, String second) {
-        if (first.charAt(first.length() - 1) == '%' && isInteger(first.substring(0,first.length()-1))) {
+        if (first.charAt(first.length() - 1) == '%' && isInteger(first.substring(0, first.length() - 1))) {
             addToTerms(first);
             return true;
         } else if (isInteger(first) && (second.equals("percentage") || second.equals("percent"))) {
             addToTerms(first + '%');
             i++;
             return true;
-        }
-        else{
+        } else {
             addToTerms(first);
         }
         return false;
@@ -393,16 +375,14 @@ public class Parse {
                     }
                     */
 
-                }
-                else if ( second.equals("dollars") || second.equals("Dollars"))
-                    addToTerms(first+ " Dollars");
-                else{
+                } else if (second.equals("dollars") || second.equals("Dollars"))
+                    addToTerms(first + " Dollars");
+                else {
                     addToTerms(first);
                     return true;
                 }
                 //number thousand.
-            }
-            else{
+            } else {
                 addToTerms(first);
                 return true;
             }
@@ -410,9 +390,9 @@ public class Parse {
         //first is $number
         else {
             if (isInteger(first.substring(1)))
-                first=first.substring(1);
-            if(isFloat( first.substring(1)))
-                first=first.substring(1);
+                first = first.substring(1);
+            if (isFloat(first.substring(1)))
+                first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
                 addToTerms(first + num + "Dollars");
                 i++;
@@ -421,8 +401,7 @@ public class Parse {
                 addToTerms(first + num + "Dollars");
                 i++;
                 return true;
-            }
-            else{
+            } else {
                 addToTerms(first + "Dollars");
                 return true;
             }
@@ -473,9 +452,9 @@ public class Parse {
 
         if (!stopWords.contains(term)) {
             if (!term.equals("")) {
-                if(stemmer){
-                    if(stemResult.get(term)!=null)
-                        term=stemResult.get(term);
+                if (stemmer) {
+                    if (stemResult.get(term) != null)
+                        term = stemResult.get(term);
                     else {
                         String originalTerm = term;
                         boolean check = false;
@@ -489,7 +468,7 @@ public class Parse {
                         term = stemmer.toString();
                         if (check == true)
                             term = term.toUpperCase();
-                        stemResult.put(originalTerm,term);
+                        stemResult.put(originalTerm, term);
                     }
                 }
                 if (term.charAt(0) >= 'A' && term.charAt(0) <= 'Z') {//check the lower / uppercase rule.
@@ -543,6 +522,7 @@ public class Parse {
             }
         }
     }
+
     /**
      * @param word
      * @return "million" etc..
@@ -603,11 +583,11 @@ public class Parse {
         return false;
     }
 
-    public static int correctDictionaryCell(String termToFind){
-        if(termToFind.charAt(0)>='a' && termToFind.charAt(0)<='z')
-            return (int)termToFind.charAt(0)-97;
-        else if(termToFind.charAt(0)>='A' && termToFind.charAt(0)<='Z')
-            return (int)termToFind.charAt(0)-65;
+    public static int correctDictionaryCell(String termToFind) {
+        if (termToFind.charAt(0) >= 'a' && termToFind.charAt(0) <= 'z')
+            return (int) termToFind.charAt(0) - 97;
+        else if (termToFind.charAt(0) >= 'A' && termToFind.charAt(0) <= 'Z')
+            return (int) termToFind.charAt(0) - 65;
         else
             return 26;
     }

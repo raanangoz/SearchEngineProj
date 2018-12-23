@@ -28,10 +28,10 @@ public class MainPageView implements Initializable {
     public TextField query_path; //query path
     public TextField query_text; //query text
     public SplitMenuButton splitMenuButton; //language menu
-    public SplitMenuButton LanguageMenu; //language menu
+    public SplitMenuButton cityMenu; //language menu
 
-    List<CheckMenuItem> allCityList =new ArrayList<>(); //list of citys
-    public boolean checkRunAgain=false;
+    List<CheckMenuItem> allCityList = new ArrayList<>(); //list of citys
+    public boolean checkRunAgain = false;
     public Menu menu;
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
     //</editor-fold>
@@ -40,7 +40,7 @@ public class MainPageView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        LanguageMenu.setText("Cities");
+        cityMenu.setText("Cities");
     }
 
     //update work path textfield
@@ -106,7 +106,7 @@ public class MainPageView implements Initializable {
                 controller.mergePartialPosting(workPath, savePath);
 
                 HashMap<String, String> countryDocsList = controller.getCountryList();
-                language_pick(countryDocsList);
+                city_pick(countryDocsList);
 
                 int coutIndexed = controller.getNumberOfIndexed();
                 int uniqterms = controller.getDicSize();
@@ -223,7 +223,7 @@ public class MainPageView implements Initializable {
             alert.setHeaderText("Please select a folder in save and work path");
             alert.showAndWait();
         } else {
-            controller.runQuery(queryText,workPath,savePath,checkbox_value);
+            controller.runQuery(queryText, workPath, savePath, checkbox_value);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Done");
         }
@@ -235,30 +235,44 @@ public class MainPageView implements Initializable {
         String queryText = query_path.getText();
         String workPath = work_path.getText();
         String savePath = save_path.getText();
-        List <String> chosenCities = getCountryForSearch(allCityList);
-        controller.runQueryFile(queryText,workPath,savePath,checkbox_value,chosenCities);
+        List<String> chosenCities = getCountryForSearch(allCityList);
+        controller.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
     }
 
     // TODO: 22/12/2018 fix this  Itzik
-    public void language_pick(HashMap<String, String> countryListDoc) {
-        for (Map.Entry<String, String> entry : countryListDoc.entrySet())
+    public void city_pick(HashMap<String, String> cityListDoc) {
+        for (Map.Entry<String, String> entry : cityListDoc.entrySet())
             allCityList.add(new CheckMenuItem(entry.getKey()));
-        if (checkRunAgain==false)
-            LanguageMenu.getItems().addAll(allCityList);
-        checkRunAgain=true;
-//        if((CheckMenuItem)LanguageMenu.getItems().get(1))
+        if (checkRunAgain == false)
+            cityMenu.getItems().addAll(allCityList);
+        checkRunAgain = true;
+//        if((CheckMenuItem)cityMenu.getItems().get(1))
     }
 
     //return selected countrys
     public List<String> getCountryForSearch(List<CheckMenuItem> allCountryList) {
         List<String> selectedCountrys = new LinkedList<>();
-        for (int i=0; i<allCountryList.size(); i++)
-        {
-            if(allCountryList.get(i).isSelected()==true)
+        for (int i = 0; i < allCountryList.size(); i++) {
+            if (allCountryList.get(i).isSelected() == true)
                 selectedCountrys.add(allCountryList.get(i).getText());
         }
-        for(int i=0; i<selectedCountrys.size(); i++)
+        for (int i = 0; i < selectedCountrys.size(); i++)
             System.out.println(selectedCountrys.get(i));
         return selectedCountrys;
+    }
+
+    public void load_cities(ActionEvent actionEvent) {
+        try {
+            List<String> selectedCountrys = controller.loadCity(save_path.getText());
+            allCityList.clear();
+            for (int i = 0; i < selectedCountrys.size(); i++)
+                allCityList.add(new CheckMenuItem(selectedCountrys.get(i)));
+            cityMenu.getItems().removeAll();
+            cityMenu.getItems().clear();
+//            cityMenu.getItems().remove(0,5);
+            cityMenu.getItems().addAll(allCityList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

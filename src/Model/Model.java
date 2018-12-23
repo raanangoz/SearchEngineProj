@@ -4,7 +4,9 @@ import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -14,7 +16,7 @@ public class Model {
     private static Model singleton = null;
     ReadFile readFile = new ReadFile("", "", false);
     //TODO WORKPATH FOR READQUERY
-    ReadQuery readQuery = new ReadQuery("","",false);
+    ReadQuery readQuery = new ReadQuery("", "", false);
 
     private Model() {
     }
@@ -69,8 +71,7 @@ public class Model {
         LoadedDictionary loadedDictionary = new LoadedDictionary(savePath);
         try {
             loadedDictionary.loadDic();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             loadedDictionary = null;
         }
     }
@@ -93,26 +94,38 @@ public class Model {
 
     public void runQuery(String queryText, String workPath, String savePath, boolean checkbox_value) {
         Query q = readQuery.ParseQueryString(queryText);
-        List <Query> queries = new LinkedList<>();
+        List<Query> queries = new LinkedList<>();
         queries.add(q);
-
     }
 
     // TODO: 12/22/2018  queryText
-    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String>chosenCities) {
+    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) {
         try {
             File queryFile = new File(queryText);
             if (!queryFile.exists())
                 System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
-            List <Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
+            List<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
             Ranker ranker = new Ranker();
             // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed . 
-            List <Doc> orderedRanked = ranker.getOrderedDocs(queriesToRanker,chosenCities);
-        }
-        catch (Exception e) {
+            List<Doc> orderedRanked = ranker.getOrderedDocs(queriesToRanker, chosenCities);
+        } catch (Exception e) {
         }
     }
+
     public HashMap<String, String> getCountrList() {
         return Country.getDocs();
+    }
+
+    public List<String> loadCity(String savePath) throws IOException {
+        File fromFile = new File(savePath + "\\City.txt");
+        BufferedReader br = null;
+        br = new BufferedReader(new FileReader(fromFile));
+        List<String> AllCountrysList = new LinkedList<>();
+        String st;
+        while ((st = br.readLine()) != null) {
+            AllCountrysList.add(st);
+        }
+        br.close();
+        return AllCountrysList;
     }
 }

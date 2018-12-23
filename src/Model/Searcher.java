@@ -411,8 +411,7 @@ public class Searcher {
                     } else {
                         termsQuery.put(lowerTerm, 1);
                     }
-                }
-                else {
+                } else {
                     if (termsQuery.get(term.toUpperCase()) != null) {
                         c = termsQuery.get(term.toUpperCase());
                         termsQuery.put(term.toUpperCase(), ++c);
@@ -440,51 +439,51 @@ public class Searcher {
         }
     }
 
-    private static String wordToMillions(String word){
-        String[]bigNumbers=new String[]{"Thousand","Million","Billion","Trillion","thousand","million","billion","trillion","m","b","bn"};
-        for(String number:bigNumbers){
-            if(word.equals(number)){
+    private static String wordToMillions(String word) {
+        String[] bigNumbers = new String[]{"Thousand", "Million", "Billion", "Trillion", "thousand", "million", "billion", "trillion", "m", "b", "bn"};
+        for (String number : bigNumbers) {
+            if (word.equals(number)) {
                 return translateWordToMillion(word);
             }
         }
         return null;
     }
 
-    private static String translateWordToMillion(String word){
+    private static String translateWordToMillion(String word) {
         //if (word.equals("Thousand")||word.equals("thousand"))
         //    return ",000";
-        if(word.equals("Million")||word.equals("million"))
-            return" M ";
-        else if(word.equals("Billion")||word.equals("billion"))
-            return",000 M ";
-        else if(word.equals("Trillion")||word.equals("trillion"))
-            return",000,000 M ";
+        if (word.equals("Million") || word.equals("million"))
+            return " M ";
+        else if (word.equals("Billion") || word.equals("billion"))
+            return ",000 M ";
+        else if (word.equals("Trillion") || word.equals("trillion"))
+            return ",000,000 M ";
         return null;
     }
 
-    private static boolean containDigit(String w){
-        for(int i=0;i<w.length();i++){
-            if(w.charAt(i)>='0'&&w.charAt(i)<='9')
+    private static boolean containDigit(String w) {
+        for (int i = 0; i < w.length(); i++) {
+            if (w.charAt(i) >= '0' && w.charAt(i) <= '9')
                 return true;
         }
         return false;
     }
 
-    public static boolean isInteger(String word){
+    public static boolean isInteger(String word) {
 
-        String ans=word.replaceAll("[,]","");// remove ","
+        String ans = word.replaceAll("[,]", "");// remove ","
 
-        if(Pattern.matches("[0-9]+",ans))
+        if (Pattern.matches("[0-9]+", ans))
             return true;
 
         return false;
     }
 
-    public static int correctDictionaryCell(String termToFind){
-        if(termToFind.charAt(0)>='a'&&termToFind.charAt(0)<='z')
-            return(int)termToFind.charAt(0)-97;
-        else if(termToFind.charAt(0)>='A'&&termToFind.charAt(0)<='Z')
-            return(int)termToFind.charAt(0)-65;
+    public static int correctDictionaryCell(String termToFind) {
+        if (termToFind.charAt(0) >= 'a' && termToFind.charAt(0) <= 'z')
+            return (int) termToFind.charAt(0) - 97;
+        else if (termToFind.charAt(0) >= 'A' && termToFind.charAt(0) <= 'Z')
+            return (int) termToFind.charAt(0) - 65;
         else
             return 26;
     }

@@ -23,7 +23,7 @@ public class Indexer {
     }
 
     public int getDicSize() {
-        int size=dictionary.length;
+        int size = dictionary.length;
         return size;
     }
 
@@ -239,9 +239,31 @@ public class Indexer {
         }
         deletePostFiles(savePath);
         writeDicToDisk(savePath);
+        writeCitysToDisk(savePath);
 //        System.out.println("number of citys in corpus: " + Country.numberofcity); // TODO: 12/9/2018 remove
 
 
+    }
+
+    private void writeCitysToDisk(String savePath) {
+        HashMap<String, String> writeCountrys = Country.getDocs();
+        File file;
+        FileWriter fw;
+        BufferedWriter bw;
+        file = new File(savePath + "\\City.txt");
+        try {
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            for (Map.Entry<String, String> entry : writeCountrys.entrySet()) {
+                String writeMe = entry.getKey();
+                bw.write(writeMe);
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void deletePostFiles(String savePath) {
@@ -299,7 +321,7 @@ public class Indexer {
                 String updateTermOnDic = entry.getKey();
                 int df = entry.getValue().getDF();
                 int totalOccurences = entry.getValue().getTotalOccurrences();
-                bw.write(updateTermOnDic + " DF " + df+ " totalTF " + totalOccurences);
+                bw.write(updateTermOnDic + " DF " + df + " totalTF " + totalOccurences);
 //                bw.write(totalOccurences + "  " + updateTermOnDic);
                 bw.newLine();
 

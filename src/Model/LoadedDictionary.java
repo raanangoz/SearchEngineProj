@@ -2,6 +2,7 @@ package Model;
 
 import Model.Excpetions.SearcherException;
 import Model.Excpetions.SuccessException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,11 +15,11 @@ public class LoadedDictionary {
     private String savePath;
     private static HashMap<String, Integer>[] dictionary;
 
-    public LoadedDictionary(String savePath){
+    public LoadedDictionary(String savePath) {
         dictionary = new HashMap[27];
         for (int i = 0; i < dictionary.length; i++)
             dictionary[i] = new HashMap<>();
-        this.savePath=savePath;
+        this.savePath = savePath;
     }
 
     public void loadDic() throws SearcherException, IOException {
@@ -34,10 +35,10 @@ public class LoadedDictionary {
             words = st.split(" ");
             int i;
             for (i = 0; i < words.length && !words[i].equals("DF"); i++) {
-                term += (words[i]+" ");
+                term += (words[i] + " ");
 
             }
-            term=term.substring(0,term.length()-1);
+            term = term.substring(0, term.length() - 1);
             DF = Integer.parseInt(words[i + 1]);
             //TF = Integer.parseInt(words[i + 3]);
 
@@ -50,6 +51,7 @@ public class LoadedDictionary {
         throw new SuccessException();
 
     }
+
     private int correctCellDictionary(String termToFind) {
 
         if (termToFind.charAt(0) >= 'a' && termToFind.charAt(0) <= 'z')

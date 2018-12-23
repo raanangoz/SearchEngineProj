@@ -140,7 +140,7 @@ public class ReadFile {
                 //at end of doc, send to parse the doc
                 if (st.equals("</DOC>")) {
                     Doc splitDoc = new Doc(DocHT.toString(), DocText.toString(), DocNum.toString());
-                    if (DocCountry.toString() != null) {
+                    if (DocCountry.toString() != null && !DocCountry.toString().equals("")) {
                         splitDoc.setDocCountry(DocCountry.toString());
                         Country.setCityDocsList(splitDoc.getCity(), splitDoc.getDocNo());
                     }
