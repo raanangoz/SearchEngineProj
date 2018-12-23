@@ -106,6 +106,7 @@ public class Model {
                 System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
             List <Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
             Ranker ranker = new Ranker();
+            // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed . 
             List <Doc> orderedRanked = ranker.getOrderedDocs(queriesToRanker,chosenCities);
         }
         catch (Exception e) {
