@@ -28,7 +28,7 @@ public class Model {
 
     }
 
-    public void mergePartialPosting(String workPath, String savePath) throws SearcherException, IOException {
+    public void mergePartialPosting(String workPath, String savePath) {
         this.readFile.p.getIndexer().mergePartialPosting(workPath, savePath);
     }
 
@@ -60,13 +60,13 @@ public class Model {
 //        Parse.clearData();
     }
 
-    public void showDic(String savePath) throws SearcherException, IOException {
+    public void showDic(String savePath) throws IOException {
         File fromFile = new File(savePath + "\\Dictionary.txt");
         Desktop.getDesktop().open(fromFile);
 
     }
 
-    public void loadDic(String savePath) throws SearcherException, IOException {
+    public void loadDic(String savePath) {
 //TODO remove?        readFile.p.getIndexer().loadDic(savePath);
         LoadedDictionary loadedDictionary = new LoadedDictionary(savePath);
         try {

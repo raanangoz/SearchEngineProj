@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class PullCountries {
     private HashMap<String, Country> Countries;
 
-    public PullCountries(JSONObject countryInfo) throws IOException {
+    public PullCountries(JSONObject countryInfo) {
         Countries = new HashMap<>();
         JSONArray result = countryInfo.getJSONArray("result");
         for (Object obj : result) {

@@ -32,7 +32,7 @@ public class ReadFile {
         return fileIndex;
     }
 
-    public List<File> listf(String directoryName) throws IOException, SearcherException {
+    public List<File> listf(String directoryName) throws SearcherException {
         File directory = new File(directoryName);
         if (!directory.exists())
             throw new BadPathException();

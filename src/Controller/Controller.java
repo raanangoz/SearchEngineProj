@@ -45,7 +45,7 @@ public class Controller {
         model.merg_func(workPath, savePath);
     }
 
-    public void writeLastDocsToDisk(String savePath) throws SearcherException, IOException {
+    public void writeLastDocsToDisk(String savePath) {
         model.writeLastDocsToDisk(savePath);
     }
 
