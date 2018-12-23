@@ -30,7 +30,7 @@ public class MainPageView implements Initializable {
     public SplitMenuButton splitMenuButton; //language menu
     public SplitMenuButton LanguageMenu; //language menu
 
-    List<CheckMenuItem> allCountryList=new ArrayList<>(); //list of countrys
+    List<CheckMenuItem> allCityList =new ArrayList<>(); //list of citys
     public boolean checkRunAgain=false;
     public Menu menu;
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
@@ -40,7 +40,7 @@ public class MainPageView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        LanguageMenu.setText("Language");
+        LanguageMenu.setText("Cities");
     }
 
     //update work path textfield
@@ -235,16 +235,16 @@ public class MainPageView implements Initializable {
         String queryText = query_path.getText();
         String workPath = work_path.getText();
         String savePath = save_path.getText();
-        List <String> chosenCities = getCountryForSearch(allCountryList);
+        List <String> chosenCities = getCountryForSearch(allCityList);
         controller.runQueryFile(queryText,workPath,savePath,checkbox_value,chosenCities);
     }
 
     // TODO: 22/12/2018 fix this  Itzik
     public void language_pick(HashMap<String, String> countryListDoc) {
         for (Map.Entry<String, String> entry : countryListDoc.entrySet())
-            allCountryList.add(new CheckMenuItem(entry.getKey()));
+            allCityList.add(new CheckMenuItem(entry.getKey()));
         if (checkRunAgain==false)
-            LanguageMenu.getItems().addAll(allCountryList);
+            LanguageMenu.getItems().addAll(allCityList);
         checkRunAgain=true;
 //        if((CheckMenuItem)LanguageMenu.getItems().get(1))
     }

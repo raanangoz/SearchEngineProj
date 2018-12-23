@@ -52,6 +52,6 @@
       <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="D:\" />
       <Button fx:id="run_query" layoutX="336.0" layoutY="251.0" mnemonicParsing="false" onAction="#run_query" text="Run Query" />
       <Button fx:id="run_query_file" layoutX="401.0" layoutY="295.0" mnemonicParsing="false" onAction="#run_query_file" text="Run Query File" />
-      <SplitMenuButton fx:id="LanguageMenu" layoutX="276.0" layoutY="211.0" mnemonicParsing="false" text="File's Language" />
+      <SplitMenuButton fx:id="LanguageMenu" layoutX="276.0" layoutY="211.0" mnemonicParsing="false" text="City's" />
     </children>
 </AnchorPane>
