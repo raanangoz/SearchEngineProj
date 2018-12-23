@@ -272,7 +272,10 @@ public class MainPageView implements Initializable {
 //            cityMenu.getItems().remove(0,5);
             cityMenu.getItems().addAll(allCityList);
         } catch (IOException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Fail");
+            alert.setHeaderText(" City file does not exist");
+            alert.showAndWait();
         }
     }
 }

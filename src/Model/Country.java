@@ -2,7 +2,6 @@ package Model;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 public class Country {
@@ -10,7 +9,7 @@ public class Country {
     private String Capital_City;
     private String Currency;
     private String Population;
-    public static int numberofcity = 0;
+    private static int numberofcity = 0;
     private static HashMap<String, String> cityDocList = new HashMap<>();
     private static HashMap<String, String> cityDocLocation = new HashMap<>();
 

@@ -7,15 +7,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Doc implements Serializable {
-    String docName;
-    String docNo;
-    String Date;
-    String T1;
-    String text;
-    String city;
-    int mostFrequentTermValue;
-    int numberOfDifferentWords;
-    int documentLength;
+    private String docName;
+    private String docNo;
+    private String Date;
+    private String T1;
+    private String text;
+    private String city;
+    private int mostFrequentTermValue;
+    private int numberOfDifferentWords;
+    private int documentLength;
     private LinkedHashMap<String, Integer>[] docTerms;
 
     public Doc(String docName, String text, String DocNo) {

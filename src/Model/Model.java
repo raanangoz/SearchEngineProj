@@ -14,9 +14,9 @@ import java.util.List;
 public class Model {
 
     private static Model singleton = null;
-    ReadFile readFile = new ReadFile("", "", false);
+    private ReadFile readFile = new ReadFile("", "", false);
     //TODO WORKPATH FOR READQUERY
-    ReadQuery readQuery = new ReadQuery("", "", false);
+    private ReadQuery readQuery = new ReadQuery("", "", false);
 
     private Model() {
     }

@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 
 public class Indexer {
-    boolean onetime = true;
+    private boolean onetime = true;
     private int postingCounter;
     private HashMap<String, PostingList>[] dictionary;
 
@@ -70,7 +70,7 @@ public class Indexer {
     }
 
 
-    public void updateDictionary(Doc currentDoc, LinkedHashMap<String, Integer>[] terms) {
+    private void updateDictionary(Doc currentDoc, LinkedHashMap<String, Integer>[] terms) {
         for (int i = 0; i < terms.length; i++) {
             for (Map.Entry<String, Integer> entry : terms[i].entrySet()) {
                 String newTerm = entry.getKey();
@@ -266,7 +266,7 @@ public class Indexer {
         }
     }
 
-    public void deletePostFiles(String savePath) {
+    private void deletePostFiles(String savePath) {
         List<File> resultList = new ArrayList<File>();
         File directory = new File(savePath);
         File[] fList = directory.listFiles();
@@ -279,7 +279,7 @@ public class Indexer {
     }
 
 
-    public void writeFinalPosting(Map<String, String> merged, int index, String savepath) {
+    private void writeFinalPosting(Map<String, String> merged, int index, String savepath) {
         File file;
         FileWriter fw;
         BufferedWriter bw;
@@ -303,7 +303,7 @@ public class Indexer {
     }
 
 
-    public void writeDicToDisk(String savePath) {
+    private void writeDicToDisk(String savePath) {
         TreeMap<String, PostingList> sorted = new TreeMap<>();
         for (int i = 0; i < dictionary.length; i++)
             sorted.putAll(dictionary[i]);
@@ -340,7 +340,7 @@ public class Indexer {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("TheDocs.txt", true));
             for (Doc d : docArray) {
-                writer.append("doc is" + d.docNo);
+                writer.append("doc is" + d.getDocNo());
                 writer.newLine();
                 LinkedHashMap<String, Integer>[] docTermsToDisk = d.getDocTerms();
                 for (int i = 0; i < docTermsToDisk.length; i++) {
@@ -386,7 +386,7 @@ public class Indexer {
             this.stemmedWord = stemmedWord;
         }
 
-        public PostingList(String newTerm) {
+        private PostingList(String newTerm) {
             DF = 0;
             posts = new LinkedHashMap<>();
             //address = "posts/Posting" + newTerm.charAt(0);

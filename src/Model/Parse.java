@@ -8,17 +8,17 @@ import java.util.regex.Pattern;
 public class Parse {
     private static LinkedHashMap<String, Integer>[] terms;
 
-    boolean stemmer = false;
+    private boolean stemmer = false;
     private Indexer indexer;
-    boolean finishedDoc;//over the doc
+    private boolean finishedDoc;//over the doc
     private int i;
     private static HashSet<String> stopWords;
-    String workpath;
-    String savepath;
+    private String workpath;
+    private String savepath;
     private static Map<String, List<Integer>> maxtfandterm = new HashMap<String, List<Integer>>();
     private Map<String, String> stemResult;
-    public String cityname = "";
-    public int maxcount = 0;
+    private String cityname = "";
+    private int maxcount = 0;
     // all docs until decide to move to disk
 
 
@@ -89,7 +89,7 @@ public class Parse {
         String fourth = "";
         String month = null;
         String length = null;
-        String[] words = currentDoc.text.split("\\s+|--+");
+        String[] words = currentDoc.getText().split("\\s+|--+");
 
         String charToDel = "~`!@#^&*(){}|+=[]';:?";
         charToDel += '"';
