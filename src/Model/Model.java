@@ -107,7 +107,7 @@ public class Model {
             List<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
             Ranker ranker = new Ranker();
             // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed . 
-            List<Doc> orderedRanked = ranker.getOrderedDocs(queriesToRanker, chosenCities);
+            List<String> orderedRanked = ranker.getOrderedDocs(queriesToRanker, chosenCities);
         } catch (Exception e) {
         }
     }
