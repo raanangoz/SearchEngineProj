@@ -240,9 +240,35 @@ public class Indexer {
         deletePostFiles(savePath);
         writeDicToDisk(savePath);
         writeCitysToDisk(savePath);
+        writeCitysPointToDocToDisk(savePath);
+        writeAvgDocsSize(savePath);
 //        System.out.println("number of citys in corpus: " + Country.numberofcity); // TODO: 12/9/2018 remove
 
 
+    }
+
+    private void writeAvgDocsSize(String savePath) {
+        Map<String, List<Integer>> docDetails = (HashMap<String, List<Integer>>) Parse.getMaxtfandterm();
+        double sum = 0;
+        for (Map.Entry<String, List<Integer>> entry : docDetails.entrySet()) {
+            sum += entry.getValue().get(2);
+        }
+        File file;
+        FileWriter fw;
+        BufferedWriter bw;
+        file = new File(savePath + "\\CorpusAvgDocLength.txt");
+        try {
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            sum=sum/ReadFile.getNumberOfParsedDocs();
+            String writeMe=""+sum;
+            bw.write(writeMe);
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        System.out.println(sum);
     }
 
     private void writeCitysToDisk(String savePath) {
@@ -256,6 +282,28 @@ public class Indexer {
             bw = new BufferedWriter(fw);
             for (Map.Entry<String, String> entry : writeCountrys.entrySet()) {
                 String writeMe = entry.getKey();
+                bw.write(writeMe);
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void writeCitysPointToDocToDisk(String savePath) {
+        HashMap<String, String> writeCountrys = Country.getDocs();
+        File file;
+        FileWriter fw;
+        BufferedWriter bw;
+        file = new File(savePath + "\\CityPointToDoc.txt");
+        try {
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            for (Map.Entry<String, String> entry : writeCountrys.entrySet()) {
+                String writeMe = entry.getKey() + " --> ";
+                writeMe += entry.getValue();
                 bw.write(writeMe);
                 bw.newLine();
             }
