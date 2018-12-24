@@ -205,20 +205,7 @@ public class MainPageView implements Initializable {
 
     //load dictionary
     public void load_dic(ActionEvent actionEvent) {
-        try {
-            controller.loadDic(save_path.getText());
-        } catch (SearcherException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(e.getMessage() + " to load dictionary");
-            alert.showAndWait();
-
-        } catch (RuntimeException | IOException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Fail");
-            alert.setHeaderText(" Dictionary does not exist");
-            alert.showAndWait();
-        }
+        AlertLoadDic();
     }
 
     //run query from text
@@ -234,6 +221,7 @@ public class MainPageView implements Initializable {
             alert.setHeaderText("Please select a folder in save and work path");
             alert.showAndWait();
         } else {
+            AlertLoadDic();
             controller.runQuery(queryText, workPath, savePath, checkbox_value);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Done");
@@ -242,12 +230,38 @@ public class MainPageView implements Initializable {
 
     //run query from file
     public void run_query_file(ActionEvent actionEvent) {
+
         //TODO ADD HERE IF's like in quest string
         String queryText = query_path.getText();
         String workPath = work_path.getText();
         String savePath = save_path.getText();
+        if (savePath.equals("") || workPath.equals("") || query_path.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please select a folder in save and work path");
+            alert.showAndWait();
+        } else {
+            AlertLoadDic();
+        }
         List<String> chosenCities = getCountryForSearch(allCityList);
         controller.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
+    }
+
+    private void AlertLoadDic() {
+        try {
+            controller.loadDic(save_path.getText());
+        } catch (SearcherException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(e.getMessage() + " to load dictionary");
+            alert.showAndWait();
+
+        } catch (RuntimeException | IOException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Fail");
+            alert.setHeaderText(" Dictionary does not exist");
+            alert.showAndWait();
+        }
     }
 
     // TODO: 22/12/2018 fix this  Itzik
