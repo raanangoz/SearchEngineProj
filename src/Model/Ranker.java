@@ -1,20 +1,18 @@
 package Model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class Ranker {
     private HashSet<String> docsAfterFilterCities = new HashSet<>();
     private List<Query> queriesToRanker;
     private List<String> chosenCities;
+
     public Ranker(List<Query> queriesToRanker, List<String> chosenCities) {
-        this.queriesToRanker= queriesToRanker;
-        this.chosenCities=chosenCities;
+        this.queriesToRanker = queriesToRanker;
+        this.chosenCities = chosenCities;
     }
 
     // TODO: 24/12/2018 function 1 - filter which docs to take based on cities - do once - return list of docs Itzik
@@ -26,14 +24,14 @@ public class Ranker {
         //TODO raanan wants to fix this to be better algorithem
         try {
             for (String city : chosenCities) {
-                String [] words;
+                String[] words;
                 String term = "";
                 String st = "";
                 int i = correctCellDictionary(city);
                 File fromFile = new File("C:\\Users\\itzik\\Desktop\\IR\\TestFolder\\output\\Posting " + i + ".txt");
                 BufferedReader br = new BufferedReader(new FileReader(fromFile));
                 while ((st = br.readLine()) != null) {
-                    if(st.startsWith(city)) {
+                    if (st.startsWith(city)) {
                         words = st.split(" ");
                         if (words[0].equals(city)) {
                             for (int k = 2; k < words.length; k++) {
@@ -44,8 +42,7 @@ public class Ranker {
                     }
                 }
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
@@ -59,16 +56,31 @@ public class Ranker {
             return 26;
     }
 
-//    public List<String> getOrdredDocumentsForQuery(int i) {
-//        Query CurrentQuery = queriesToRanker.get(i); // a specific query for extample "hello gas station"
-//        String word[] = CurrentQuery.getTerms();
-//        for (Map.Entry<String, Integer> entry : queryTerms.entrySet()) {
-//            String word[] =
-//            entry.getKey();
-//        String key = queryTerms.get
-//        foreach (String x: queryTerms
-//             ) {
-//
-//        }
-//    }
+    public List<String> getOrdredDocumentsForQuery(int i) {
+        Query CurrentQuery = queriesToRanker.get(i); // a specific query for extample "hello gas station"
+        List<String> word = CurrentQuery.getTerms(); //new list to keep all words - hello,gas,station - after parsing
+        List<String> saveDocOfWord = new ArrayList<>(); //list to keep docs of the word
+        try {
+            for (int k = 0; k < word.size(); k++) {
+                String quertyWord = word.get(k); //quertyword = 1st word - hello
+                int index = correctCellDictionary(quertyWord); //get right index file
+                String st = "";
+                File fromFile = new File("C:\\Users\\itzik\\Desktop\\IR\\TestFolder\\output\\Posting " + index + ".txt");
+                BufferedReader br = new BufferedReader(new FileReader(fromFile));
+                while ((st = br.readLine()) != null) { //go over all the posting file
+                    if (st.startsWith(quertyWord)) { //if found the line in posting file
+                        String[] words = st.split(" "); //split with space
+                        for (int l = 2; l < words.length; l++) { //go over all the docs
+                            if (docsAfterFilterCities.contains(words[l])) //if doc is equale to a doc from cities
+                                saveDocOfWord.add(words[k]); //add it to list
+                        }
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
