@@ -107,9 +107,17 @@ public class Model {
             ReadQuery read = new ReadQuery(workPath,savePath,checkbox_value);
             this.readQuery=read;
             List<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
-            Ranker ranker = new Ranker();
-            // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed . 
-            List<String> orderedRanked = ranker.getOrderedDocs(queriesToRanker, chosenCities);
+            Ranker ranker = new Ranker(queriesToRanker,chosenCities);
+            // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
+
+            List <List<String>> queriestResults = new ArrayList<>();
+
+            for(int i = 0 ; i < queriesToRanker.size();i++){
+                List<String> orderedRanked = ranker.getOrderedDocs(i);
+                queriestResults.add(orderedRanked);
+
+            }
+
         } catch (Exception e) {
         }
     }
