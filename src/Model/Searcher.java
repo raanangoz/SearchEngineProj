@@ -46,7 +46,7 @@ public class Searcher {
     }
 
     public Query parse(Query q) {
-        stopWordsFunc(this.savepath);
+        stopWordsFunc(this.workpath);
         this.queryText = q.getQueryTitle();
         termsQuery = new HashMap<>();
         String first = "";

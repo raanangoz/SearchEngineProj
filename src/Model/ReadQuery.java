@@ -1,9 +1,7 @@
 package Model;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,11 +21,18 @@ public class ReadQuery {
         return q;
     }
 
-    public List<Query> ParseQueryFile(File f) {
-        StringBuilder QueryTitle = new StringBuilder();
+    public List<Query> ParseQueryFile(File f) throws IOException {
+
         List<Query> queries = new LinkedList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(f.getAbsolutePath()))) {
-            String st;
+        StringBuilder QueryTitle = new StringBuilder();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(f));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        String st;
+        while ((st = br.readLine()) != null) {
             String ParseMe = "";
             String[] wordLine = {};
             int i = 0;
@@ -45,11 +50,7 @@ public class ReadQuery {
                 }
             }
             return queries;
-        } catch (
-                Exception e) {
-            System.out.println(e.getMessage());
         }
-
         return queries;
     }
 }

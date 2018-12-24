@@ -15,7 +15,7 @@ import java.util.List;
 public class ReadFile {
     public Parse p;
     private static int fileIndex;
-    private int numbOfDocsParsed;
+    private static int numbOfDocsParsed;
 
     public ReadFile(String workPath, String savePath, boolean checkbox_value) {
         p = new Parse(workPath, savePath, checkbox_value);
@@ -24,7 +24,7 @@ public class ReadFile {
         int i = 0;
     }
 
-    public int getNumberOfParsedDocs() {
+    public static int getNumberOfParsedDocs() {
         return numbOfDocsParsed;
     }
 
