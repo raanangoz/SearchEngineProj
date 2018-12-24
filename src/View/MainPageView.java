@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +56,17 @@ public class MainPageView implements Initializable {
 
     //update query path textfield
     public void Browse_query(ActionEvent actionEvent) {
-        UpdateTextField(query_path);
+        try {
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("Choose Folder");
+            File selectedDirectory = chooser.showOpenDialog(null);
+            query_path.setText(selectedDirectory.getPath());
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please select a folder");
+            alert.showAndWait();
+        }
     }
 
     //gets path from filechoser and updates the field text
