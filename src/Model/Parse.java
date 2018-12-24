@@ -44,7 +44,7 @@ public class Parse {
         TfandUniq.add(currentDoc.getMostFrequentTermValue());
         TfandUniq.add(currentDoc.getNumberOfDifferentWords());
         TfandUniq.add(currentDoc.getDocumentLength());
-        String temp = currentDoc.getDocNo();
+
         maxtfandterm.put(currentDoc.getDocNo(), TfandUniq);
     }
 

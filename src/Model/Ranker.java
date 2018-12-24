@@ -18,6 +18,7 @@ public class Ranker {
 
     public List<String> getOrderedDocs(int queryIndex) {
 
+        //TODO IF CHOSENCITIES .SIZE IS 0 SO DONT FILTER CITIES.
         //TODO ALSO FOR FP 104
         HashSet<String> docsAfterFilterCities = new HashSet<>();
         try {
@@ -44,6 +45,9 @@ public class Ranker {
 
         }
         return null;
+
+
+
     }
     private int correctCellDictionary(String termToFind) {
         if (termToFind.charAt(0) >= 'a' && termToFind.charAt(0) <= 'z')
