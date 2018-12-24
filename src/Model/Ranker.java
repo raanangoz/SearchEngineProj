@@ -9,11 +9,14 @@ import java.util.List;
 
 public class Ranker {
 
-    public Ranker() {
-
+    List<Query> queriesToRanker;
+    List<String> chosenCities;
+    public Ranker(List<Query> queriesToRanker, List<String> chosenCities) {
+        this.queriesToRanker= queriesToRanker;
+        this.chosenCities=chosenCities;
     }
 
-    public List<String> getOrderedDocs(List<Query> queriesToRanker, List<String> chosenCities) {
+    public List<String> getOrderedDocs(int queryIndex) {
 
         //TODO ALSO FOR FP 104
         HashSet<String> docsAfterFilterCities = new HashSet<>();
