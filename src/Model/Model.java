@@ -111,10 +111,11 @@ public class Model {
             // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
 
             List <List<String>> queriestResults = new ArrayList<>();
+            ranker.filterDocsByCities();
 
             for(int i = 0 ; i < queriesToRanker.size();i++){
-                List<String> orderedRanked = ranker.getOrderedDocs(i);
-                queriestResults.add(orderedRanked);
+//                List<String> resultForQuery = ranker.getOrdredDocumentsForQuery(i);
+//                queriestResults.add(orderedRanked);
 
             }
 

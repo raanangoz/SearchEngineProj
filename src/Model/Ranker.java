@@ -6,49 +6,50 @@ import java.io.FileReader;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Ranker {
-
-    List<Query> queriesToRanker;
-    List<String> chosenCities;
+    private HashSet<String> docsAfterFilterCities = new HashSet<>();
+    private List<Query> queriesToRanker;
+    private List<String> chosenCities;
     public Ranker(List<Query> queriesToRanker, List<String> chosenCities) {
         this.queriesToRanker= queriesToRanker;
         this.chosenCities=chosenCities;
     }
 
-    public List<String> getOrderedDocs(int queryIndex) {
-
+    // TODO: 24/12/2018 function 1 - filter which docs to take based on cities - do once - return list of docs Itzik
+    //after that we compare each word from the query to the list , if exthist take it, else- ignore
+    // TODO: 24/12/2018 function 2 -   Itzik
+    public void filterDocsByCities() {
         //TODO IF CHOSENCITIES .SIZE IS 0 SO DONT FILTER CITIES.
         //TODO ALSO FOR FP 104
-        HashSet<String> docsAfterFilterCities = new HashSet<>();
+        //TODO raanan wants to fix this to be better algorithem
         try {
             for (String city : chosenCities) {
                 String [] words;
                 String term = "";
                 String st = "";
                 int i = correctCellDictionary(city);
-                File fromFile = new File("C:\\Users\\Raanan\\Desktop\\Part2\\posts\\Posting" + i + ".txt");
+                File fromFile = new File("C:\\Users\\itzik\\Desktop\\IR\\TestFolder\\output\\Posting " + i + ".txt");
                 BufferedReader br = new BufferedReader(new FileReader(fromFile));
                 while ((st = br.readLine()) != null) {
                     if(st.startsWith(city)) {
                         words = st.split(" ");
                         if (words[0].equals(city)) {
-                            for (int k = 2; k < st.length(); k++) {
+                            for (int k = 2; k < words.length; k++) {
                                 docsAfterFilterCities.add(words[k]);
                             }
+                            break;
                         }
                     }
                 }
             }
         }
         catch(Exception e){
-
         }
-        return null;
-
-
-
     }
+
+
     private int correctCellDictionary(String termToFind) {
         if (termToFind.charAt(0) >= 'a' && termToFind.charAt(0) <= 'z')
             return (int) termToFind.charAt(0) - 97;
@@ -57,4 +58,17 @@ public class Ranker {
         else
             return 26;
     }
+
+//    public List<String> getOrdredDocumentsForQuery(int i) {
+//        Query CurrentQuery = queriesToRanker.get(i); // a specific query for extample "hello gas station"
+//        String word[] = CurrentQuery.getTerms();
+//        for (Map.Entry<String, Integer> entry : queryTerms.entrySet()) {
+//            String word[] =
+//            entry.getKey();
+//        String key = queryTerms.get
+//        foreach (String x: queryTerms
+//             ) {
+//
+//        }
+//    }
 }
