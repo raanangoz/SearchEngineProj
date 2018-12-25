@@ -66,7 +66,8 @@ public class Ranker {
                 String quertyWord = word.get(k); //quertyword = 1st word - hello
                 int index = correctCellDictionary(quertyWord); //get right index file
                 String st = "";
-                File fromFile = new File("C:\\Users\\itzik\\Desktop\\IR\\TestFolder\\output\\Posting " + index + ".txt");
+                String SavePath=Model.getInstance().getSavePath();
+                File fromFile = new File(SavePath+"\\Posting " + index + ".txt");
                 BufferedReader br = new BufferedReader(new FileReader(fromFile));
                 while ((st = br.readLine()) != null) { //go over all the posting file
                     if (st.startsWith(quertyWord)) { //if found the line in posting file
