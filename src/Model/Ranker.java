@@ -1,9 +1,7 @@
 package Model;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Ranker {
     private HashSet<String> docsAfterFilterCities = new HashSet<>();
@@ -66,8 +64,8 @@ public class Ranker {
                 String quertyWord = word.get(k); //quertyword = 1st word - hello
                 int index = correctCellDictionary(quertyWord); //get right index file
                 String st = "";
-                String SavePath=Model.getInstance().getSavePath();
-                File fromFile = new File(SavePath+"\\Posting " + index + ".txt");
+                String SavePath = Model.getInstance().getSavePath();
+                File fromFile = new File(SavePath + "\\Posting " + index + ".txt");
                 BufferedReader br = new BufferedReader(new FileReader(fromFile));
                 while ((st = br.readLine()) != null) { //go over all the posting file
                     if (st.startsWith(quertyWord)) { //if found the line in posting file
@@ -102,6 +100,19 @@ public class Ranker {
         BufferedReader br = new BufferedReader(new FileReader(fromFile));
         String size = br.readLine();
         return Double.parseDouble(size);
+    }
+
+    public HashMap<String, Integer> getAllDocSize() throws IOException {
+        String savePath = Model.getInstance().getSavePath();
+        File fromFile = new File(savePath + "\\EachDocSize.txt");
+        BufferedReader br = new BufferedReader(new FileReader(fromFile));
+        String st;
+        Map<String, Integer> eachDocSize = new HashMap<String, Integer>();
+        while ((st = br.readLine()) != null) {
+            String[] words = st.split(" ");
+            eachDocSize.put(words[0], Integer.parseInt(words[2]));
+        }
+        return (HashMap<String, Integer>) eachDocSize;
     }
 
 }

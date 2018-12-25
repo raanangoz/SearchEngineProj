@@ -242,9 +242,30 @@ public class Indexer {
         writeCitysToDisk(savePath);
         writeCitysPointToDocToDisk(savePath);
         writeAvgDocsSize(savePath);
+        writeEachDocSizeToDisc(savePath);
 //        System.out.println("number of citys in corpus: " + Country.numberofcity); // TODO: 12/9/2018 remove
 
 
+    }
+
+    private void writeEachDocSizeToDisc(String savePath) {
+        Map<String, List<Integer>> docDetails = (HashMap<String, List<Integer>>) Parse.getMaxtfandterm();
+        File file;
+        FileWriter fw;
+        BufferedWriter bw;
+        file = new File(savePath + "\\EachDocSize.txt");
+        try {
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            for (Map.Entry<String, List<Integer>> entry : docDetails.entrySet()) {
+                bw.write(entry.getKey().toString() + " --> " + entry.getValue().get(2));
+                bw.write("\n");
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private void writeAvgDocsSize(String savePath) {
