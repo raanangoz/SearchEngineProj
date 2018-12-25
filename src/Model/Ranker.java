@@ -93,6 +93,8 @@ public class Ranker {
         return FinalListWithAllDocs;
     }
 
+    // TODO: 25/12/2018 basicly words in the function above contains how many times it's in each doc  Itzik
+    // TODO: 25/12/2018 so now we need to open dictonary if we want total DF\IDF  Itzik
     //get doc size
     public double getDocSize() throws IOException {
         String savePath = Model.getInstance().getSavePath();
