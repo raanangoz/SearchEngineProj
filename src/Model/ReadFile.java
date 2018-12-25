@@ -17,12 +17,14 @@ public class ReadFile {
     private static int fileIndex;
     private static int numbOfDocsParsed;
 
+
     public ReadFile(String workPath, String savePath, boolean checkbox_value) {
         p = new Parse(workPath, savePath, checkbox_value);
         fileIndex = 1;
         numbOfDocsParsed = 0;
         int i = 0;
     }
+
 
     public static int getNumberOfParsedDocs() {
         return numbOfDocsParsed;

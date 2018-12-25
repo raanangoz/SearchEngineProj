@@ -85,6 +85,17 @@ public class Ranker {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return FinalListWithAllDocs;
     }
+
+    //get doc size
+    public double getDocSize() throws IOException {
+        String savePath = Model.getInstance().getSavePath();
+        File fromFile = new File(savePath + "\\CorpusAvgDocLength.txt");
+        BufferedReader br = new BufferedReader(new FileReader(fromFile));
+        String size= br.readLine();
+        return Double.parseDouble(size);
+    }
+
 }

@@ -13,6 +13,10 @@ import java.util.List;
 
 public class Model {
 
+    private String savePath;
+    private String workPath;
+
+
     private static Model singleton = null;
     private ReadFile readFile = new ReadFile("", "", false);
     //TODO WORKPATH FOR READQUERY
@@ -28,11 +32,19 @@ public class Model {
 
     }
 
+    public String getSavePath(){return this.savePath;}
+
+    public String getWorkPath(){return this.workPath;}
+
     public void mergePartialPosting(String workPath, String savePath) {
+        this.savePath=savePath;
+        this.workPath=workPath;
         this.readFile.p.getIndexer().mergePartialPosting(workPath, savePath);
     }
 
     public void parse(String workPath, String savePath, boolean checkbox_value) throws SearcherException, IOException {
+        this.savePath=savePath;
+        this.workPath=workPath;
         //read corpus files from folder
         this.readFile = new ReadFile(workPath, savePath, checkbox_value);
         readFile.listf(workPath + "\\corpus");
@@ -43,6 +55,7 @@ public class Model {
 
 
     public void resetButton(String savePath) throws SearcherException {
+        this.savePath=savePath;
         File directory = new File(savePath);
         if (!directory.exists())
             throw new BadPathException();
@@ -61,13 +74,17 @@ public class Model {
     }
 
     public void showDic(String savePath) throws IOException {
+        this.savePath=savePath;
         File fromFile = new File(savePath + "\\Dictionary.txt");
         Desktop.getDesktop().open(fromFile);
 
     }
 
     public void loadDic(String savePath) {
-//TODO remove?        readFile.p.getIndexer().loadDic(savePath);
+
+        this.savePath=savePath;
+
+        //TODO remove?        readFile.p.getIndexer().loadDic(savePath);
         LoadedDictionary loadedDictionary = new LoadedDictionary(savePath);
         try {
             loadedDictionary.loadDic();
@@ -77,6 +94,9 @@ public class Model {
     }
 
     public void merg_func(String workPath, String savePath) {
+        this.savePath=savePath;
+        this.workPath=workPath;
+
         readFile.p.getIndexer().mergePartialPosting(workPath, savePath);
     }
 
@@ -93,6 +113,9 @@ public class Model {
     }
 
     public void runQuery(String queryText, String workPath, String savePath, boolean checkbox_value) {
+        this.savePath=savePath;
+        this.workPath=workPath;
+
         Query q = readQuery.ParseQueryString(queryText);
         List<Query> queries = new LinkedList<>();
         queries.add(q);
@@ -101,6 +124,9 @@ public class Model {
     // TODO: 12/22/2018  queryText
     public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) {
         try {
+            this.savePath=savePath;
+            this.workPath=workPath;
+
             File queryFile = new File(queryText);
             if (!queryFile.exists())
                 System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
@@ -128,6 +154,8 @@ public class Model {
     }
 
     public List<String> loadCity(String savePath) throws IOException {
+        this.savePath=savePath;
+
         File fromFile = new File(savePath + "\\City.txt");
         BufferedReader br = null;
         br = new BufferedReader(new FileReader(fromFile));
