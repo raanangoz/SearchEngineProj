@@ -56,8 +56,9 @@ public class Ranker {
             return 26;
     }
 
-    public List<String> getOrdredDocumentsForQuery(int i) {
+    public List<List<String>> getOrdredDocumentsForQuery(int i) {
         Query CurrentQuery = queriesToRanker.get(i); // a specific query for extample "hello gas station"
+        List<List<String>> FinalListWithAllDocs = new ArrayList<>(); //new list to keep all words - hello,gas,station - after parsing
         List<String> word = CurrentQuery.getTerms(); //new list to keep all words - hello,gas,station - after parsing
         List<String> saveDocOfWord = new ArrayList<>(); //list to keep docs of the word
         try {
@@ -74,6 +75,8 @@ public class Ranker {
                             if (docsAfterFilterCities.contains(words[l])) //if doc is equale to a doc from cities
                                 saveDocOfWord.add(words[k]); //add it to list
                         }
+                        FinalListWithAllDocs.add(saveDocOfWord);
+                        // TODO: 25/12/2018 add break?  Itzik
                     }
                 }
             }
@@ -82,5 +85,6 @@ public class Ranker {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return FinalListWithAllDocs;
     }
 }
