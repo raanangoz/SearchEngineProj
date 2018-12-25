@@ -72,8 +72,11 @@ public class Ranker {
                     if (st.startsWith(quertyWord)) { //if found the line in posting file
                         String[] words = st.split(" "); //split with space
                         for (int l = 2; l < words.length; l++) { //go over all the docs
-                            if (docsAfterFilterCities.contains(words[l])) //if doc is equale to a doc from cities
+                            if (docsAfterFilterCities.size() == 0) //if no country slected
+                                saveDocOfWord.add(words[k]);
+                            else if (docsAfterFilterCities.contains(words[l])) //if doc is equale to a doc from cities
                                 saveDocOfWord.add(words[k]); //add it to list
+
                         }
                         FinalListWithAllDocs.add(saveDocOfWord);
                         // TODO: 25/12/2018 add break?  Itzik
@@ -94,7 +97,7 @@ public class Ranker {
         String savePath = Model.getInstance().getSavePath();
         File fromFile = new File(savePath + "\\CorpusAvgDocLength.txt");
         BufferedReader br = new BufferedReader(new FileReader(fromFile));
-        String size= br.readLine();
+        String size = br.readLine();
         return Double.parseDouble(size);
     }
 
