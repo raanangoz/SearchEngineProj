@@ -279,7 +279,8 @@ public class Indexer {
             fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
             int number = ReadFile.getNumberOfParsedDocs();
-            bw.write(number);
+            String write = ""+number;
+            bw.write(write);
             bw.close();
             fw.close();
         } catch (Exception e) {
@@ -517,7 +518,7 @@ public class Indexer {
             for (Map.Entry<Doc, Integer> entry : posts.entrySet()) {
                 String key = entry.getKey().getDocNo();
                 Integer value = entry.getValue();
-                ans += key + "[" + value + "] ";
+                ans += key + " " + value + " ";
             }
 
             return ans;

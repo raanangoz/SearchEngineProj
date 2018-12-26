@@ -26,7 +26,7 @@ public class Ranker {
                 String term = "";
                 String st = "";
                 int i = correctCellDictionary(city);
-                File fromFile = new File("C:\\Users\\itzik\\Desktop\\IR\\TestFolder\\output\\Posting " + i + ".txt");
+                File fromFile = new File(Model.getInstance().getSavePath() +"Posting " + i + ".txt");
                 BufferedReader br = new BufferedReader(new FileReader(fromFile));
                 while ((st = br.readLine()) != null) {
                     if (st.startsWith(city)) {
@@ -72,16 +72,24 @@ public class Ranker {
                     if (st.startsWith(queryWord)) { //if found the line in posting file
                         String[] postingList = st.split(" "); //split with space
                         if (postingList[0].equals(queryWord)) {
-                            for (int l = 2; l < postingList.length; l++) { //go over all the docs
+                            for (int l = 2; l < postingList.length; l+=2) { //go over all the docs
                                 if (docsAfterFilterCities.size() == 0) //if no country slected
                                     //TODO CHANGE THE ZEROES now the postinglist[l] contains the tf aswell
-                                    docsAndTF.put(postingList[l], 0);
+                                    docsAndTF.put(postingList[l], Integer.parseInt(postingList[l+1]));
                                 else if (docsAfterFilterCities.contains(postingList[l])) //if doc is equale to a doc from cities
-                                    docsAndTF.put(postingList[l], 0); //add it to list
+                                    docsAndTF.put(postingList[l],Integer.parseInt(postingList[l+1])); //add it to list
                             }
-                            docsForEachTerm[wordIndexInQuery] = docsAndTF;
+
+
+                            if(docsAndTF.size()!=0) {
+                                docsForEachTerm[wordIndexInQuery] = new HashMap<>();
+                                docsForEachTerm[wordIndexInQuery].putAll(docsAndTF);
+                            }
+                            //TODO maybe if should include this line too
                             docsForEachTerm[wordIndexInQuery].put(queryWord,-1);//PLASTER to save the term.
                             wordIndexInQuery++;
+                            br.close();
+                            docsAndTF.clear();
                             break;
                         }
                         //TODO IF POSTING LIST IS SORTED THEN STOP LOOKING FOR A WORD like query word:stopp, and on posting list its stopt then break
@@ -90,7 +98,7 @@ public class Ranker {
                         // TODO: 25/12/2018 add break?  Itzik
                     }
                 }
-                br.close();
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -104,6 +112,7 @@ public class Ranker {
     // TODO: 25/12/2018 basicly words in the function above contains how many times it's in each doc  Itzik
     // TODO: 25/12/2018 so now we need to open dictonary if we want total DF\IDF  Itzik
     //get doc size
+    /*
     public double getDocSize() throws IOException {
         String savePath = Model.getInstance().getSavePath();
         File fromFile = new File(savePath + "\\CorpusAvgDocLength.txt");
@@ -111,7 +120,9 @@ public class Ranker {
         String size = br.readLine();
         return Double.parseDouble(size);
     }
+*/
 
+    /*
     public HashMap<String, Integer> getAllDocSize() throws IOException {
         String savePath = Model.getInstance().getSavePath();
         File fromFile = new File(savePath + "\\EachDocSize.txt");
@@ -124,7 +135,7 @@ public class Ranker {
         }
         return (HashMap<String, Integer>) eachDocSize;
     }
-
+*/
     /**
      * FQID IS ARRAY OF TERMS ( string,tf)! OF ONE QUERY.
      * the terms arent here, but only their posting lists.
@@ -138,43 +149,50 @@ public class Ranker {
         String queryWord = "";
         Map<String,Double> docsAndValues = new HashMap<>();
         for (int i = 0; i < fqid.length; i++) {//iterate words' posting.
-            for (String term : fqid[i].keySet()) {
-                if (fqid[i].get(term).equals(-1)) {
-                    queryWord = term;
-                }
-            }
-
-            for (Map.Entry<String, Integer> key : fqid[i].entrySet()) {// key holds docname and tf
-                String docNo = key.getKey();//docname
-                int TF = fqid[i].get(docNo);
-                int DL = 0;
-                String st;
-                BufferedReader br;
-                File file = new File(Model.getInstance().getSavePath() + "\\EachDocSize.txt");
-                try {
-                    br = new BufferedReader(new FileReader(file));
-                    while ((st = br.readLine()) != null) {
-                        if (st.startsWith(docNo)) {
-                            String[] line = st.split(" ");
-                            if (line[0].equals(docNo)) {
-                                DL = Integer.parseInt(line[1]);
-                                break;
-                            }
-                        }
-                        //TODO MAYBE DONT NEED TO CONTINUE
+            if(null!=fqid[i])
+                for (String term : fqid[i].keySet()) {
+                    if (fqid[i].get(term).equals(-1)) {
+                        queryWord = term;
                     }
-                    br.close();
-                } catch (Exception e) {
-                    System.out.println(e);
                 }
+            if(null!=fqid[i])
+                for (Map.Entry<String, Integer> key : fqid[i].entrySet()) {// key holds docname and tf
+                    String docNo;
+                    if(key.getValue()>=0)
+                        docNo = key.getKey();//docname
+                    else
+                        continue;
+                    int TF = fqid[i].get(docNo);
+                    int DL = 0;
+                    String st;
+                    BufferedReader br;
+                    File file = new File(Model.getInstance().getSavePath() + "\\EachDocSize.txt");
+                    try {
+                        br = new BufferedReader(new FileReader(file));
+                        while ((st = br.readLine()) != null) {
+                            if (st.startsWith(docNo)) {
+                                String[] line = st.split(" ");
+                                if (line[0].equals(docNo)) {
+                                    DL = Integer.parseInt(line[1]);
+                                    break;
+                                }
+                            }
+                            //TODO MAYBE DONT NEED TO CONTINUE
+                        }
+                        br.close();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
 
-                int DF;
-                DF = LoadedDictionary.getDictionary()[correctCellDictionary(queryWord)].get(queryWord);
-                IDF = Math.log((docsNumber - DF + 0.5)/(DF+0.5))/Math.log(2);
-                double docRelevance = IDF*((TF * k1 + 1) / (TF + k1 * (1 - b + b * DL / avgDL)));
-                //now next doc of same term.
-                docsAndValues.put(docNo,docRelevance);
-            }
+                    int DF;
+                    DF = LoadedDictionary.getDictionary()[correctCellDictionary(queryWord)].get(queryWord);
+                    IDF = Math.log((docsNumber - DF + 0.5)/(DF+0.5))/Math.log(2);
+                    double docRelevance = IDF*((TF * k1 + 1) / (TF + k1 * (1 - b + b * DL / avgDL)));
+                    //now next doc of same term.
+                    if(docsAndValues.containsKey(docNo))
+                        docsAndValues.put(docNo,docsAndValues.get(docNo)+docRelevance);//update docrelevance because 2 terms of query existed on this doc.
+                    else docsAndValues.put(docNo,docRelevance);
+                }
 
         }
         return docsAndValues;
@@ -188,7 +206,7 @@ public class Ranker {
         try {
             br = new BufferedReader(new FileReader(file));
             if ((st = br.readLine()) != null) {
-                answer = Integer.parseInt(st);
+                answer = Double.parseDouble(st);
             }
         } catch (Exception e) {
 
@@ -200,7 +218,7 @@ public class Ranker {
         BufferedReader br;
         int answer = 0;
         String st = "";
-        File file = new File(Model.getInstance().getSavePath() + "\\CorpusTotalDocNumber");
+        File file = new File(Model.getInstance().getSavePath() + "\\CorpusTotalDocNumber.txt");
         try {
             br = new BufferedReader(new FileReader(file));
             if ((st = br.readLine()) != null) {

@@ -142,7 +142,7 @@ public class Model {
 
 
 
-            sorted
+            //sorted
 
 
             for(int i = 0 ; i < queriesToRanker.size();i++){
@@ -157,8 +157,12 @@ public class Model {
 
 
             }
+            for(int i = 0; i < allQueriestResults.length;i++){
+                
+            }
 
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
 

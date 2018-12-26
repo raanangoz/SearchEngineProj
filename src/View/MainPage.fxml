@@ -50,7 +50,8 @@
         <Label layoutX="17.0" layoutY="137.0" text="Save path" />
         <Button fx:id="Browse_Q" layoutX="336.0" layoutY="295.0" mnemonicParsing="false" onAction="#Browse_query" text="Browse" />
         <TextField fx:id="query_text" layoutX="12.0" layoutY="251.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter Query Text" />
-        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\queries.txt" />
+        <!--<TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\queries.txt" />-->
+        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments\2\queries.txt" />
         <Button fx:id="run_query" layoutX="336.0" layoutY="251.0" mnemonicParsing="false" onAction="#run_query" text="Run Query" />
         <Button fx:id="run_query_file" layoutX="401.0" layoutY="295.0" mnemonicParsing="false" onAction="#run_query_file" text="Run Query File" />
         <SplitMenuButton fx:id="cityMenu" layoutX="276.0" layoutY="211.0" mnemonicParsing="false" text="City's" />
