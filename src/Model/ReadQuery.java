@@ -2,6 +2,7 @@ package Model;
 
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class ReadQuery {
         return q;
     }
 
-    public List<Query> ParseQueryFile(File f) throws IOException {
+    public ArrayList<Query> ParseQueryFile(File f) throws IOException {
 
-        List<Query> queries = new LinkedList<>();
+        ArrayList<Query> queries = new ArrayList<>();
         StringBuilder QueryTitle = new StringBuilder();
         BufferedReader br = null;
         try {

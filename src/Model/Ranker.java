@@ -74,12 +74,13 @@ public class Ranker {
                         if (postingList[0].equals(queryWord)) {
                             for (int l = 2; l < postingList.length; l++) { //go over all the docs
                                 if (docsAfterFilterCities.size() == 0) //if no country slected
-                                    //TODO CHANGE THE ZEROES
+                                    //TODO CHANGE THE ZEROES now the postinglist[l] contains the tf aswell
                                     docsAndTF.put(postingList[l], 0);
                                 else if (docsAfterFilterCities.contains(postingList[l])) //if doc is equale to a doc from cities
                                     docsAndTF.put(postingList[l], 0); //add it to list
                             }
                             docsForEachTerm[wordIndexInQuery] = docsAndTF;
+                            docsForEachTerm[wordIndexInQuery].put(queryWord,-1);//PLASTER to save the term.
                             wordIndexInQuery++;
                             break;
                         }
@@ -130,13 +131,19 @@ public class Ranker {
      * @param fqid
      * @return
      */
-    public Map<String,Integer> applyBM25Algorithm(Map<String, Integer>[] fqid, double avgDL, int docsNumber, ArrayList<String> terms) {//docsNumber - 470000
+    public Map<String,Double> applyBM25Algorithm(Map<String, Integer>[] fqid, double avgDL, int docsNumber) {//docsNumber - 470000
         double k1 = 1.5;//TODO a number between 1.2 to 2 to our choice.
         double b = 0.75;
         double IDF=0;
-        Map<String,Integer> docsAndValues = new HashMap<>();
+        String queryWord = "";
+        Map<String,Double> docsAndValues = new HashMap<>();
         for (int i = 0; i < fqid.length; i++) {//iterate words' posting.
-            String queryWord = queriesToRanker.get(i);
+            for (String term : fqid[i].keySet()) {
+                if (fqid[i].get(term).equals(-1)) {
+                    queryWord = term;
+                }
+            }
+
             for (Map.Entry<String, Integer> key : fqid[i].entrySet()) {// key holds docname and tf
                 String docNo = key.getKey();//docname
                 int TF = fqid[i].get(docNo);
@@ -166,10 +173,11 @@ public class Ranker {
                 IDF = Math.log((docsNumber - DF + 0.5)/(DF+0.5))/Math.log(2);
                 double docRelevance = IDF*((TF * k1 + 1) / (TF + k1 * (1 - b + b * DL / avgDL)));
                 //now next doc of same term.
-                docsAndValues.put()
+                docsAndValues.put(docNo,docRelevance);
             }
 
         }
+        return docsAndValues;
     }
 
     public double getAverageDocumentLength() {

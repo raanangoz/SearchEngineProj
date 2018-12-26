@@ -122,6 +122,7 @@ public class Model {
     }
 
     // TODO: 12/22/2018  queryText
+    // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
     public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) {
         try {
             this.savePath=savePath;
@@ -132,21 +133,28 @@ public class Model {
                 System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
             ReadQuery read = new ReadQuery(workPath,savePath,checkbox_value);
             this.readQuery=read;
-            List<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
+            ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
             Ranker ranker = new Ranker(queriesToRanker,chosenCities);
-            // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
-
-            List<String>[] queriestResults = new LinkedList[queriesToRanker.size()];// each cell of array shows ordered docs result of a query.(remove integer)
             ranker.filterDocsByCities();
             int docsNumber = ranker.getTotalDocumentsNumber();
             double avgDL = ranker.getAverageDocumentLength();
+            Map<String,Double>[] allQueriestResults = new HashMap[queriesToRanker.size()];
+
+
+
+            sorted
+
+
             for(int i = 0 ; i < queriesToRanker.size();i++){
                 //for one query: FQID[0]->firstTerm (string doc, int tf)(string doc, int tf)
                 //               FQID[1]->secondTerm(...)
                 Map<String,Integer>[] FQID = ranker.getDocsAndTfForEachTerm(i);//for one query! String is doc, integer is tf,
 
-                List<String> qResult = ranker.applyBM25Algorithm(FQID,avgDL,docsNumber,queriesToRanker. );
-                queriestResults[i]=qResult;//add specific query result (=ordered doc list).
+                Map<String,Double> qResult = ranker.applyBM25Algorithm(FQID,avgDL,docsNumber);// doc1 0.8  doc2 0.1 ...
+
+                // each cell of array shows ordered docs result of a query.(remove integer)
+                allQueriestResults[i]=qResult;//add specific query result (=ordered doc list).
+
 
             }
 
