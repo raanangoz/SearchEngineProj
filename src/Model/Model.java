@@ -84,7 +84,7 @@ public class Model {
 
         this.savePath=savePath;
 
-        //TODO remove?        readFile.p.getIndexer().loadDic(savePath);
+        //TODO remove this:        readFile.p.getIndexer().loadDic(savePath);??????
         LoadedDictionary loadedDictionary = new LoadedDictionary(savePath);
         try {
             loadedDictionary.loadDic();
@@ -136,12 +136,17 @@ public class Model {
             Ranker ranker = new Ranker(queriesToRanker,chosenCities);
             // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
 
-            List <List<String>> queriestResults = new ArrayList<>();
+            List<String>[] queriestResults = new LinkedList[queriesToRanker.size()];// each cell of array shows ordered docs result of a query.(remove integer)
             ranker.filterDocsByCities();
-
+            int docsNumber = ranker.getTotalDocumentsNumber();
+            double avgDL = ranker.getAverageDocumentLength();
             for(int i = 0 ; i < queriesToRanker.size();i++){
-//                List<String> resultForQuery = ranker.getOrdredDocumentsForQuery(i);
-//                queriestResults.add(orderedRanked);
+                //for one query: FQID[0]->firstTerm (string doc, int tf)(string doc, int tf)
+                //               FQID[1]->secondTerm(...)
+                Map<String,Integer>[] FQID = ranker.getDocsAndTfForEachTerm(i);//for one query! String is doc, integer is tf,
+
+                List<String> qResult = ranker.applyBM25Algorithm(FQID,avgDL,docsNumber,queriesToRanker. );
+                queriestResults[i]=qResult;//add specific query result (=ordered doc list).
 
             }
 

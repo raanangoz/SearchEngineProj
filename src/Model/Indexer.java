@@ -243,6 +243,7 @@ public class Indexer {
         writeCitysPointToDocToDisk(savePath);
         writeAvgDocsSize(savePath);
         writeEachDocSizeToDisc(savePath);
+        writeNumberOfDocs(savePath);
 //        System.out.println("number of citys in corpus: " + Country.numberofcity); // TODO: 12/9/2018 remove
 
 
@@ -258,9 +259,27 @@ public class Indexer {
             fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
             for (Map.Entry<String, List<Integer>> entry : docDetails.entrySet()) {
-                bw.write(entry.getKey().toString() + " --> " + entry.getValue().get(2));
+                bw.write(entry.getKey().toString() + " " + entry.getValue().get(2));
                 bw.write("\n");
             }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void writeNumberOfDocs(String savePath) {
+
+        File file;
+        FileWriter fw;
+        BufferedWriter bw;
+        file = new File(savePath + "\\CorpusTotalDocNumber.txt");
+        try {
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            int number = ReadFile.getNumberOfParsedDocs();
+            bw.write(number);
             bw.close();
             fw.close();
         } catch (Exception e) {
