@@ -36,17 +36,22 @@ public class ReadQuery {
 
         String ParseMe = "";
         int i = 0;
+        String queryNum = "";
         while ((st = br.readLine()) != null) {
             if (st.equals("<top>")) {
                 QueryTitle = new StringBuilder();
             }
-            if (st.startsWith("<title>")) {
+            else if (st.startsWith("<title>")) {
                 ParseMe = st;
             }
-            if (st.equals("</top>")) {
-                Query q = new Query("", ParseMe.substring(8), "", "");
+            else if (st.equals("</top>")) {
+                Query q = new Query(queryNum, ParseMe.substring(8), "", "");
                 q = pq.parse(q);
                 queries.add(q);
+            }
+            else if (st.startsWith("<num> ")) {
+                String [] words = st.split(" ");
+                queryNum = words[words.length-1];
             }
         }
         return queries;
