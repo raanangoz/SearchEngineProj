@@ -144,31 +144,35 @@ public class Model {
 
             //sorted
 
+            // TODO: 12/27/2018 for each query i run this but i should get all posts for the needed terms only once.
+            HashMap<String, Integer>[] relevantPostsForAllQueries = ranker.loadPostingListsForAllQueries(queriesToRanker);
 
-            for (int i = 0; i < queriesToRanker.size(); i++) {
-                //for one query: FQID[0]->firstTerm (string doc, int tf)(string doc, int tf)
-                //               FQID[1]->secondTerm(...)
-                Map<String, Integer>[] FQID = ranker.getDocsAndTfForEachTerm(i);//for one query! String is doc, integer is tf,
+            HashMap<String, Integer> docLengths = ranker.getAllDocsLengthsForQueriesGroup(relevantPostsForAllQueries);
+//            for (int i = 0; i < queriesToRanker.size(); i++) {
+            //for one query: FQID[0]->firstTerm (string doc, int tf)(string doc, int tf)
+            //               FQID[1]->secondTerm(...)
+//                Map<String, Integer>[] FQID = ranker.getDocsAndTfForEachTerm(i);//for one query! String is doc, integer is tf,
 
-                Map<String, Double> qResult = ranker.applyBM25Algorithm(FQID, avgDL, docsNumber);// doc1 0.8  doc2 0.1 ...
+//                Map<String, Double> qResult = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber,docLengths);// doc1 0.8  doc2 0.1 ...
+//TODO DID I FILTER CITIES?
+            // each cell of array shows ordered docs result of a query.(remove integer)
+//                allQueriestResults[i] = qResult;//add specific query result (=ordered doc list).
 
-                // each cell of array shows ordered docs result of a query.(remove integer)
-                allQueriestResults[i] = qResult;//add specific query result (=ordered doc list).
 
+            allQueriestResults=ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber,docLengths);// doc1 0.8  doc2 0.1 ...
 
-
-            }
+            //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
+            List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
             //TODO SHOULD BE ANYWHERE THAT USER CHOOSE
             File toFile = new File(savePath + "\\results.txt");
             BufferedWriter bw = null;
             bw = new BufferedWriter(new FileWriter(toFile));
-            for (int i = 0; i < allQueriestResults.length; i++) {
+            for (int i = 0; i < fiftyRelevantDocs.length; i++) {
                 String queryNum = queriesToRanker.get(i).getQueryNum();
-                for (Map.Entry<String, Double> key : allQueriestResults[i].entrySet()) {
-                    String docNo = key.getKey();
+                for (String docNo : fiftyRelevantDocs[i]) {
                     bw.write(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
                     bw.newLine();
-                    System.out.println(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
+//                System.out.println(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
                 }
                 //          351   0  FR940104-0-00001  1   42.38   mt
             }
@@ -178,6 +182,8 @@ public class Model {
             System.out.println(e);
         }
     }
+
+
 
     public HashMap<String, String> getCountrList() {
         return Country.getDocs();
