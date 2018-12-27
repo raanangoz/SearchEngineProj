@@ -70,7 +70,7 @@ public class Ranker {
                 BufferedReader br = new BufferedReader(new FileReader(fromFile));
                 while ((st = br.readLine()) != null) { //go over all the posting file
                     if (st.startsWith(queryWord)) { //if found the line in posting file
-                        String[] postingList = st.split(" "); //split with space
+                        String[] postingList = st.split("\\s+"); //split with space
                         if (postingList[0].equals(queryWord)) {
                             for (int l = 2; l < postingList.length; l+=2) { //go over all the docs
                                 if (docsAfterFilterCities.size() == 0) //if no country slected
