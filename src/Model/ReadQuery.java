@@ -16,7 +16,6 @@ public class ReadQuery {
         pq = new Searcher(workPath, savePath, checkbox_value);
     }
 
-
     public Query ParseQueryString(String queryText) {
         Query q = new Query("", queryText, "", "");
         q = pq.parse(q);

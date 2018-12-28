@@ -161,7 +161,6 @@ public class Model {
                     bw.newLine();
 //                System.out.println(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
                 }
-                //          351   0  FR940104-0-00001  1   42.38   mt
             }
             bw.close();
     }
