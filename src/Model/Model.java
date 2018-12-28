@@ -140,23 +140,14 @@ public class Model {
             int docsNumber = ranker.getTotalDocumentsNumber();
             double avgDL = ranker.getAverageDocumentLength();
             Map<String, Double>[] allQueriestResults = new HashMap[queriesToRanker.size()];
-
-
+            // [docNo, grade], [docNo, grade],  [docNo, grade],  [docNo, grade],
             //sorted
-
             // TODO: 12/27/2018 for each query i run this but i should get all posts for the needed terms only once.
             HashMap<String, Integer>[] relevantPostsForAllQueries = ranker.loadPostingListsForAllQueries(queriesToRanker);
-
             HashMap<String, Integer> docLengths = ranker.getAllDocsLengthsForQueriesGroup(relevantPostsForAllQueries);
-//            for (int i = 0; i < queriesToRanker.size(); i++) {
-            //for one query: FQID[0]->firstTerm (string doc, int tf)(string doc, int tf)
-            //               FQID[1]->secondTerm(...)
-//                Map<String, Integer>[] FQID = ranker.getDocsAndTfForEachTerm(i);//for one query! String is doc, integer is tf,
 
-//                Map<String, Double> qResult = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber,docLengths);// doc1 0.8  doc2 0.1 ...
 //TODO DID I FILTER CITIES?
-            // each cell of array shows ordered docs result of a query.(remove integer)
-//                allQueriestResults[i] = qResult;//add specific query result (=ordered doc list).
+
 
 
             allQueriestResults=ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber,docLengths);// doc1 0.8  doc2 0.1 ...

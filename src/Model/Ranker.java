@@ -13,12 +13,10 @@ public class Ranker {
         this.queriesToRanker = queriesToRanker;
         this.chosenCities = chosenCities;
     }
-
-    // TODO: 24/12/2018 function 1 - filter which docs to take based on cities - do once - return list of docs Itzik
+    
     //after that we compare each word from the query to the list , if exthist take it, else- ignore
     // TODO: 24/12/2018 function 2 -   Itzik
     public void filterDocsByCities() {
-        //TODO IF CHOSENCITIES .SIZE IS 0 SO DONT FILTER CITIES.
         //TODO ALSO FOR FP 104
         //TODO raanan wants to fix this to be better algorithem
         try {
@@ -27,7 +25,7 @@ public class Ranker {
                 String term = "";
                 String st = "";
                 int i = correctCellDictionary(city);
-                File fromFile = new File(Model.getInstance().getSavePath() + "Posting " + i + ".txt");
+                File fromFile = new File(Model.getInstance().getSavePath() + "\\Posting " + i + ".txt");
                 BufferedReader br = new BufferedReader(new FileReader(fromFile));
                 while ((st = br.readLine()) != null) {
                     if (st.startsWith(city)) {
@@ -166,18 +164,22 @@ public class Ranker {
 //                }
                 //postOfAllQueriesTerm[k] is the posting list for the term. now rate docs.
                 for (String docNo : postsOfAllQueriesTerms[k].keySet()) {
-                    if (postsOfAllQueriesTerms[k].get(docNo) != -1) {
-                        int DF = LoadedDictionary.getDictionary()[k].get(term);
-                        IDF = Math.log((docsNumber - DF + 0.5) / (DF + 0.5)) / Math.log(2);
-                        int TF = postsOfAllQueriesTerms[k].get(docNo);
-                        if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
-                            int DL = docsLength.get(docNo);
-                            double docRelevance = IDF * ((TF * k1 + 1) / (TF + k1 * (1 - b + b * DL / avgDL)));
-                            if (docsAndValues.containsKey(docNo))
-                                docsAndValues.put(docNo, docsAndValues.get(docNo) + docRelevance);//update docrelevance because 2 terms of query existed on this doc.
-                            else docsAndValues.put(docNo, docRelevance);
+                    if(docsAfterFilterCities.contains(docNo) || docsAfterFilterCities.size()==0) {
+                        if (postsOfAllQueriesTerms[k].get(docNo) != -1) {
+                            int DF = LoadedDictionary.getDictionary()[k].get(term);
+                            IDF = Math.log((docsNumber - DF + 0.5) / (DF + 0.5)) / Math.log(2);
+                            int TF = postsOfAllQueriesTerms[k].get(docNo);
+                            if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
+                                int DL = docsLength.get(docNo);
+                                double docRelevance = IDF * ((TF * k1 + 1) / (TF + k1 * (1 - b + b * DL / avgDL)));
+                                if (docsAndValues.containsKey(docNo))
+                                    docsAndValues.put(docNo, docsAndValues.get(docNo) + docRelevance);//update docrelevance because 2 terms of query existed on this doc.
+                                else docsAndValues.put(docNo, docRelevance);
+                            }
                         }
                     }
+                    else
+                        System.out.println("hi");
                 }
             }
 
