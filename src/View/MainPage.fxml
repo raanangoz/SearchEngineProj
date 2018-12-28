@@ -29,8 +29,8 @@
         </Label>
         <Button fx:id="Browse_w" layoutX="337.0" layoutY="101.0" mnemonicParsing="false" onAction="#Browse_working" text="Browse" />
         <Button fx:id="Browse_s" layoutX="337.0" layoutY="160.0" mnemonicParsing="false" onAction="#Browse_saving" text="Browse" />
-        <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />
-        <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />
+        <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments" />
+        <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Desktop\Part2\posts" />
         <!--<TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />-->
         <!--<TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />-->
         <CheckBox fx:id="stemming_option" layoutX="14.0" layoutY="206.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Stemmimg" />
@@ -51,7 +51,7 @@
         <Button fx:id="Browse_Q" layoutX="336.0" layoutY="295.0" mnemonicParsing="false" onAction="#Browse_query" text="Browse" />
         <TextField fx:id="query_text" layoutX="12.0" layoutY="251.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter Query Text" />
         <!--<TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\queries.txt" />-->
-        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\queries.txt" />
+        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments\2\queries.txt" />
         <Button fx:id="run_query" layoutX="336.0" layoutY="251.0" mnemonicParsing="false" onAction="#run_query" text="Run Query" />
         <Button fx:id="run_query_file" layoutX="401.0" layoutY="295.0" mnemonicParsing="false" onAction="#run_query_file" text="Run Query File" />
         <SplitMenuButton fx:id="cityMenu" layoutX="276.0" layoutY="211.0" mnemonicParsing="false" text="City's" />
