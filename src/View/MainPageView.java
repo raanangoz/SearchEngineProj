@@ -153,12 +153,10 @@ public class MainPageView implements Initializable {
                 controller.resetButton(savePath);
         } catch (SearcherException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
+            alert.setTitle("Done - reset successfully");
             alert.setHeaderText(e.getMessage());
             alert.showAndWait();
-
         }
-
     }
 
     //show dictionary function
@@ -205,7 +203,16 @@ public class MainPageView implements Initializable {
 
     //load dictionary
     public void load_dic(ActionEvent actionEvent) {
-        AlertLoadDic();
+        if(AlertLoadDic()==true ) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Loaded dictionary");
+            alert.setHeaderText("Loaded dictionary");
+            alert.showAndWait();
+        }
+    }
+
+    public void run_query_alert(){
+
     }
 
     //run query from text
@@ -224,7 +231,9 @@ public class MainPageView implements Initializable {
             AlertLoadDic();
             controller.runQuery(queryText, workPath, savePath, checkbox_value);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Done");
+            alert.setTitle("Fail");
+            alert.setHeaderText("Query ran successfully");
+            alert.showAndWait();
         }
     }
 
@@ -244,23 +253,40 @@ public class MainPageView implements Initializable {
             AlertLoadDic();
         }
         List<String> chosenCities = getCountryForSearch(allCityList);
-        controller.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
+        try {
+            controller.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Done");
+            alert.setHeaderText("Query ran successfully");
+            alert.showAndWait();
+
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to run Query");
+            alert.showAndWait();
+        }
+
     }
 
-    private void AlertLoadDic() {
+    private boolean AlertLoadDic() {
         try {
             controller.loadDic(save_path.getText());
+            return true;
+
         } catch (SearcherException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText(e.getMessage() + " to load dictionary");
             alert.showAndWait();
+            return false;
 
         } catch (RuntimeException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Fail");
             alert.setHeaderText(" Dictionary does not exist");
             alert.showAndWait();
+            return false;
         }
     }
 
@@ -296,6 +322,10 @@ public class MainPageView implements Initializable {
             cityMenu.getItems().clear();
 //            cityMenu.getItems().remove(0,5);
             cityMenu.getItems().addAll(allCityList);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Loaded Cities File");
+            alert.showAndWait();
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Fail");

@@ -1,10 +1,11 @@
 package Model;
 
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ReadQuery {
 
@@ -23,15 +24,10 @@ public class ReadQuery {
     }
 
     public ArrayList<Query> ParseQueryFile(File f) throws IOException {
-
         ArrayList<Query> queries = new ArrayList<>();
         StringBuilder QueryTitle = new StringBuilder();
         BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(f));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        br = new BufferedReader(new FileReader(f));
         String st;
 
         String ParseMe = "";
@@ -40,18 +36,15 @@ public class ReadQuery {
         while ((st = br.readLine()) != null) {
             if (st.equals("<top>")) {
                 QueryTitle = new StringBuilder();
-            }
-            else if (st.startsWith("<title>")) {
+            } else if (st.startsWith("<title>")) {
                 ParseMe = st;
-            }
-            else if (st.equals("</top>")) {
+            } else if (st.equals("</top>")) {
                 Query q = new Query(queryNum, ParseMe.substring(8), "", "");
                 q = pq.parse(q);
                 queries.add(q);
-            }
-            else if (st.startsWith("<num> ")) {
-                String [] words = st.split(" ");
-                queryNum = words[words.length-1];
+            } else if (st.startsWith("<num> ")) {
+                String[] words = st.split(" ");
+                queryNum = words[words.length - 1];
             }
         }
         return queries;

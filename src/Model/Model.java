@@ -2,6 +2,7 @@ package Model;
 
 import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
+import Model.Excpetions.SuccessException;
 
 import java.awt.*;
 import java.io.*;
@@ -70,6 +71,7 @@ public class Model {
             if (file.getName().endsWith(".txt"))
                 file.delete();
         }
+        throw new SuccessException();
         //clear data- need more
 //        Parse.clearData();
     }
@@ -81,17 +83,13 @@ public class Model {
 
     }
 
-    public void loadDic(String savePath) {
+    public void loadDic(String savePath) throws IOException, SearcherException {
 
         this.savePath = savePath;
 
         //TODO remove this:        readFile.p.getIndexer().loadDic(savePath);??????
         LoadedDictionary loadedDictionary = new LoadedDictionary(savePath);
-        try {
-            loadedDictionary.loadDic();
-        } catch (Exception e) {
-            loadedDictionary = null;
-        }
+        loadedDictionary.loadDic();
     }
 
     public void merg_func(String workPath, String savePath) {
@@ -124,8 +122,7 @@ public class Model {
 
     // TODO: 12/22/2018  queryText
     // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
-    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) {
-        try {
+    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException {
             this.savePath = savePath;
             this.workPath = workPath;
 
@@ -149,8 +146,7 @@ public class Model {
 //TODO DID I FILTER CITIES?
 
 
-
-            allQueriestResults=ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber,docLengths);// doc1 0.8  doc2 0.1 ...
+            allQueriestResults = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber, docLengths);// doc1 0.8  doc2 0.1 ...
 
             //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
             List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
@@ -168,12 +164,7 @@ public class Model {
                 //          351   0  FR940104-0-00001  1   42.38   mt
             }
             bw.close();
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
     }
-
 
 
     public HashMap<String, String> getCountrList() {

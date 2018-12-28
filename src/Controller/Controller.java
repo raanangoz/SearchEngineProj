@@ -61,7 +61,7 @@ public class Controller {
         model.runQuery(queryPath,workPath, savePath, checkbox_value);
     }
 
-    public void runQueryFile(String queryText,String workPath, String savePath, boolean checkbox_value,List<String> chosenCities) {
+    public void runQueryFile(String queryText,String workPath, String savePath, boolean checkbox_value,List<String> chosenCities) throws IOException {
         model.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
     }
 
