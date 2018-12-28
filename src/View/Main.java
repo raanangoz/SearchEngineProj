@@ -9,8 +9,6 @@ import javafx.stage.Stage;
 
 import java.io.Serializable;
 
-import static javafx.application.Application.launch;
-
 public class Main extends Application implements Serializable {
 
 

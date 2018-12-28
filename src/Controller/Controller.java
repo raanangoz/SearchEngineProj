@@ -53,15 +53,15 @@ public class Controller {
         return model.getNumberOfIndexed();
     }
 
-    public int getDicSize(){
+    public int getDicSize() {
         return model.getDicSize();
     }
 
-    public void runQuery(String queryPath,String workPath, String savePath, boolean checkbox_value) {
-        model.runQuery(queryPath,workPath, savePath, checkbox_value);
+    public void runQuery(String queryPath, String workPath, String savePath, boolean checkbox_value) {
+        model.runQuery(queryPath, workPath, savePath, checkbox_value);
     }
 
-    public void runQueryFile(String queryText,String workPath, String savePath, boolean checkbox_value,List<String> chosenCities) throws IOException {
+    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException {
         model.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
     }
 
@@ -69,7 +69,7 @@ public class Controller {
         return model.getCountrList();
     }
 
-    public  List<String> loadCity(String savePath) throws IOException {
+    public List<String> loadCity(String savePath) throws IOException {
         return model.loadCity(savePath);
     }
 }

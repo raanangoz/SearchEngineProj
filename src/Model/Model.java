@@ -123,46 +123,46 @@ public class Model {
     // TODO: 12/22/2018  queryText
     // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
     public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException {
-            this.savePath = savePath;
-            this.workPath = workPath;
+        this.savePath = savePath;
+        this.workPath = workPath;
 
-            File queryFile = new File(queryText);
-            if (!queryFile.exists())
-                System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
-            ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
-            this.readQuery = read;
-            ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
-            Ranker ranker = new Ranker(queriesToRanker, chosenCities);
-            ranker.filterDocsByCities();
-            int docsNumber = ranker.getTotalDocumentsNumber();
-            double avgDL = ranker.getAverageDocumentLength();
-            Map<String, Double>[] allQueriestResults = new HashMap[queriesToRanker.size()];
-            // [docNo, grade], [docNo, grade],  [docNo, grade],  [docNo, grade],
-            //sorted
-            // TODO: 12/27/2018 for each query i run this but i should get all posts for the needed terms only once.
-            HashMap<String, Integer>[] relevantPostsForAllQueries = ranker.loadPostingListsForAllQueries(queriesToRanker);
-            HashMap<String, Integer> docLengths = ranker.getAllDocsLengthsForQueriesGroup(relevantPostsForAllQueries);
+        File queryFile = new File(queryText);
+        if (!queryFile.exists())
+            System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
+        ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
+        this.readQuery = read;
+        ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
+        Ranker ranker = new Ranker(queriesToRanker, chosenCities);
+        ranker.filterDocsByCities();
+        int docsNumber = ranker.getTotalDocumentsNumber();
+        double avgDL = ranker.getAverageDocumentLength();
+        Map<String, Double>[] allQueriestResults = new HashMap[queriesToRanker.size()];
+        // [docNo, grade], [docNo, grade],  [docNo, grade],  [docNo, grade],
+        //sorted
+        // TODO: 12/27/2018 for each query i run this but i should get all posts for the needed terms only once.
+        HashMap<String, Integer>[] relevantPostsForAllQueries = ranker.loadPostingListsForAllQueries(queriesToRanker);
+        HashMap<String, Integer> docLengths = ranker.getAllDocsLengthsForQueriesGroup(relevantPostsForAllQueries);
 
 //TODO DID I FILTER CITIES?
 
 
-            allQueriestResults = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber, docLengths);// doc1 0.8  doc2 0.1 ...
+        allQueriestResults = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber, docLengths);// doc1 0.8  doc2 0.1 ...
 
-            //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
-            List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
-            //TODO SHOULD BE ANYWHERE THAT USER CHOOSE
-            File toFile = new File(savePath + "\\results.txt");
-            BufferedWriter bw = null;
-            bw = new BufferedWriter(new FileWriter(toFile));
-            for (int i = 0; i < fiftyRelevantDocs.length; i++) {
-                String queryNum = queriesToRanker.get(i).getQueryNum();
-                for (String docNo : fiftyRelevantDocs[i]) {
-                    bw.write(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
-                    bw.newLine();
+        //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
+        List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
+        //TODO SHOULD BE ANYWHERE THAT USER CHOOSE
+        File toFile = new File(savePath + "\\results.txt");
+        BufferedWriter bw = null;
+        bw = new BufferedWriter(new FileWriter(toFile));
+        for (int i = 0; i < fiftyRelevantDocs.length; i++) {
+            String queryNum = queriesToRanker.get(i).getQueryNum();
+            for (String docNo : fiftyRelevantDocs[i]) {
+                bw.write(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
+                bw.newLine();
 //                System.out.println(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
-                }
             }
-            bw.close();
+        }
+        bw.close();
     }
 
 

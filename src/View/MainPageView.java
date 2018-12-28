@@ -203,7 +203,7 @@ public class MainPageView implements Initializable {
 
     //load dictionary
     public void load_dic(ActionEvent actionEvent) {
-        if(AlertLoadDic()==true ) {
+        if (AlertLoadDic() == true) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Loaded dictionary");
             alert.setHeaderText("Loaded dictionary");
@@ -211,7 +211,7 @@ public class MainPageView implements Initializable {
         }
     }
 
-    public void run_query_alert(){
+    public void run_query_alert() {
 
     }
 
