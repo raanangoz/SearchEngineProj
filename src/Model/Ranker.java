@@ -13,7 +13,7 @@ public class Ranker {
         this.queriesToRanker = queriesToRanker;
         this.chosenCities = chosenCities;
     }
-    
+
     //after that we compare each word from the query to the list , if exthist take it, else- ignore
     // TODO: 24/12/2018 function 2 -   Itzik
     public void filterDocsByCities() {
@@ -232,7 +232,6 @@ public class Ranker {
         List<String>[] termsOfAllQueries = new LinkedList[27];//each cell contains only terms starting with same char.
         for (int i = 0; i < termsOfAllQueries.length; i++)
             termsOfAllQueries[i] = new LinkedList<>();
-        for (int i = 0; i < queriesToRanker.size(); i++) {
             for (Query q : queriesToRanker) {
                 Map<String, Integer> terms = q.getTerms();
                 for (Map.Entry<String, Integer> entry : terms.entrySet()) {
@@ -240,7 +239,7 @@ public class Ranker {
                     int where = correctCellDictionary(term);
                     termsOfAllQueries[where].add(term);
                 }
-            }
+
         }
 //TODO CHECK CASE THAT TERM APPEARS IN DIFFERENT QUERIES. (HASHMAP SIZE..)
 
@@ -250,7 +249,7 @@ public class Ranker {
             allPosts[m] = new HashMap<>();
             int numOfPostingListsFoundForGroup = 0;//2 terms start with e, we want to open posting list e once.
             String st;
-            File file = new File("C:\\Users\\Raanan\\Desktop\\Part2\\posts\\Posting " + i + ".txt");
+            File file = new File(Model.getInstance().getSavePath()+"\\Posting " + i + ".txt");
             try {
                 BufferedReader fr = new BufferedReader(new FileReader(file));
                 while ((st = fr.readLine()) != null) {//read all lines that might contain term's posts
@@ -313,48 +312,6 @@ public class Ranker {
             System.out.println(e);
         }
         return docLengths;
-    }
-
-    /*public Map<String, Double>[] sortReturnedDocsByValue(Map<String,Double>[] allQueriestResults) {
-        Map<String, Double>[] sorted = new LinkedHashMap[allQueriestResults.length];
-        List<String>[] relevantDocs = new LinkedList[allQueriestResults.length];
-        for(int i = 0 ; i < allQueriestResults.length;i++) {
-            sorted[i]= new LinkedHashMap<>();
-            sorted[i] = sortByValue(allQueriestResults[i]);
-        }
-        return sorted;
-    }
-    */
-    private static Map<String, Double> sortByValue(Map<String, Double> unsortMap) {
-
-        // 1. Convert Map to List of Map
-        List<Map.Entry<String, Double>> list =
-                new LinkedList<Map.Entry<String, Double>>(unsortMap.entrySet());
-
-        // 2. Sort list with Collections.sort(), provide a custom Comparator
-        //    Try switch the o1 o2 position for a different order
-        Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
-            public int compare(Map.Entry<String, Double> o1,
-                               Map.Entry<String, Double> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
-        // 3. Loop the sorted list and put it into a new insertion order Map LinkedHashMap
-        Map<String, Double> sortedMap = new LinkedHashMap<String, Double>();
-        for (Map.Entry<String, Double> entry : list) {
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }
-
-        /*
-        //classic iterator example
-        for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext(); ) {
-            Map.Entry<String, Integer> entry = it.next();
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }*/
-
-
-        return sortedMap;
     }
 
     public List<String>[] get50relevant(Map<String,Double>[] allQueriestResults) {
