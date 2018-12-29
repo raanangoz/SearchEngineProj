@@ -244,7 +244,6 @@ public class Indexer {
         writeAvgDocsSize(savePath);
         writeEachDocSizeToDisc(savePath);
         writeNumberOfDocs(savePath);
-//        System.out.println("number of citys in corpus: " + Country.numberofcity); // TODO: 12/9/2018 remove
 
 
     }
@@ -457,6 +456,14 @@ public class Indexer {
         dictionary[i].put(upperTerm.toLowerCase(), temp);
         dictionary[i].remove(upperTerm);
 
+    }
+
+    public void cleardic() {
+        for (int i = 0; i < dictionary.length; i++) {
+            for (Map.Entry<String, PostingList> entry : dictionary[i].entrySet()) {
+                entry.getValue().clearPosts();
+            }
+        }
     }
 
 

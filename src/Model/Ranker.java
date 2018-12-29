@@ -14,8 +14,7 @@ public class Ranker {
         this.chosenCities = chosenCities;
     }
 
-    //after that we compare each word from the query to the list , if exthist take it, else- ignore
-    // TODO: 24/12/2018 function 2 -   Itzik
+
     public void filterDocsByCities() {
         //TODO ALSO FOR FP 104
         //TODO raanan wants to fix this to be better algorithem
@@ -108,8 +107,6 @@ public class Ranker {
         return docsForEachTerm;
     }
 
-    // TODO: 25/12/2018 basicly words in the function above contains how many times it's in each doc  Itzik
-    // TODO: 25/12/2018 so now we need to open dictonary if we want total DF\IDF  Itzik
     //get doc size
     /*
     public double getDocSize() throws IOException {

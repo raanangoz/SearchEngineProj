@@ -25,11 +25,6 @@ public class Searcher {
 
     }
 
-    public static void clearData() {
-        stopWords.clear();
-        // TODO: 30/11/2018 what else to clear  Itzik
-    }
-
     public void stopWordsFunc(String workpath) {
         try {
             Scanner textFile = new Scanner(new File(this.workpath + "\\corpus\\stop_words.txt"));

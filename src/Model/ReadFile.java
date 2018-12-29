@@ -87,13 +87,6 @@ public class ReadFile {
                         }
                         DocText.append(st + " ");
                     }
-
-                    // TODO: 07/12/2018 if above does not work, do like last time, was deleted in merge -parse top Itzik
-//                    String cWord = words[i];
-//                    if (!currentDoc.getCity().equals(""))
-//                        if (cWord.equals(currentDoc.getCity())) {
-//                            String index = ""+i;
-//                            Country.setCityDocLocation(currentDoc.getDocNo(), index);
                 }
                 if (st.equals("<HT>")) {
                     while (((st = br.readLine()) != null) && (!st.equals("</HT>")))

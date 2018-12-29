@@ -17,7 +17,6 @@ public class Model {
 
     private static Model singleton = null;
     private ReadFile readFile = new ReadFile("", "", false);
-    //TODO WORKPATH FOR READQUERY
     private ReadQuery readQuery = new ReadQuery("", "", false);
 
     private Model() {
@@ -51,7 +50,7 @@ public class Model {
         this.readFile = new ReadFile(workPath, savePath, checkbox_value);
         readFile.listf(workPath + "\\corpus");
 //        System.out.println("total number of docs that parsed: " + readFile.getNumberOfParsedDocs());
-//        System.out.println("city with most shows: " + readFile.p.cityname + " number of appearance " + readFile.p.maxcount); // TODO: 12/9/2018 remove
+//        System.out.println("city with most shows: " + readFile.p.cityname + " number of appearance " + readFile.p.maxcount);
 
     }
 
@@ -71,6 +70,8 @@ public class Model {
             if (file.getName().endsWith(".txt"))
                 file.delete();
         }
+        Country.clear();
+        readFile.p.getIndexer().cleardic();
         throw new SuccessException();
         //clear data- need more
 //        Parse.clearData();
@@ -111,7 +112,7 @@ public class Model {
         return readFile.p.getIndexer().getDicSize();
     }
 
-    public void runQuery(String queryText, String workPath, String savePath, boolean checkbox_value) {
+    public void runQuery(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException {
         this.savePath = savePath;
         this.workPath = workPath;
 
@@ -122,13 +123,13 @@ public class Model {
 
     // TODO: 12/22/2018  queryText
     // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
-    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException {
+    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
         this.savePath = savePath;
         this.workPath = workPath;
 
         File queryFile = new File(queryText);
         if (!queryFile.exists())
-            System.out.println("error in file query load"); // TODO: 22/12/2018 throw exception  Itzik
+            throw new BadPathException();
         ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
         this.readQuery = read;
         ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);

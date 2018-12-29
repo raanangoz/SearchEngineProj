@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 import Model.Model;
 
@@ -57,11 +58,11 @@ public class Controller {
         return model.getDicSize();
     }
 
-    public void runQuery(String queryPath, String workPath, String savePath, boolean checkbox_value) {
-        model.runQuery(queryPath, workPath, savePath, checkbox_value);
+    public void runQuery(String queryPath, String workPath, String savePath, boolean checkbox_value,List<String> chosenCities) throws IOException {
+        model.runQuery(queryPath, workPath, savePath, checkbox_value,chosenCities);
     }
 
-    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException {
+    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
         model.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
     }
 

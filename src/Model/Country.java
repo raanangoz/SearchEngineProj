@@ -22,6 +22,11 @@ public class Country {
 
     }
 
+    public static void clear(){
+        cityDocList.clear();
+        cityDocList.clear();
+    }
+
     private String ConvertPop(String population) {
         String word = population;
         String newword = "";

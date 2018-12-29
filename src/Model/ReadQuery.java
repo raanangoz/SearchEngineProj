@@ -12,7 +12,6 @@ public class ReadQuery {
     private Searcher pq;
 
     public ReadQuery(String workPath, String savePath, boolean checkbox_value) {
-        //TODO WORKPATH ETC...
         pq = new Searcher(workPath, savePath, checkbox_value);
     }
 

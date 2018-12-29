@@ -52,12 +52,6 @@ public class Parse {
         return maxtfandterm;
     }
 
-    public static void clearData() {
-        stopWords.clear();
-        // TODO: 30/11/2018 what else to clear  Itzik
-
-    }
-
     void stopWordsFunc(String workpath) {
         try {
             Scanner textFile = new Scanner(new File(this.workpath + "\\corpus\\stop_words.txt"));

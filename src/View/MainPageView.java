@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Controller;
+import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -228,19 +229,27 @@ public class MainPageView implements Initializable {
             alert.setHeaderText("Please select a folder in save and work path");
             alert.showAndWait();
         } else {
-            AlertLoadDic();
-            controller.runQuery(queryText, workPath, savePath, checkbox_value);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Done");
-            alert.setHeaderText("Query ran successfully");
-            alert.showAndWait();
+            try {
+                List<String> chosenCities = getCountryForSearch(allCityList);
+                AlertLoadDic();
+                controller.runQuery(queryText, workPath, savePath, checkbox_value, chosenCities);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Done");
+                alert.setHeaderText("Query ran successfully");
+                alert.showAndWait();
+            }
+            catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error");
+                alert.setHeaderText("Failed to run Query");
+                alert.showAndWait();
+            }
         }
     }
 
     //run query from file
     public void run_query_file(ActionEvent actionEvent) {
 
-        //TODO ADD HERE IF's like in quest string
         String queryText = query_path.getText();
         String workPath = work_path.getText();
         String savePath = save_path.getText();
@@ -264,6 +273,11 @@ public class MainPageView implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to run Query");
+            alert.showAndWait();
+        } catch (BadPathException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(e.getMessage());
             alert.showAndWait();
         }
 
@@ -290,7 +304,6 @@ public class MainPageView implements Initializable {
         }
     }
 
-    // TODO: 22/12/2018 fix this  Itzik
     public void city_pick(HashMap<String, String> cityListDoc) {
         for (Map.Entry<String, String> entry : cityListDoc.entrySet())
             allCityList.add(new CheckMenuItem(entry.getKey()));
