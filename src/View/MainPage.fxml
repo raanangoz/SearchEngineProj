@@ -66,6 +66,6 @@
                 <MenuItem mnemonicParsing="false" text="English" />
             </items>
         </SplitMenuButton>
-      <CheckBox fx:id="semantic_option" layoutX="414.0" layoutY="255.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Semantic" />
+      <CheckBox fx:id="semantic_option" layoutX="414.0" layoutY="255.0" mnemonicParsing="false" onAction="#checkBox_semantic" text="Semantic" />
     </children>
 </AnchorPane>

@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
@@ -36,7 +37,7 @@ public class MainPageView implements Initializable {
     List<CheckMenuItem> allCityList = new ArrayList<>(); //list of citys
     public boolean checkRunAgain = false;
     public Menu menu;
-    protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
+    protected boolean checkbox_stemming = false; //start checkbox as false, if marked change to true
     protected boolean checkbox_semantic = false; //start checkbox as false, if marked change to true
 
     //</editor-fold>
@@ -90,12 +91,16 @@ public class MainPageView implements Initializable {
 
     //checkbox for stemming, updates the boolean value accordingly
     public void checkBox_stemmimg(ActionEvent actionEvent) {
-        checkbox_value = stemming_option.isSelected();
+        checkbox_stemming = stemming_option.isSelected();
     }
 
     //checkbox for semantic, updates the boolean value accodingly
     public void checkBox_semantic(ActionEvent actionEvent) {
         checkbox_semantic = semantic_option.isSelected();
+        if (checkbox_semantic==true) {
+            stemming_option.setSelected(true);
+            checkBox_stemmimg(actionEvent);
+        }
     }
 
 
@@ -119,7 +124,7 @@ public class MainPageView implements Initializable {
                 alert.showAndWait();
             } else {
                 double t = System.currentTimeMillis();
-                controller.parse(workPath, savePath, checkbox_value);
+                controller.parse(workPath, savePath, checkbox_stemming);
 //                double y = System.currentTimeMillis() - t;
 //                System.out.println("total time to parse = " + ((y) / 1000) + " seconds");
 //                double l = System.currentTimeMillis();
@@ -241,7 +246,7 @@ public class MainPageView implements Initializable {
             try {
                 List<String> chosenCities = getCountryForSearch(allCityList);
                 AlertLoadDic();
-                controller.runQuery(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities);
+                controller.runQuery(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
                 alert.setHeaderText("\"Query ran successfully.\\n Open results.txt file to see them.\"");
@@ -271,12 +276,34 @@ public class MainPageView implements Initializable {
             AlertLoadDic();
         }
         List<String> chosenCities = getCountryForSearch(allCityList);
+        boolean tosave;
+        String saveFolder="";
         try {
-            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Done");
-            alert.setHeaderText("Query ran successfully.\n Open results.txt file to see them.");
-            alert.showAndWait();
+            Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION,"Do you want to save the results?",
+                    ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alertConfirm.showAndWait();
+            if (result.get() == ButtonType.YES){
+                DirectoryChooser chooser = new DirectoryChooser();
+                chooser.setTitle("Choose Folder");
+                File selectedDirectory = chooser.showDialog(null);
+                saveFolder = (selectedDirectory.getPath());
+                tosave=true;
+            } else {
+                tosave=false;
+            }
+            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities,tosave,saveFolder);
+            if (tosave==true) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Done");
+                alert.setHeaderText("Query ran successfully.\nOpen results.txt file to see them.");
+                alert.showAndWait();
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Done");
+                alert.setHeaderText("Query ran successfully.");
+                alert.showAndWait();
+            }
 
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -287,6 +314,11 @@ public class MainPageView implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText(e.getMessage() + "of Query");
+            alert.showAndWait();
+        } catch (RuntimeException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("No folder has been selected");
             alert.showAndWait();
         }
 

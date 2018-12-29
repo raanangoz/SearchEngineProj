@@ -63,8 +63,8 @@ public class Controller {
         model.runQuery(queryPath, workPath, savePath, checkbox_semantic, checkbox_value,chosenCities);
     }
 
-    public void runQueryFile(String queryText, String workPath, String savePath, Boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
-        model.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities);
+    public void runQueryFile(String queryText, String workPath, String savePath, Boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder) throws IOException, BadPathException {
+        model.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities,tosave, savefolder);
     }
 
     public HashMap<String, String> getCountryList() {

@@ -132,7 +132,7 @@ public class Model {
 
     // TODO: 12/22/2018  queryText
     // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
-    public void runQueryFile(String queryText, String workPath, String savePath,boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
+    public void runQueryFile(String queryText, String workPath, String savePath,boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities,boolean tosave, String savefolder) throws IOException, BadPathException {
         this.savePath = savePath;
         this.workPath = workPath;
         this.stemmimng = checkbox_value;
@@ -140,6 +140,10 @@ public class Model {
         File queryFile = new File(queryText);
         if (!queryFile.exists())
             throw new BadPathException();
+        if (tosave==true) {
+            if(savefolder.length()<1)
+                throw new BadPathException();
+        }
         ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
         this.readQuery = read;
         ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
@@ -174,18 +178,20 @@ public class Model {
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         //TODO SHOULD BE able to save ANYWHERE THAT USER CHOOSE by the instructions
-        File toFile = new File(savePath + "\\results.txt");
-        BufferedWriter bw = null;
-        bw = new BufferedWriter(new FileWriter(toFile));
-        for (int i = 0; i < fiftyRelevantDocs.length; i++) {
-            String queryNum = queriesToRanker.get(i).getQueryNum();
-            for (String docNo : fiftyRelevantDocs[i]) {
-                bw.write(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
-                bw.newLine();
+        if (tosave==true) {
+            File toFile = new File(savefolder + "\\results.txt");
+            BufferedWriter bw = null;
+            bw = new BufferedWriter(new FileWriter(toFile));
+            for (int i = 0; i < fiftyRelevantDocs.length; i++) {
+                String queryNum = queriesToRanker.get(i).getQueryNum();
+                for (String docNo : fiftyRelevantDocs[i]) {
+                    bw.write(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
+                    bw.newLine();
 //                System.out.println(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
+                }
             }
+            bw.close();
         }
-        bw.close();
     }
 
     private List<String> findsimiliar(String key) {
