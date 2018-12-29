@@ -25,6 +25,7 @@ public class MainPageView implements Initializable {
     public Button load_b; //load dictionary button
     public Button showdic_b; //show dictionary button
     public CheckBox stemming_option; //stemming checkbox
+    public CheckBox semantic_option; //semantic checkbox
     public TextField work_path; //text field for working path
     public TextField save_path; //text field for saving path
     public TextField query_path; //query path
@@ -36,6 +37,8 @@ public class MainPageView implements Initializable {
     public boolean checkRunAgain = false;
     public Menu menu;
     protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
+    protected boolean checkbox_semantic = false; //start checkbox as false, if marked change to true
+
     //</editor-fold>
 
     private Controller controller = Controller.getInstance();
@@ -89,6 +92,12 @@ public class MainPageView implements Initializable {
     public void checkBox_stemmimg(ActionEvent actionEvent) {
         checkbox_value = stemming_option.isSelected();
     }
+
+    //checkbox for semantic, updates the boolean value accodingly
+    public void checkBox_semantic(ActionEvent actionEvent) {
+        checkbox_semantic = semantic_option.isSelected();
+    }
+
 
     //merge function
     public void merge_func(ActionEvent actionEvent) {
@@ -232,7 +241,7 @@ public class MainPageView implements Initializable {
             try {
                 List<String> chosenCities = getCountryForSearch(allCityList);
                 AlertLoadDic();
-                controller.runQuery(queryText, workPath, savePath, checkbox_value, chosenCities);
+                controller.runQuery(queryText, workPath, savePath, checkbox_semantic, chosenCities);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
                 alert.setHeaderText("\"Query ran successfully.\\n Open results.txt file to see them.\"");
@@ -263,7 +272,7 @@ public class MainPageView implements Initializable {
         }
         List<String> chosenCities = getCountryForSearch(allCityList);
         try {
-            controller.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
+            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, chosenCities);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Done");
             alert.setHeaderText("Query ran successfully.\n Open results.txt file to see them.");
