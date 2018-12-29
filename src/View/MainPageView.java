@@ -337,7 +337,6 @@ public class MainPageView implements Initializable {
             doAlert("Sucsses", "Loaded city files");
         } catch (IOException e) {
             doAlert("Error", "city file does not exist");
-
         }
     }
 }
