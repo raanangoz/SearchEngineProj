@@ -3,6 +3,9 @@ package Model;
 import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 import Model.Excpetions.SuccessException;
+import com.sun.xml.internal.bind.v2.TODO;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.*;
@@ -131,13 +134,13 @@ public class Model {
         ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
         this.readQuery = read;
         ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
-        if(1>0){
+        if(checkbox_value==true){
             Map<String, Integer> terms;
             for (Query q: queriesToRanker) {
                 terms = q.getTerms();
                 for (Map.Entry<String, Integer> s: terms.entrySet())
                       {
-                         q.addTerm(findsimiliar(s.getKey();
+                         q.addTerm(findsimiliar(s.getKey()));
 
                 }
             }
@@ -171,6 +174,19 @@ public class Model {
         bw.close();
     }
 
+    private Map<String, Integer> findsimiliar(String key) {
+        HashMap<String, Integer> Final = new HashMap<>();
+        DatamuseQuery getData = new DatamuseQuery();
+        String allData = getData.findSimilar(key);
+        JSONArray array = new JSONArray(allData);
+        for(int i=0; i<array.length(); i++){
+            JSONObject jsonObj = array.getJSONObject(i);
+            String word = (jsonObj.getString("word"));
+            int score = (jsonObj.getInt("score"));
+            Final.put(word,score);
+        }
+        return Final;
+    }
 
     public HashMap<String, String> getCountrList() {
         return Country.getDocs();

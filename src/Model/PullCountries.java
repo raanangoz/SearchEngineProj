@@ -60,6 +60,15 @@ public class PullCountries {
         DatamuseQuery test = new DatamuseQuery();
         String x = test.findSimilar("vehicle");
         System.out.println(x);
+
+        JSONArray array = new JSONArray(x);
+
+        for(int i=0; i<array.length(); i++) {
+            JSONObject jsonObj = array.getJSONObject(i);
+            System.out.println(jsonObj.getString("word"));
+            System.out.println(jsonObj.getInt("score"));
+//            System.out.println(jsonObj.getString("score"));
+        }
         pullinfos("jerusalem");
     }
 }
