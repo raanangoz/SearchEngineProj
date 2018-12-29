@@ -29,6 +29,10 @@ public class Query implements Serializable {
 
     }
 
+    public void addTerm(Map<String, Integer> terms) {
+        this.terms = terms;
+    }
+
     //<editor-fold desc="Getter and Setter">
     public String getQueryNum() {
         return queryNum;
