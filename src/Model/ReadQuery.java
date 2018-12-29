@@ -41,7 +41,7 @@ public class ReadQuery {
                 Query q = new Query(queryNum, ParseMe.substring(8), queryDesc, "");
                 q = pq.parse(q);
                 queries.add(q);
-            } else if (st.startsWith("<num> ")) {
+            } else if (st.startsWith("<num>")) {
                 String[] words = st.split(" ");
                 queryNum = words[words.length - 1];
             } else if (st.startsWith("<desc>")) {

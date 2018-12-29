@@ -87,8 +87,6 @@ public class Model {
     public void loadDic(String savePath) throws IOException, SearcherException {
 
         this.savePath = savePath;
-
-        //TODO remove this:        readFile.p.getIndexer().loadDic(savePath);??????
         LoadedDictionary loadedDictionary = new LoadedDictionary(savePath);
         loadedDictionary.loadDic();
     }
@@ -140,18 +138,13 @@ public class Model {
         Map<String, Double>[] allQueriestResults = new HashMap[queriesToRanker.size()];
         // [docNo, grade], [docNo, grade],  [docNo, grade],  [docNo, grade],
         //sorted
-        // TODO: 12/27/2018 for each query i run this but i should get all posts for the needed terms only once.
         HashMap<String, Integer>[] relevantPostsForAllQueries = ranker.loadPostingListsForAllQueries(queriesToRanker);
         HashMap<String, Integer> docLengths = ranker.getAllDocsLengthsForQueriesGroup(relevantPostsForAllQueries);
-
-//TODO DID I FILTER CITIES?
-
-
         allQueriestResults = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber, docLengths);// doc1 0.8  doc2 0.1 ...
 
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
-        //TODO SHOULD BE ANYWHERE THAT USER CHOOSE
+        //TODO SHOULD BE ANYWHERE THAT USER CHOOSE by the instructions
         File toFile = new File(savePath + "\\results.txt");
         BufferedWriter bw = null;
         bw = new BufferedWriter(new FileWriter(toFile));

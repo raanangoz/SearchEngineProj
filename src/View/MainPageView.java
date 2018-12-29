@@ -235,7 +235,7 @@ public class MainPageView implements Initializable {
                 controller.runQuery(queryText, workPath, savePath, checkbox_value, chosenCities);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
-                alert.setHeaderText("Query ran successfully");
+                alert.setHeaderText("\"Query ran successfully.\\n Open results.txt file to see them.\"");
                 alert.showAndWait();
             }
             catch (IOException e) {
@@ -266,7 +266,7 @@ public class MainPageView implements Initializable {
             controller.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Done");
-            alert.setHeaderText("Query ran successfully");
+            alert.setHeaderText("Query ran successfully.\n Open results.txt file to see them.");
             alert.showAndWait();
 
         } catch (IOException e) {

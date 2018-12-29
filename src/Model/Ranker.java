@@ -17,7 +17,6 @@ public class Ranker {
 
     public void filterDocsByCities() {
         //TODO ALSO FOR FP 104
-        //TODO raanan wants to fix this to be better algorithem
         try {
             for (String city : chosenCities) {
                 String[] words;
@@ -90,10 +89,7 @@ public class Ranker {
                             docsAndTF.clear();
                             break;
                         }
-                        //TODO IF POSTING LIST IS SORTED THEN STOP LOOKING FOR A WORD like query word:stopp, and on posting list its stopt then break
                         //else then keep looking for the word.
-                        // TODO: 12/26/2018  if line of a term on posting list is very long and actually is seen on 2 lines on notepad its ok ?
-                        // TODO: 25/12/2018 add break?  Itzik
                     }
                 }
 
@@ -239,7 +235,6 @@ public class Ranker {
             }
 
         }
-//TODO CHECK CASE THAT TERM APPEARS IN DIFFERENT QUERIES. (HASHMAP SIZE..)
 
         HashMap<String, Integer>[] allPosts = new HashMap[termsOfAllQueries.length];//[0]:  gas -1 fbis3 5 fbis4 6...
         int m = 0;//allposts[m] contains random posting list of a term.
@@ -302,7 +297,6 @@ public class Ranker {
 //                    break;
                 }
             }
-            //TODO MAYBE DONT NEED TO CONTINUE
             br.close();
 
         } catch (Exception e) {
