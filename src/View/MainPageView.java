@@ -231,7 +231,7 @@ public class MainPageView implements Initializable {
             AlertLoadDic();
             controller.runQuery(queryText, workPath, savePath, checkbox_value);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Fail");
+            alert.setTitle("Done");
             alert.setHeaderText("Query ran successfully");
             alert.showAndWait();
         }
@@ -276,8 +276,8 @@ public class MainPageView implements Initializable {
 
         } catch (SearcherException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(e.getMessage() + " to load dictionary");
+            alert.setTitle("failed");
+            alert.setHeaderText(e.getMessage());
             alert.showAndWait();
             return false;
 

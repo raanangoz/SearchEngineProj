@@ -48,7 +48,7 @@ public class LoadedDictionary {
 
         }//while
         br.close();
-        throw new SuccessException();
+//        throw new SuccessException();
 
     }
 
