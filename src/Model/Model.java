@@ -113,7 +113,7 @@ public class Model {
         return readFile.p.getIndexer().getDicSize();
     }
 
-    public void runQuery(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException {
+    public void runQuery(String queryText, String workPath, String savePath,boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities) throws IOException {
         this.savePath = savePath;
         this.workPath = workPath;
 
@@ -124,7 +124,7 @@ public class Model {
 
     // TODO: 12/22/2018  queryText
     // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
-    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
+    public void runQueryFile(String queryText, String workPath, String savePath,boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
         this.savePath = savePath;
         this.workPath = workPath;
 
@@ -134,7 +134,7 @@ public class Model {
         ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
         this.readQuery = read;
         ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
-        if(checkbox_value==true){
+        if(checkbox_semantic==true){
             Map<String, Integer> tempTerms;
             Map<String, Integer> termsToAdd = new HashMap<>();
             for (Query q: queriesToRanker) {

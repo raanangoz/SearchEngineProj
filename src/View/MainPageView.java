@@ -241,7 +241,7 @@ public class MainPageView implements Initializable {
             try {
                 List<String> chosenCities = getCountryForSearch(allCityList);
                 AlertLoadDic();
-                controller.runQuery(queryText, workPath, savePath, checkbox_semantic, chosenCities);
+                controller.runQuery(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
                 alert.setHeaderText("\"Query ran successfully.\\n Open results.txt file to see them.\"");
@@ -272,7 +272,7 @@ public class MainPageView implements Initializable {
         }
         List<String> chosenCities = getCountryForSearch(allCityList);
         try {
-            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, chosenCities);
+            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Done");
             alert.setHeaderText("Query ran successfully.\n Open results.txt file to see them.");

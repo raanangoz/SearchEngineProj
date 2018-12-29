@@ -3,6 +3,7 @@ package Controller;
 import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 import Model.Model;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -58,12 +59,12 @@ public class Controller {
         return model.getDicSize();
     }
 
-    public void runQuery(String queryPath, String workPath, String savePath, boolean checkbox_value,List<String> chosenCities) throws IOException {
-        model.runQuery(queryPath, workPath, savePath, checkbox_value,chosenCities);
+    public void runQuery(String queryPath, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_value,List<String> chosenCities) throws IOException {
+        model.runQuery(queryPath, workPath, savePath, checkbox_semantic, checkbox_value,chosenCities);
     }
 
-    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
-        model.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
+    public void runQueryFile(String queryText, String workPath, String savePath, Boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
+        model.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities);
     }
 
     public HashMap<String, String> getCountryList() {
