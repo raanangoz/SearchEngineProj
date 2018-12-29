@@ -40,6 +40,7 @@ public class Indexer {
         currentDoc.setNumberOfDifferentWords();
         currentDoc.setMostFrequentTermValue();
         currentDoc.setDocumentLength();
+        currentDoc.saveEntities();
         Parse.saveTFandUniq(currentDoc);
         updateDictionary(currentDoc, terms);
 

@@ -136,5 +136,12 @@ public class Doc implements Serializable {
     public void setDocCountry(String docCity) {
         this.city = docCity;
     }
+
+    public void saveEntities() {
+        for(int i = 0 ; i < docTerms.length;i++){
+
+            }
+        }
+    }
     //</editor-fold>
 }

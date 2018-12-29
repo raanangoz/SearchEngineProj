@@ -55,6 +55,7 @@ public class ReadQuery {
             }
 
         }
+        br.close();
         return queries;
     }
 }
