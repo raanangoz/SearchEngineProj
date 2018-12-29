@@ -256,11 +256,19 @@ public class MainPageView implements Initializable {
                     tosave = false;
                 }
                 AlertLoadDic();
-                controller.runQueryString(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities,tosave,saveFolder );
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Done");
-                alert.setHeaderText("\"Query ran successfully.\\n Open results.txt file to see them.\"");
-                alert.showAndWait();
+                controller.runQueryString(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities, tosave, saveFolder);
+                if (tosave==true) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Done");
+                    alert.setHeaderText("Query ran successfully.\n Open results.txt file to see them.");
+                    alert.showAndWait();
+                }
+                else{
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Done");
+                    alert.setHeaderText("Done");
+                    alert.showAndWait();
+                }
             } catch (IOException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error");
@@ -309,7 +317,7 @@ public class MainPageView implements Initializable {
             if (tosave == true) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
-                alert.setHeaderText("Query ran successfully.\nOpen results.txt file to see them.");
+                alert.setHeaderText("Query ran successfully.\n Open results.txt file to see them.");
                 alert.showAndWait();
             } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
