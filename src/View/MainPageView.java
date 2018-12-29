@@ -129,6 +129,7 @@ public class MainPageView implements Initializable {
 //                double l = System.currentTimeMillis();
                 controller.writeLastDocsToDisk(savePath);
                 controller.mergePartialPosting(workPath, savePath);
+                controller.writeEntitiesToDisk(workPath, savePath);
 
                 HashMap<String, String> countryDocsList = controller.getCountryList();
                 city_pick(countryDocsList);

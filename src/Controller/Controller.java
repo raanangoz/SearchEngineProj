@@ -75,4 +75,8 @@ public class Controller {
     public void runQueryString(String queryText, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_stemming, List<String> chosenCities, boolean tosave, String saveFolder) throws IOException, BadPathException {
         model.runQueryString(queryText,workPath,savePath,checkbox_semantic,checkbox_stemming,chosenCities,tosave,saveFolder);
     }
+
+    public void writeEntitiesToDisk(String workPath, String savePath) {
+        model.writeEntitiesToDisk(workPath,savePath);
+    }
 }

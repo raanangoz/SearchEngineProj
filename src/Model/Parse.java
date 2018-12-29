@@ -15,7 +15,7 @@ public class Parse {
     private static HashSet<String> stopWords;
     private String workpath;
     private String savepath;
-    private static Map<String, List<Integer>> maxtfandterm = new HashMap<String, List<Integer>>();
+    private static Map<Doc, List<Integer>> maxtfandterm = new HashMap<Doc, List<Integer>>();
     private Map<String, String> stemResult;
     private String cityname = "";
     private int maxcount = 0;
@@ -44,11 +44,13 @@ public class Parse {
         TfandUniq.add(currentDoc.getMostFrequentTermValue());
         TfandUniq.add(currentDoc.getNumberOfDifferentWords());
         TfandUniq.add(currentDoc.getDocumentLength());
-
-        maxtfandterm.put(currentDoc.getDocNo(), TfandUniq);
+        maxtfandterm.put(currentDoc, TfandUniq);
+    }
+    public static Set<Doc> getAllDocsParsed(){
+        return maxtfandterm.keySet();
     }
 
-    public static Map<String, List<Integer>> getMaxtfandterm() {
+    public static Map<Doc, List<Integer>> getMaxtfandterm() {
         return maxtfandterm;
     }
 

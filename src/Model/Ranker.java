@@ -25,10 +25,12 @@ public class Ranker {
                 int i = correctCellDictionary(city);
                 File fromFile = new File(Model.getInstance().getSavePath() + "\\Posting " + i + ".txt");
                 BufferedReader br = new BufferedReader(new FileReader(fromFile));
+                String city1 = city.toUpperCase();
+                String city2 = city.toLowerCase();
                 while ((st = br.readLine()) != null) {
-                    if (st.startsWith(city)) {
+                    if (st.startsWith(city1) || st.startsWith(city2)) {
                         words = st.split(" ");
-                        if (words[0].equals(city)) {
+                        if (words[0].equals(city1) || words[0].equals(city2)) {
                             for (int k = 2; k < words.length; k++) {
                                 docsAfterFilterCities.add(words[k]);
                             }
@@ -36,6 +38,7 @@ public class Ranker {
                         }
                     }
                 }
+                br.close();
             }
         } catch (Exception e) {
         }
@@ -92,6 +95,7 @@ public class Ranker {
                         //else then keep looking for the word.
                     }
                 }
+                br.close();
 
             }
         } catch (FileNotFoundException e) {
@@ -172,25 +176,26 @@ public class Ranker {
                                 }
                             }
                         }
-                    } else
-                        System.out.println("hi");
+
+                    }
                 }
+
+
+                //sum all docs values for this query and save 50 highest and return for this query.
+                results[i].putAll(docsAndValues);
             }
 
 
-            //sum all docs values for this query and save 50 highest and return for this query.
-            results[i].putAll(docsAndValues);
+            //now next doc of same term.
+
+
+
         }
-
-
-        //now next doc of same term.
-
-
         return results;
     }
 
 
-    public double getAverageDocumentLength() {
+    public double getAverageDocumentLength () {
         BufferedReader br;
         double answer = 0;
         String st = "";
@@ -200,13 +205,14 @@ public class Ranker {
             if ((st = br.readLine()) != null) {
                 answer = Double.parseDouble(st);
             }
+            br.close();
         } catch (Exception e) {
 
         }
         return answer;
     }
 
-    public int getTotalDocumentsNumber() {
+    public int getTotalDocumentsNumber () {
         BufferedReader br;
         int answer = 0;
         String st = "";
@@ -216,13 +222,14 @@ public class Ranker {
             if ((st = br.readLine()) != null) {
                 answer = Integer.parseInt(st);
             }
+            br.close();
         } catch (Exception e) {
 
         }
         return answer;
     }
 
-    public HashMap<String, Integer>[] loadPostingListsForAllQueries(ArrayList<Query> queriesToRanker) {
+    public HashMap<String, Integer>[] loadPostingListsForAllQueries (ArrayList < Query > queriesToRanker) {
         List<String>[] termsOfAllQueries = new LinkedList[27];//each cell contains only terms starting with same char.
         for (int i = 0; i < termsOfAllQueries.length; i++)
             termsOfAllQueries[i] = new LinkedList<>();
@@ -264,6 +271,7 @@ public class Ranker {
                     if (numOfPostingListsFoundForGroup == termsOfAllQueries[i].size())
                         break;//dont read more lines , all postings of this group are in memory.
                 }
+                fr.close();
 
             } catch (Exception e) {
 
@@ -274,7 +282,7 @@ public class Ranker {
     }
 
 
-    public HashMap<String, Integer> getAllDocsLengthsForQueriesGroup(Map<String, Integer>[] termsAndPostings) {
+    public HashMap<String, Integer> getAllDocsLengthsForQueriesGroup (Map < String, Integer >[]termsAndPostings){
         HashMap<String, Integer> docLengths = new HashMap<>();
         String st;
         BufferedReader br;
@@ -305,7 +313,7 @@ public class Ranker {
         return docLengths;
     }
 
-    public List<String>[] get50relevant(Map<String, Double>[] allQueriestResults) {
+    public List<String>[] get50relevant (Map < String, Double >[]allQueriestResults){
 //TODO I DONT THINK THE 50 RETURNED ARE SORTED FROM HIGHEST TO LOWEST, BUT THEY ARE THE BEST 50.
         List<String>[] finalResult = new LinkedList[allQueriestResults.length];
 
@@ -322,8 +330,8 @@ public class Ranker {
         return finalResult;
     }
 
-    private static <String, Double extends Comparable<? super Double>> List<Map.Entry<String, Double>>
-    findGreatest(Map<String, Double> map, int n) {
+    private static <String, Double extends Comparable<? super Double>>List<Map.Entry<String, Double>>
+    findGreatest(Map < String, Double > map, int n){
         Comparator<? super Map.Entry<String, Double>> comparator =
                 new Comparator<Map.Entry<String, Double>>() {
                     @Override
