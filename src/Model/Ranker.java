@@ -189,8 +189,9 @@ public class Ranker {
             //now next doc of same term.
 
 
-            return results;
+
         }
+        return results;
     }
 
 

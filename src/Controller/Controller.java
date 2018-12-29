@@ -73,4 +73,8 @@ public class Controller {
     public List<String> loadCity(String savePath) throws IOException {
         return model.loadCity(savePath);
     }
+
+    public void writeEntitiesToDisk(String workPath, String savePath) {
+        model.writeEntitiesToDisk(workPath,savePath);
+    }
 }

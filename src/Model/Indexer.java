@@ -43,20 +43,45 @@ public class Indexer {
         currentDoc.saveEntities();
         Parse.saveTFandUniq(currentDoc);
         updateDictionary(currentDoc, terms);
-
         if ((ReadFile.getFileIndex() % 10 == 0) && (onetime == true)) {
+
+
             writeToDiskAlgorithm(savepath);
         }
         if ((ReadFile.getFileIndex() % 10) - 1 == 0 && ReadFile.getFileIndex() != 1)
             onetime = true;
     }
 
-
     private void writeToDiskAlgorithm(String savepath) {
         writePartialPostToDisk(savepath);
         deletePostingFromMemory();
         onetime = false;
     }
+
+    public void writeEntitiesToDisk(String savePath) {
+        try {
+            File tofile =  new File(savePath + "\\docsEntities.txt");
+            FileWriter fw = new FileWriter(tofile);
+            BufferedWriter bw = new BufferedWriter(fw);
+            Set <Doc> letsWriteEntitiesToDiskLMAO = Parse.getAllDocsParsed();
+            for (Doc d:letsWriteEntitiesToDiskLMAO) {
+                List<Map.Entry<String, Integer>> docDominantEntities = d.getDocDominantEntities();
+                bw.write(d.getDocNo() + " -> ");
+                for (Map.Entry<String, Integer> entry : docDominantEntities) {
+                    bw.write(entry.getKey()+"@");
+
+                }
+                bw.newLine();
+
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
 
     private void deletePostingFromMemory() {
         for (int i = 0; i < dictionary.length; i++) {
@@ -250,7 +275,7 @@ public class Indexer {
     }
 
     private void writeEachDocSizeToDisc(String savePath) {
-        Map<String, List<Integer>> docDetails = (HashMap<String, List<Integer>>) Parse.getMaxtfandterm();
+        Map<Doc, List<Integer>> docDetails = (HashMap<Doc, List<Integer>>) Parse.getMaxtfandterm();
         File file;
         FileWriter fw;
         BufferedWriter bw;
@@ -258,8 +283,8 @@ public class Indexer {
         try {
             fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
-            for (Map.Entry<String, List<Integer>> entry : docDetails.entrySet()) {
-                bw.write(entry.getKey().toString() + " " + entry.getValue().get(2));
+            for (Map.Entry<Doc, List<Integer>> entry : docDetails.entrySet()) {
+                bw.write(entry.getKey().getDocNo().toString() + " " + entry.getValue().get(2));
                 bw.write("\n");
             }
             bw.close();
@@ -289,9 +314,9 @@ public class Indexer {
     }
 
     private void writeAvgDocsSize(String savePath) {
-        Map<String, List<Integer>> docDetails = (HashMap<String, List<Integer>>) Parse.getMaxtfandterm();
+        Map<Doc, List<Integer>> docDetails = (HashMap<Doc, List<Integer>>) Parse.getMaxtfandterm();
         double sum = 0;
-        for (Map.Entry<String, List<Integer>> entry : docDetails.entrySet()) {
+        for (Map.Entry<Doc, List<Integer>> entry : docDetails.entrySet()) {
             sum += entry.getValue().get(2);
         }
         File file;
@@ -468,74 +493,74 @@ public class Indexer {
     }
 
 
-    private class PostingList {
-        int DF;
-        LinkedHashMap<Doc, Integer> posts;
-        //String address;
-        int totalOccurrences;
-        String stemmedWord;
+public class PostingList {
+    int DF;
+    LinkedHashMap<Doc, Integer> posts;
+    //String address;
+    int totalOccurrences;
+    String stemmedWord;
 
-        public String getStemmedWord() {
-            return stemmedWord;
-        }
-
-        public void setStemmedWord(String stemmedWord) {
-            this.stemmedWord = stemmedWord;
-        }
-
-        private PostingList(String newTerm) {
-            DF = 0;
-            posts = new LinkedHashMap<>();
-            //address = "posts/Posting" + newTerm.charAt(0);
-            totalOccurrences = 0;
-            stemmedWord = null;
-
-        }
-
-        public void add(Doc doc, int tf) {
-            posts.put(doc, tf);
-        }
-
-        public int getDF() {
-            return this.DF;
-        }
-
-        public void increaseDF() {
-            this.DF++;
-        }
-
-        public void setDF(int df) {
-            this.DF = df;
-        }
-
-        public LinkedHashMap<Doc, Integer> getPosts() {
-            return posts;
-        }
-
-        public int getTotalOccurrences() {
-            return totalOccurrences;
-        }
-
-        public void setTotalOccurrences(int totalOccurrences) {
-            this.totalOccurrences += totalOccurrences;
-        }
-
-        @Override
-        public String toString() {
-            String ans = "";
-            for (Map.Entry<Doc, Integer> entry : posts.entrySet()) {
-                String key = entry.getKey().getDocNo();
-                Integer value = entry.getValue();
-                ans += key + " " + value + " ";
-            }
-
-            return ans;
-        }
-
-        public void clearPosts() {
-            this.posts.clear();
-        }
+    public String getStemmedWord() {
+        return stemmedWord;
     }
+
+    public void setStemmedWord(String stemmedWord) {
+        this.stemmedWord = stemmedWord;
+    }
+
+    private PostingList(String newTerm) {
+        DF = 0;
+        posts = new LinkedHashMap<>();
+        //address = "posts/Posting" + newTerm.charAt(0);
+        totalOccurrences = 0;
+        stemmedWord = null;
+
+    }
+
+    public void add(Doc doc, int tf) {
+        posts.put(doc, tf);
+    }
+
+    public int getDF() {
+        return this.DF;
+    }
+
+    public void increaseDF() {
+        this.DF++;
+    }
+
+    public void setDF(int df) {
+        this.DF = df;
+    }
+
+    public LinkedHashMap<Doc, Integer> getPosts() {
+        return posts;
+    }
+
+    public int getTotalOccurrences() {
+        return totalOccurrences;
+    }
+
+    public void setTotalOccurrences(int totalOccurrences) {
+        this.totalOccurrences += totalOccurrences;
+    }
+
+    @Override
+    public String toString() {
+        String ans = "";
+        for (Map.Entry<Doc, Integer> entry : posts.entrySet()) {
+            String key = entry.getKey().getDocNo();
+            Integer value = entry.getValue();
+            ans += key + " " + value + " ";
+        }
+
+        return ans;
+    }
+
+    public void clearPosts() {
+        this.posts.clear();
+    }
+}
 }
 
 class CustomizedHashMap implements Comparator<Map.Entry<String, LinkedList<String>>> {

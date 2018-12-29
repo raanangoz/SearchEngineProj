@@ -211,4 +211,8 @@ public class Model {
         br.close();
         return AllCountrysList;
     }
+
+    public void writeEntitiesToDisk(String workPath, String savePath) {
+        readFile.p.getIndexer().writeEntitiesToDisk(savePath);
+    }
 }
