@@ -286,7 +286,7 @@ public class MainPageView implements Initializable {
         } catch (BadPathException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
-            alert.setHeaderText(e.getMessage());
+            alert.setHeaderText(e.getMessage() + "of Query");
             alert.showAndWait();
         }
 
