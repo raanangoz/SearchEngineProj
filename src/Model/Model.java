@@ -16,7 +16,7 @@ public class Model {
 
     private String savePath;
     private String workPath;
-
+    private boolean stemmimng=false;
 
     private static Model singleton = null;
     private ReadFile readFile = new ReadFile("", "", false);
@@ -40,15 +40,18 @@ public class Model {
         return this.workPath;
     }
 
+    public Boolean getStemmimng() {return this.stemmimng;}
+
     public void mergePartialPosting(String workPath, String savePath) {
         this.savePath = savePath;
         this.workPath = workPath;
-        this.readFile.p.getIndexer().mergePartialPosting(workPath, savePath);
+        this.readFile.p.getIndexer().mergePartialPosting(workPath, savePath, this.stemmimng);
     }
 
     public void parse(String workPath, String savePath, boolean checkbox_value) throws SearcherException, IOException {
         this.savePath = savePath;
         this.workPath = workPath;
+        this.stemmimng = checkbox_value;
         //read corpus files from folder
         this.readFile = new ReadFile(workPath, savePath, checkbox_value);
         readFile.listf(workPath + "\\corpus");
@@ -82,7 +85,11 @@ public class Model {
 
     public void showDic(String savePath) throws IOException {
         this.savePath = savePath;
-        File fromFile = new File(savePath + "\\Dictionary.txt");
+        File fromFile;
+        if (this.stemmimng==false)
+            fromFile = new File(savePath + "\\Dictionary.txt");
+        else
+            fromFile = new File(savePath + "\\DictionaryS.txt");
         Desktop.getDesktop().open(fromFile);
 
     }
@@ -90,7 +97,7 @@ public class Model {
     public void loadDic(String savePath) throws IOException, SearcherException {
 
         this.savePath = savePath;
-        LoadedDictionary loadedDictionary = new LoadedDictionary(savePath);
+        LoadedDictionary loadedDictionary = new LoadedDictionary(savePath,this.stemmimng);
         loadedDictionary.loadDic();
     }
 
@@ -98,7 +105,7 @@ public class Model {
         this.savePath = savePath;
         this.workPath = workPath;
 
-        readFile.p.getIndexer().mergePartialPosting(workPath, savePath);
+        readFile.p.getIndexer().mergePartialPosting(workPath, savePath,this.stemmimng);
     }
 
     public void writeLastDocsToDisk(String savePath) {
@@ -116,6 +123,7 @@ public class Model {
     public void runQuery(String queryText, String workPath, String savePath,boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities) throws IOException {
         this.savePath = savePath;
         this.workPath = workPath;
+        this.stemmimng = checkbox_value;
 
         Query q = readQuery.ParseQueryString(queryText);
         List<Query> queries = new LinkedList<>();
@@ -127,6 +135,7 @@ public class Model {
     public void runQueryFile(String queryText, String workPath, String savePath,boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
         this.savePath = savePath;
         this.workPath = workPath;
+        this.stemmimng = checkbox_value;
 
         File queryFile = new File(queryText);
         if (!queryFile.exists())
@@ -164,7 +173,7 @@ public class Model {
 
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
-        //TODO SHOULD BE ANYWHERE THAT USER CHOOSE by the instructions
+        //TODO SHOULD BE able to save ANYWHERE THAT USER CHOOSE by the instructions
         File toFile = new File(savePath + "\\results.txt");
         BufferedWriter bw = null;
         bw = new BufferedWriter(new FileWriter(toFile));

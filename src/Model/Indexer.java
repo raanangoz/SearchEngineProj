@@ -10,6 +10,7 @@ public class Indexer {
     private boolean onetime = true;
     private int postingCounter;
     private HashMap<String, PostingList>[] dictionary;
+    private boolean stemmiming = false;
 
     public Indexer() {
         postingCounter = 0;
@@ -93,36 +94,36 @@ public class Indexer {
         }
     }
 
-    public void loadDic(String savePath) throws SearcherException, IOException {
-        File fromFile = new File(savePath + "\\Dictionary.txt");
-        BufferedReader br = new BufferedReader(new FileReader(fromFile));
-        String st;
-        String[] words;
-        String term = "";
-        int DF = 0;
-        //int TF=0;
-        while ((st = br.readLine()) != null) {
-            term = "";
-            words = st.split(" ");
-            int i;
-            for (i = 0; i < words.length && !words[i].equals("DF"); i++) {
-                term += (words[i]);
-
-            }
-            DF = Integer.parseInt(words[i + 1]);
-            //TF = Integer.parseInt(words[i + 3]);
-
-
-            int location = correctCellDictionary(term);
-            PostingList p = new PostingList(term);
-            p.setDF(DF);
-            dictionary[location].put(term, p);
-
-        }//while
-        br.close();
-        throw new SuccessException();
-
-    }
+//    public void loadDic(String savePath) throws SearcherException, IOException {
+//        File fromFile = new File(savePath + "\\Dictionary.txt");
+//        BufferedReader br = new BufferedReader(new FileReader(fromFile));
+//        String st;
+//        String[] words;
+//        String term = "";
+//        int DF = 0;
+//        //int TF=0;
+//        while ((st = br.readLine()) != null) {
+//            term = "";
+//            words = st.split(" ");
+//            int i;
+//            for (i = 0; i < words.length && !words[i].equals("DF"); i++) {
+//                term += (words[i]);
+//
+//            }
+//            DF = Integer.parseInt(words[i + 1]);
+//            //TF = Integer.parseInt(words[i + 3]);
+//
+//
+//            int location = correctCellDictionary(term);
+//            PostingList p = new PostingList(term);
+//            p.setDF(DF);
+//            dictionary[location].put(term, p);
+//
+//        }//while
+//        br.close();
+//        throw new SuccessException();
+//
+//    }
 
     private int correctCellDictionary(String termToFind) {
 
@@ -161,8 +162,8 @@ public class Indexer {
         postingCounter++;
     }
 
-    public void mergePartialPosting(String workPath, String savePath) {
-
+    public void mergePartialPosting(String workPath, String savePath, Boolean stemmiming) {
+        this.stemmiming=stemmiming;
 
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 
@@ -233,10 +234,12 @@ public class Indexer {
                 merged.remove(entry.getKey().toUpperCase());
                 merged.put(entry.getKey(), entry.getValue());
             }
+
             writeFinalPosting(merged, i, savePath);
             list.clear();
 
         }
+
         deletePostFiles(savePath);
         writeDicToDisk(savePath);
         writeCitysToDisk(savePath);
@@ -371,7 +374,12 @@ public class Indexer {
         File file;
         FileWriter fw;
         BufferedWriter bw;
-        file = new File("Posting " + index + ".txt");
+        String filename;
+        if (this.stemmiming == false)
+            filename = "Posting " + index + ".txt";
+        else
+            filename = "Posting " + index + "S.txt";
+        file = new File(filename);
         try {
             fw = new FileWriter(savepath + "\\" + file);
             bw = new BufferedWriter(fw);
@@ -399,9 +407,13 @@ public class Indexer {
         FileWriter fw;
         BufferedWriter bw;
 
-
+        String filename;
+        if (this.stemmiming == false)
+            filename = savePath + "\\Dictionary.txt";
+        else
+            filename = savePath + "\\DictionaryS.txt";
 //        for (int i = 0; i < dictionary.length; i++) {
-        file = new File(savePath + "\\Dictionary.txt");
+        file = new File(filename);
         try {
             fw = new FileWriter(file);
             bw = new BufferedWriter(fw);

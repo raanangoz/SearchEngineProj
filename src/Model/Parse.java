@@ -66,7 +66,7 @@ public class Parse {
             textFile.close();
 
         } catch (FileNotFoundException e) {
-            System.out.println("can't find stopword file (parse class code) - put stopword file inside corpus folder");
+//            System.out.println("can't find stopword file (parse class code) - put stopword file inside corpus folder");
         }
     }
 
