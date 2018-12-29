@@ -135,14 +135,19 @@ public class Model {
         this.readQuery = read;
         ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
         if(checkbox_value==true){
-            Map<String, Integer> terms;
+            Map<String, Integer> tempTerms;
+            Map<String, Integer> termsToAdd = new HashMap<>();
             for (Query q: queriesToRanker) {
-                terms = q.getTerms();
-                for (Map.Entry<String, Integer> s: terms.entrySet())
-                      {
-                         q.addTerm(findsimiliar(s.getKey()));
+                tempTerms = q.getTerms();
+                for (Map.Entry<String, Integer> s: tempTerms.entrySet())
+                {
+                    List <String> seManticTerms = findsimiliar(s.getKey());
+                    for (String newTerm:seManticTerms) {
+                        termsToAdd.put(newTerm,1);
 
+                    }
                 }
+                q.addTerms(termsToAdd);
             }
         }
 
@@ -174,16 +179,16 @@ public class Model {
         bw.close();
     }
 
-    private Map<String, Integer> findsimiliar(String key) {
-        HashMap<String, Integer> Final = new HashMap<>();
+    private List<String> findsimiliar(String key) {
+        List<String> Final = new LinkedList<>();
         DatamuseQuery getData = new DatamuseQuery();
         String allData = getData.findSimilar(key);
         JSONArray array = new JSONArray(allData);
-        for(int i=0; i<array.length(); i++){
+        for(int i=0; i<array.length() && i < 5; i++){
             JSONObject jsonObj = array.getJSONObject(i);
             String word = (jsonObj.getString("word"));
-            int score = (jsonObj.getInt("score"));
-            Final.put(word,score);
+//            int score = (jsonObj.getInt("score"));
+            Final.add(word);
         }
         return Final;
     }

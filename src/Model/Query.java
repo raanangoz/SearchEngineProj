@@ -29,8 +29,15 @@ public class Query implements Serializable {
 
     }
 
-    public void addTerm(Map<String, Integer> terms) {
-        this.terms = terms;
+    public void addTerms(Map<String, Integer> newTerms) {
+        int c;
+        for (Map.Entry<String, Integer> s: newTerms.entrySet())
+            if (!terms.containsKey(s.getKey()))
+                terms.put(s.getKey(), 1);
+            else {
+                c = terms.get(s.getKey());
+                terms.put(s.getKey(), ++c);
+            }
     }
 
     //<editor-fold desc="Getter and Setter">
