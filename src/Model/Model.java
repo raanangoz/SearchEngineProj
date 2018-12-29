@@ -131,6 +131,18 @@ public class Model {
         ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
         this.readQuery = read;
         ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
+        if(1>0){
+            Map<String, Integer> terms;
+            for (Query q: queriesToRanker) {
+                terms = q.getTerms();
+                for (Map.Entry<String, Integer> s: terms.entrySet())
+                      {
+                         q.addTerm(findsimiliar(s.getKey();
+
+                }
+            }
+        }
+
         Ranker ranker = new Ranker(queriesToRanker, chosenCities);
         ranker.filterDocsByCities();
         int docsNumber = ranker.getTotalDocumentsNumber();
