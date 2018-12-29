@@ -6,6 +6,7 @@ import Model.Model;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,10 +60,6 @@ public class Controller {
         return model.getDicSize();
     }
 
-    public void runQuery(String queryPath, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_value,List<String> chosenCities) throws IOException {
-        model.runQuery(queryPath, workPath, savePath, checkbox_semantic, checkbox_value,chosenCities);
-    }
-
     public void runQueryFile(String queryText, String workPath, String savePath, Boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder) throws IOException, BadPathException {
         model.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities,tosave, savefolder);
     }
@@ -73,5 +70,9 @@ public class Controller {
 
     public List<String> loadCity(String savePath) throws IOException {
         return model.loadCity(savePath);
+    }
+
+    public void runQueryString(String queryText, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_stemming, List<String> chosenCities, boolean tosave, String saveFolder) throws IOException, BadPathException {
+        model.runQueryString(queryText,workPath,savePath,checkbox_semantic,checkbox_stemming,chosenCities,tosave,saveFolder);
     }
 }

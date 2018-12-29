@@ -31,7 +31,7 @@ public class Query implements Serializable {
 
     public void addTerms(Map<String, Integer> newTerms) {
         int c;
-        for (Map.Entry<String, Integer> s: newTerms.entrySet())
+        for (Map.Entry<String, Integer> s : newTerms.entrySet())
             if (!terms.containsKey(s.getKey()))
                 terms.put(s.getKey(), 1);
             else {

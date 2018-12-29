@@ -3,7 +3,6 @@ package Model;
 import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 import Model.Excpetions.SuccessException;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,7 +15,7 @@ public class Model {
 
     private String savePath;
     private String workPath;
-    private boolean stemmimng=false;
+    private boolean stemmimng = false;
 
     private static Model singleton = null;
     private ReadFile readFile = new ReadFile("", "", false);
@@ -40,7 +39,9 @@ public class Model {
         return this.workPath;
     }
 
-    public Boolean getStemmimng() {return this.stemmimng;}
+    public Boolean getStemmimng() {
+        return this.stemmimng;
+    }
 
     public void mergePartialPosting(String workPath, String savePath) {
         this.savePath = savePath;
@@ -86,7 +87,7 @@ public class Model {
     public void showDic(String savePath) throws IOException {
         this.savePath = savePath;
         File fromFile;
-        if (this.stemmimng==false)
+        if (this.stemmimng == false)
             fromFile = new File(savePath + "\\Dictionary.txt");
         else
             fromFile = new File(savePath + "\\DictionaryS.txt");
@@ -97,7 +98,7 @@ public class Model {
     public void loadDic(String savePath) throws IOException, SearcherException {
 
         this.savePath = savePath;
-        LoadedDictionary loadedDictionary = new LoadedDictionary(savePath,this.stemmimng);
+        LoadedDictionary loadedDictionary = new LoadedDictionary(savePath, this.stemmimng);
         loadedDictionary.loadDic();
     }
 
@@ -105,7 +106,7 @@ public class Model {
         this.savePath = savePath;
         this.workPath = workPath;
 
-        readFile.p.getIndexer().mergePartialPosting(workPath, savePath,this.stemmimng);
+        readFile.p.getIndexer().mergePartialPosting(workPath, savePath, this.stemmimng);
     }
 
     public void writeLastDocsToDisk(String savePath) {
@@ -120,43 +121,53 @@ public class Model {
         return readFile.p.getIndexer().getDicSize();
     }
 
-    public void runQuery(String queryText, String workPath, String savePath,boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities) throws IOException {
-        this.savePath = savePath;
-        this.workPath = workPath;
-        this.stemmimng = checkbox_value;
-
-        Query q = readQuery.ParseQueryString(queryText);
-        List<Query> queries = new LinkedList<>();
-        queries.add(q);
-    }
 
     // TODO: 12/22/2018  queryText
     // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
-    public void runQueryFile(String queryText, String workPath, String savePath,boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities,boolean tosave, String savefolder) throws IOException, BadPathException {
-        this.savePath = savePath;
-        this.workPath = workPath;
-        this.stemmimng = checkbox_value;
-
+    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder) throws IOException, BadPathException {
         File queryFile = new File(queryText);
         if (!queryFile.exists())
             throw new BadPathException();
-        if (tosave==true) {
-            if(savefolder.length()<1)
+        if (tosave == true) {
+            if (savefolder.length() < 1)
                 throw new BadPathException();
         }
-        ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
-        this.readQuery = read;
         ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
-        if(checkbox_semantic==true){
+        runQuery(workPath, savePath, checkbox_semantic, checkbox_value, chosenCities, tosave, savefolder, queriesToRanker);
+    }
+
+
+    public void runQueryString(String queryText, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder) throws IOException, BadPathException {
+        ArrayList<Query> queriesToRanker = new ArrayList<Query>();
+        Query q = new Query("11111", queryText, "", "");
+        String[] querytext = queryText.split(" ");
+        Map<String, Integer> terms = new HashMap<>();
+        for (int i = 0; i < querytext.length; i++) {
+            terms.put(querytext[i], 1);
+        }
+        q.setTerms(terms);
+        queriesToRanker.add(q);
+        runQuery(workPath, savePath, checkbox_semantic, checkbox_value, chosenCities, tosave, savefolder, queriesToRanker);
+    }
+
+
+    public void runQuery(String workPath, String savePath, boolean checkbox_semantic,
+                         boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder, ArrayList<Query> queriesToRanker) throws IOException, BadPathException {
+
+        ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
+        this.savePath = savePath;
+        this.workPath = workPath;
+        this.stemmimng = checkbox_value;
+        this.readQuery = read;
+        if (checkbox_semantic == true) {
             Map<String, Integer> tempTerms;
             Map<String, Integer> termsToAdd = new HashMap<>();
-            for (Query q: queriesToRanker) {
+            for (Query q : queriesToRanker) {
                 tempTerms = q.getTerms();
-                for (Map.Entry<String, Integer> s: tempTerms.entrySet())
-                {
-                    List <String> seManticTerms = findsimiliar(s.getKey());
-                    for (String newTerm:seManticTerms) {
-                        termsToAdd.put(newTerm,1);
+                for (Map.Entry<String, Integer> s : tempTerms.entrySet()) {
+                    List<String> seManticTerms = findsimiliar(s.getKey());
+                    for (String newTerm : seManticTerms) {
+                        termsToAdd.put(newTerm, 1);
 
                     }
                 }
@@ -178,7 +189,7 @@ public class Model {
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         //TODO SHOULD BE able to save ANYWHERE THAT USER CHOOSE by the instructions
-        if (tosave==true) {
+        if (tosave == true) {
             File toFile = new File(savefolder + "\\results.txt");
             BufferedWriter bw = null;
             bw = new BufferedWriter(new FileWriter(toFile));
@@ -192,14 +203,23 @@ public class Model {
             }
             bw.close();
         }
+
+        //        this.savePath = savePath;
+//        this.workPath = workPath;
+//        this.stemmimng = checkbox_value;
+//
+//        Query q = readQuery.ParseQueryString(queryText);
+//        List<Query> queries = new LinkedList<>();
+//        queries.add(q);
     }
+
 
     private List<String> findsimiliar(String key) {
         List<String> Final = new LinkedList<>();
         DatamuseQuery getData = new DatamuseQuery();
         String allData = getData.findSimilar(key);
         JSONArray array = new JSONArray(allData);
-        for(int i=0; i<array.length() && i < 5; i++){
+        for (int i = 0; i < array.length() && i < 5; i++) {
             JSONObject jsonObj = array.getJSONObject(i);
             String word = (jsonObj.getString("word"));
 //            int score = (jsonObj.getInt("score"));

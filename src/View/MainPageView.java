@@ -11,7 +11,6 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
@@ -97,7 +96,7 @@ public class MainPageView implements Initializable {
     //checkbox for semantic, updates the boolean value accodingly
     public void checkBox_semantic(ActionEvent actionEvent) {
         checkbox_semantic = semantic_option.isSelected();
-        if (checkbox_semantic==true) {
+        if (checkbox_semantic == true) {
             stemming_option.setSelected(true);
             checkBox_stemmimg(actionEvent);
         }
@@ -226,9 +225,6 @@ public class MainPageView implements Initializable {
         }
     }
 
-    public void run_query_alert() {
-
-    }
 
     //run query from text
     public void run_query(ActionEvent actionEvent) {
@@ -245,17 +241,35 @@ public class MainPageView implements Initializable {
         } else {
             try {
                 List<String> chosenCities = getCountryForSearch(allCityList);
+                boolean tosave;
+                String saveFolder = "";
+                Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save the results?",
+                        ButtonType.YES, ButtonType.NO);
+                Optional<ButtonType> result = alertConfirm.showAndWait();
+                if (result.get() == ButtonType.YES) {
+                    DirectoryChooser chooser = new DirectoryChooser();
+                    chooser.setTitle("Choose Folder");
+                    File selectedDirectory = chooser.showDialog(null);
+                    saveFolder = (selectedDirectory.getPath());
+                    tosave = true;
+                } else {
+                    tosave = false;
+                }
                 AlertLoadDic();
-                controller.runQuery(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities);
+                controller.runQueryString(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities,tosave,saveFolder );
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
                 alert.setHeaderText("\"Query ran successfully.\\n Open results.txt file to see them.\"");
                 alert.showAndWait();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error");
                 alert.setHeaderText("Failed to run Query");
+                alert.showAndWait();
+            } catch (BadPathException e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Fail");
+                alert.setHeaderText("Bad Path Selected.");
                 alert.showAndWait();
             }
         }
@@ -277,28 +291,27 @@ public class MainPageView implements Initializable {
         }
         List<String> chosenCities = getCountryForSearch(allCityList);
         boolean tosave;
-        String saveFolder="";
+        String saveFolder = "";
         try {
-            Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION,"Do you want to save the results?",
+            Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save the results?",
                     ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alertConfirm.showAndWait();
-            if (result.get() == ButtonType.YES){
+            if (result.get() == ButtonType.YES) {
                 DirectoryChooser chooser = new DirectoryChooser();
                 chooser.setTitle("Choose Folder");
                 File selectedDirectory = chooser.showDialog(null);
                 saveFolder = (selectedDirectory.getPath());
-                tosave=true;
+                tosave = true;
             } else {
-                tosave=false;
+                tosave = false;
             }
-            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities,tosave,saveFolder);
-            if (tosave==true) {
+            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities, tosave, saveFolder);
+            if (tosave == true) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
                 alert.setHeaderText("Query ran successfully.\nOpen results.txt file to see them.");
                 alert.showAndWait();
-            }
-            else{
+            } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
                 alert.setHeaderText("Query ran successfully.");
@@ -315,7 +328,7 @@ public class MainPageView implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText(e.getMessage() + "of Query");
             alert.showAndWait();
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText("No folder has been selected");
