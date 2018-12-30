@@ -58,12 +58,8 @@ public class Controller {
         return model.getDicSize();
     }
 
-    public void runQuery(String queryPath, String workPath, String savePath, boolean checkbox_value,List<String> chosenCities) throws IOException {
-        model.runQuery(queryPath, workPath, savePath, checkbox_value,chosenCities);
-    }
-
-    public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_value, List<String> chosenCities) throws IOException, BadPathException {
-        model.runQueryFile(queryText, workPath, savePath, checkbox_value, chosenCities);
+    public void runQueryFile(String queryText, String workPath, String savePath, Boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder) throws IOException, BadPathException {
+        model.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_value, chosenCities, tosave, savefolder);
     }
 
     public HashMap<String, String> getCountryList() {
@@ -74,7 +70,23 @@ public class Controller {
         return model.loadCity(savePath);
     }
 
+    public void runQueryString(String queryText, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_stemming, List<String> chosenCities, boolean tosave, String saveFolder) throws IOException, BadPathException {
+        model.runQueryString(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities, tosave, saveFolder);
+    }
+
     public void writeEntitiesToDisk(String workPath, String savePath) {
-        model.writeEntitiesToDisk(workPath,savePath);
+        model.writeEntitiesToDisk(workPath, savePath);
+    }
+
+    public HashMap<String, String> getEntities(String savePath) throws IOException {
+        return model.getEntities(savePath);
+    }
+
+    public HashMap<String, String> getlanguageDocList() {
+        return model.getlanguageDocList();
+    }
+
+    public List<String> loadLang(String savepath) throws IOException {
+        return model.loadLang(savepath);
     }
 }

@@ -13,17 +13,24 @@ import java.util.HashMap;
 public class LoadedDictionary {
 
     private String savePath;
+    private boolean stemmimng;
     private static HashMap<String, Integer>[] dictionary;
 
-    public LoadedDictionary(String savePath) {
+    public LoadedDictionary(String savePath, boolean stemmimng) {
         dictionary = new HashMap[27];
         for (int i = 0; i < dictionary.length; i++)
             dictionary[i] = new HashMap<>();
         this.savePath = savePath;
+        this.stemmimng = stemmimng;
     }
 
     public void loadDic() throws SearcherException, IOException {
-        File fromFile = new File(savePath + "\\Dictionary.txt");
+        String path;
+        if (this.stemmimng==false)
+            path = savePath+ "\\Dictionary.txt";
+        else
+            path = savePath+ "\\DictionaryS.txt";
+        File fromFile = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(fromFile));
         String st;
         String[] words;

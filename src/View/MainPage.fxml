@@ -29,38 +29,47 @@
         </Label>
         <Button fx:id="Browse_w" layoutX="337.0" layoutY="101.0" mnemonicParsing="false" onAction="#Browse_working" text="Browse" />
         <Button fx:id="Browse_s" layoutX="337.0" layoutY="160.0" mnemonicParsing="false" onAction="#Browse_saving" text="Browse" />
-        <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments" />
-        <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Desktop\Part2\posts" />
-        <!--<TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />-->
-        <!--<TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />-->
+
+        <!--<TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments" />-->
+        <!--<TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Desktop\Part2\posts" />-->
+
+        <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />
+        <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />
+
         <CheckBox fx:id="stemming_option" layoutX="14.0" layoutY="206.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Stemmimg" />
-        <Button fx:id="parse_b" layoutX="35.0" layoutY="339.0" mnemonicParsing="false" onAction="#parse" prefHeight="56.0" prefWidth="121.0" text="Parse">
+        <Button fx:id="parse_b" layoutX="65.0" layoutY="414.0" mnemonicParsing="false" onAction="#parse" prefHeight="56.0" prefWidth="121.0" text="Parse">
             <font>
                 <Font size="26.0" />
             </font>
         </Button>
-        <Button fx:id="reset_b" layoutX="145.0" layoutY="411.0" mnemonicParsing="false" onAction="#reset" text="Reset Button">
+        <Button fx:id="reset_b" layoutX="264.0" layoutY="414.0" mnemonicParsing="false" onAction="#reset" text="Reset Button">
             <font>
                 <Font size="26.0" />
             </font>
         </Button>
-        <Button fx:id="showdic_b" layoutX="195.0" layoutY="345.0" mnemonicParsing="false" onAction="#show_dic" prefHeight="43.0" prefWidth="111.0" text="Show Dictonary" />
-        <Button fx:id="load_b" layoutX="352.0" layoutY="345.0" mnemonicParsing="false" onAction="#load_dic" prefHeight="43.0" prefWidth="111.0" text="Load Dictonary" />
+        <Button fx:id="showdic_b" layoutX="14.0" layoutY="345.0" mnemonicParsing="false" onAction="#show_dic" prefHeight="43.0" prefWidth="111.0" text="Show Dictonary" />
+        <Button fx:id="load_b" layoutX="155.0" layoutY="345.0" mnemonicParsing="false" onAction="#load_dic" prefHeight="43.0" prefWidth="111.0" text="Load Dictonary" />
         <Label layoutX="17.0" layoutY="80.0" text="Working path" />
         <Label layoutX="17.0" layoutY="137.0" text="Save path" />
         <Button fx:id="Browse_Q" layoutX="336.0" layoutY="295.0" mnemonicParsing="false" onAction="#Browse_query" text="Browse" />
         <TextField fx:id="query_text" layoutX="12.0" layoutY="251.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter Query Text" />
-        <!--<TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\queries.txt" />-->
-        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments\2\queries.txt" />
+
+        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\queries.txt" />
+        <!--<TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments\2\queries.txt" />-->
+
         <Button fx:id="run_query" layoutX="336.0" layoutY="251.0" mnemonicParsing="false" onAction="#run_query" text="Run Query" />
         <Button fx:id="run_query_file" layoutX="401.0" layoutY="295.0" mnemonicParsing="false" onAction="#run_query_file" text="Run Query File" />
-        <SplitMenuButton fx:id="cityMenu" layoutX="276.0" layoutY="211.0" mnemonicParsing="false" text="City's" />
-        <Button fx:id="load_city" layoutX="373.0" layoutY="211.0" mnemonicParsing="false" onAction="#load_cities" text="Load Cities" />
-        <SplitMenuButton layoutX="149.0" layoutY="211.0" mnemonicParsing="false" text="Language">
+        <SplitMenuButton fx:id="cityMenu" layoutX="336.0" layoutY="211.0" mnemonicParsing="false" text="City's" />
+        <Button fx:id="load_city" layoutX="413.0" layoutY="211.0" mnemonicParsing="false" onAction="#load_cities" text="Load Cities" />
+        <SplitMenuButton fx:id="LangaugeButton" layoutX="109.0" layoutY="211.0" mnemonicParsing="false" text="Language">
             <items>
                 <MenuItem mnemonicParsing="false" text="English" />
             </items>
         </SplitMenuButton>
-      <CheckBox fx:id="semantic_option" layoutX="414.0" layoutY="255.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Semantic" />
+      <CheckBox fx:id="semantic_option" layoutX="414.0" layoutY="255.0" mnemonicParsing="false" onAction="#checkBox_semantic" text="Semantic" />
+      <Button fx:id="get_entities" layoutX="412.0" layoutY="354.0" mnemonicParsing="false" onAction="#get_Entities" text="Load Entities" />
+      <TextField fx:id="entities_text" layoutX="282.0" layoutY="354.0" prefHeight="25.0" prefWidth="121.0" promptText="Enter Doc Number" />
+      <Label layoutX="305.0" layoutY="332.0" text="Doc Number" />
+      <Button fx:id="load_city1" layoutX="211.0" layoutY="211.0" mnemonicParsing="false" onAction="#load_lanugage" text="Load Language" />
     </children>
 </AnchorPane>

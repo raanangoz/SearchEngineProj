@@ -24,19 +24,23 @@ public class MainPageView implements Initializable {
     public Button reset_b; //reset button
     public Button load_b; //load dictionary button
     public Button showdic_b; //show dictionary button
+    public Button get_entities;
     public CheckBox stemming_option; //stemming checkbox
     public CheckBox semantic_option; //semantic checkbox
     public TextField work_path; //text field for working path
     public TextField save_path; //text field for saving path
     public TextField query_path; //query path
     public TextField query_text; //query text
-    public SplitMenuButton splitMenuButton; //language menu
+    public TextField entities_text; //entities text
+    public SplitMenuButton LangaugeButton; //language menu
     public SplitMenuButton cityMenu; //language menu
 
     List<CheckMenuItem> allCityList = new ArrayList<>(); //list of citys
+    List<CheckMenuItem> languageDocList = new ArrayList<>(); //list of citys
     public boolean checkRunAgain = false;
+    public boolean checkRunAgain2 = false;
     public Menu menu;
-    protected boolean checkbox_value = false; //start checkbox as false, if marked change to true
+    protected boolean checkbox_stemming = false; //start checkbox as false, if marked change to true
     protected boolean checkbox_semantic = false; //start checkbox as false, if marked change to true
 
     //</editor-fold>
@@ -58,6 +62,13 @@ public class MainPageView implements Initializable {
         UpdateTextField(save_path);
     }
 
+    public void doAlert(String title, String headerText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.showAndWait();
+    }
+
     //update query path textfield
     public void Browse_query(ActionEvent actionEvent) {
         try {
@@ -66,10 +77,7 @@ public class MainPageView implements Initializable {
             File selectedDirectory = chooser.showOpenDialog(null);
             query_path.setText(selectedDirectory.getPath());
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText("Please select a folder");
-            alert.showAndWait();
+            doAlert("Error", "Please select a folder");
         }
     }
 
@@ -81,21 +89,22 @@ public class MainPageView implements Initializable {
             File selectedDirectory = chooser.showDialog(null);
             Path.setText(selectedDirectory.getPath());
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText("Please select a folder");
-            alert.showAndWait();
+            doAlert("Error", "Please select a folder");
         }
     }
 
     //checkbox for stemming, updates the boolean value accordingly
     public void checkBox_stemmimg(ActionEvent actionEvent) {
-        checkbox_value = stemming_option.isSelected();
+        checkbox_stemming = stemming_option.isSelected();
     }
 
     //checkbox for semantic, updates the boolean value accodingly
     public void checkBox_semantic(ActionEvent actionEvent) {
         checkbox_semantic = semantic_option.isSelected();
+        if (checkbox_semantic == true) {
+            stemming_option.setSelected(true);
+            checkBox_stemmimg(actionEvent);
+        }
     }
 
 
@@ -113,13 +122,10 @@ public class MainPageView implements Initializable {
             String savePath = save_path.getText();
             //if path left empty
             if (savePath.equals("") || workPath.equals("")) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText("Please select a folder in save and work path");
-                alert.showAndWait();
+                doAlert("Error", "Please select a folder");
             } else {
                 double t = System.currentTimeMillis();
-                controller.parse(workPath, savePath, checkbox_value);
+                controller.parse(workPath, savePath, checkbox_stemming);
 //                double y = System.currentTimeMillis() - t;
 //                System.out.println("total time to parse = " + ((y) / 1000) + " seconds");
 //                double l = System.currentTimeMillis();
@@ -128,7 +134,9 @@ public class MainPageView implements Initializable {
                 controller.writeEntitiesToDisk(workPath, savePath);
 
                 HashMap<String, String> countryDocsList = controller.getCountryList();
+                HashMap<String, String> languageDocList = controller.getlanguageDocList();
                 city_pick(countryDocsList);
+                language_pick(languageDocList);
 
                 int coutIndexed = controller.getNumberOfIndexed();
                 int uniqterms = controller.getDicSize();
@@ -141,10 +149,8 @@ public class MainPageView implements Initializable {
                 alert.showAndWait();
             }
         } catch (SearcherException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText(e.getMessage());
-            alert.showAndWait();
+            doAlert("Error", e.getMessage());
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,17 +162,11 @@ public class MainPageView implements Initializable {
         try {
             String savePath = save_path.getText();
             if (savePath.equals("")) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText("Please select a folder in save and work path");
-                alert.showAndWait();
+                doAlert("Error", "Please select a folder in save and work path");
             } else
                 controller.resetButton(savePath);
         } catch (SearcherException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Done - reset successfully");
-            alert.setHeaderText(e.getMessage());
-            alert.showAndWait();
+            doAlert("Done", "Reset Succsefully");
         }
     }
 
@@ -175,25 +175,16 @@ public class MainPageView implements Initializable {
         try {
             String savePath = save_path.getText();
             if (savePath.equals("")) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText("Save Path does not have Dictionary file");
-                alert.showAndWait();
+                doAlert("Error", "Save Path does not have Dictionary file");
             } else
                 controller.showDic(savePath);
         } catch (SearcherException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(e.getMessage());
-            alert.showAndWait();
-
+            doAlert("Success", e.getMessage());
         } catch (RuntimeException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Fail");
-            alert.setHeaderText("Dictionary does not exist");
-            alert.showAndWait();
+            doAlert("Fail", "Dictionary does not exist");
         } catch (IOException e) {
-            e.printStackTrace();
+            doAlert("Fail", "Failed");
+
         }
 
         //        Stage s = (Stage) showdic_b.getScene().getWindow();
@@ -215,16 +206,10 @@ public class MainPageView implements Initializable {
     //load dictionary
     public void load_dic(ActionEvent actionEvent) {
         if (AlertLoadDic() == true) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Loaded dictionary");
-            alert.setHeaderText("Loaded dictionary");
-            alert.showAndWait();
+            doAlert("Success", "Loaded dictionary");
         }
     }
 
-    public void run_query_alert() {
-
-    }
 
     //run query from text
     public void run_query(ActionEvent actionEvent) {
@@ -234,25 +219,35 @@ public class MainPageView implements Initializable {
         String savePath = save_path.getText();
         //if path left empty
         if (savePath.equals("") || workPath.equals("") || queryText.equals("")) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText("Please select a folder in save and work path");
-            alert.showAndWait();
+            doAlert("Error", "Please select a folder in save and work path");
         } else {
             try {
                 List<String> chosenCities = getCountryForSearch(allCityList);
+                boolean tosave;
+                String saveFolder = "";
+                Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save the results?",
+                        ButtonType.YES, ButtonType.NO);
+                Optional<ButtonType> result = alertConfirm.showAndWait();
+                if (result.get() == ButtonType.YES) {
+                    DirectoryChooser chooser = new DirectoryChooser();
+                    chooser.setTitle("Choose Folder");
+                    File selectedDirectory = chooser.showDialog(null);
+                    saveFolder = (selectedDirectory.getPath());
+                    tosave = true;
+                } else {
+                    tosave = false;
+                }
                 AlertLoadDic();
-                controller.runQuery(queryText, workPath, savePath, checkbox_semantic, chosenCities);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Done");
-                alert.setHeaderText("\"Query ran successfully.\\n Open results.txt file to see them.\"");
-                alert.showAndWait();
-            }
-            catch (IOException e) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText("Failed to run Query");
-                alert.showAndWait();
+                controller.runQueryString(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities, tosave, saveFolder);
+                if (tosave == true) {
+                    doAlert("Done", "Query ran successfully.\n Open results.txt file to see them.");
+                } else {
+                    doAlert("Done", "Done");
+                }
+            } catch (IOException e) {
+                doAlert("Error", "Failed to run Query");
+            } catch (BadPathException e) {
+                doAlert("Error", "Bad Path Selected.");
             }
         }
     }
@@ -264,33 +259,39 @@ public class MainPageView implements Initializable {
         String workPath = work_path.getText();
         String savePath = save_path.getText();
         if (savePath.equals("") || workPath.equals("") || query_path.equals("")) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText("Please select a folder in save and work path");
-            alert.showAndWait();
+            doAlert("Error", "Please select a folder in save and work path");
         } else {
             AlertLoadDic();
         }
         List<String> chosenCities = getCountryForSearch(allCityList);
+        boolean tosave;
+        String saveFolder = "";
         try {
-            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, chosenCities);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Done");
-            alert.setHeaderText("Query ran successfully.\n Open results.txt file to see them.");
-            alert.showAndWait();
-
+            Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save the results?",
+                    ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alertConfirm.showAndWait();
+            if (result.get() == ButtonType.YES) {
+                DirectoryChooser chooser = new DirectoryChooser();
+                chooser.setTitle("Choose Folder");
+                File selectedDirectory = chooser.showDialog(null);
+                saveFolder = (selectedDirectory.getPath());
+                tosave = true;
+            } else {
+                tosave = false;
+            }
+            controller.runQueryFile(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities, tosave, saveFolder);
+            if (tosave == true) {
+                doAlert("Done", "Query ran successfully.\n Open results.txt file to see them.");
+            } else {
+                doAlert("Done", "Query ran successfully.");
+            }
         } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText("Failed to run Query");
-            alert.showAndWait();
+            doAlert("Error", "Failed to run Query");
         } catch (BadPathException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText(e.getMessage());
-            alert.showAndWait();
+            doAlert("Error", e.getMessage() + "of Query");
+        } catch (RuntimeException e) {
+            doAlert("Error", "No folder has been selected");
         }
-
     }
 
     private boolean AlertLoadDic() {
@@ -299,19 +300,23 @@ public class MainPageView implements Initializable {
             return true;
 
         } catch (SearcherException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("failed");
-            alert.setHeaderText(e.getMessage());
-            alert.showAndWait();
+            doAlert("Error", e.getMessage());
             return false;
 
         } catch (RuntimeException | IOException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Fail");
-            alert.setHeaderText(" Dictionary does not exist");
-            alert.showAndWait();
+            doAlert("Error", "Dictionary does not exist");
             return false;
         }
+    }
+
+
+    public void language_pick(HashMap<String, String> languageList) {
+        for (Map.Entry<String, String> entry : languageList.entrySet())
+            languageDocList.add(new CheckMenuItem(entry.getKey()));
+        if (checkRunAgain2 == false)
+            LangaugeButton.getItems().addAll(languageDocList);
+        checkRunAgain2 = true;
+//        if((CheckMenuItem)cityMenu.getItems().get(1))
     }
 
     public void city_pick(HashMap<String, String> cityListDoc) {
@@ -320,7 +325,7 @@ public class MainPageView implements Initializable {
         if (checkRunAgain == false)
             cityMenu.getItems().addAll(allCityList);
         checkRunAgain = true;
-//        if((CheckMenuItem)cityMenu.getItems().get(1))
+//        if((CheckMenuItem)cityMcity_pickenu.getItems().get(1))
     }
 
     //return selected countrys
@@ -330,8 +335,8 @@ public class MainPageView implements Initializable {
             if (allCountryList.get(i).isSelected() == true)
                 selectedCountrys.add(allCountryList.get(i).getText());
         }
-        for (int i = 0; i < selectedCountrys.size(); i++)
-            System.out.println(selectedCountrys.get(i));
+//        for (int i = 0; i < selectedCountrys.size(); i++)
+//            System.out.println(selectedCountrys.get(i));
         return selectedCountrys;
     }
 
@@ -345,15 +350,41 @@ public class MainPageView implements Initializable {
             cityMenu.getItems().clear();
 //            cityMenu.getItems().remove(0,5);
             cityMenu.getItems().addAll(allCityList);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText("Loaded Cities File");
-            alert.showAndWait();
+            doAlert("Sucsses", "Loaded city files");
         } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Fail");
-            alert.setHeaderText(" City file does not exist");
-            alert.showAndWait();
+            doAlert("Error", "city file does not exist");
+        }
+
+    }
+
+    public void get_Entities(ActionEvent actionEvent) {
+        try {
+            HashMap<String, String> allEntities = controller.getEntities(save_path.getText());
+            String entity_text = entities_text.getText();
+            String Entities = allEntities.get(entity_text);
+            String words[] = Entities.split("@");
+            Entities = "";
+            for (int i = 0; i < words.length; i++)
+                Entities += words[i] + " \n";
+            doAlert("Entities", Entities);
+        } catch (IOException e) {
+            doAlert("Error", "city file does not exist");
+        }
+    }
+
+    public void load_lanugage(ActionEvent actionEvent) {
+        try {
+            List<String> selectedLang = controller.loadLang(save_path.getText());
+            languageDocList.clear();
+            for (int i = 0; i < selectedLang.size(); i++)
+                languageDocList.add(new CheckMenuItem(selectedLang.get(i)));
+            LangaugeButton.getItems().removeAll();
+            LangaugeButton.getItems().clear();
+//            cityMenu.getItems().remove(0,5);
+            LangaugeButton.getItems().addAll(languageDocList);
+            doAlert("Sucsses", "Loaded language files");
+        } catch (IOException e) {
+            doAlert("Error", "language file does not exist");
         }
     }
 }

@@ -12,6 +12,7 @@ public class Doc implements Serializable {
     private String T1;
     private String text;
     private String city;
+    private String docLangauge;
     private int mostFrequentTermValue;
     private int numberOfDifferentWords;
     private int documentLength;
@@ -25,6 +26,7 @@ public class Doc implements Serializable {
         this.docTerms = new LinkedHashMap[27];
         this.city = "";
         this.documentLength = 0;
+        this.docLangauge="";
 
 
     }
@@ -69,6 +71,14 @@ public class Doc implements Serializable {
 
     public String getText() {
         return text;
+    }
+
+    public String getDocLangauge() {
+        return docLangauge;
+    }
+
+    public void setDocLanguage(String docLangauge) {
+        this.docLangauge = docLangauge;
     }
 
     public void setDocName(String docName) {
@@ -187,5 +197,7 @@ public class Doc implements Serializable {
         }
         return result;
     }
+
+
 }
 //</editor-fold>
