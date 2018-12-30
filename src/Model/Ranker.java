@@ -141,8 +141,8 @@ public class Ranker {
      * @return
      */
     public Map<String, Double>[] applyBM25Algorithm(Map<String, Integer>[] postsOfAllQueriesTerms, double avgDL, int docsNumber, HashMap<String, Integer> docsLength) {//docsNumber - 470000
-        double k1 = 1.5;//TODO a number between 1.2 to 2 to our choice.
-        double b = 0.75;
+        double k1 = 2;//TODO a number between 1.2 to 2 to our choice.
+        double b = 0.67;
         double IDF = 0;
         Map<String, Double>[] results = new HashMap[queriesToRanker.size()];//each cell contains map of docno and docvalue
 
@@ -169,7 +169,7 @@ public class Ranker {
                                 int TF = postsOfAllQueriesTerms[k].get(docNo);
                                 if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
                                     int DL = docsLength.get(docNo);
-                                    double docRelevance = IDF * ((TF * k1 + 1) / (TF + k1 * (1 - b + b * DL / avgDL)));
+                                    double docRelevance = IDF * ((TF * (k1 + 1)) / (TF + k1 * (1 - b + b * DL / avgDL)));
                                     if (docsAndValues.containsKey(docNo))
                                         docsAndValues.put(docNo, docsAndValues.get(docNo) + docRelevance);//update docrelevance because 2 terms of query existed on this doc.
                                     else docsAndValues.put(docNo, docRelevance);

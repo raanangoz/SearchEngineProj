@@ -179,12 +179,11 @@ public class Model {
         ranker.filterDocsByCities();
         int docsNumber = ranker.getTotalDocumentsNumber();
         double avgDL = ranker.getAverageDocumentLength();
-        Map<String, Double>[] allQueriestResults = new HashMap[queriesToRanker.size()];
         // [docNo, grade], [docNo, grade],  [docNo, grade],  [docNo, grade],
         //sorted
         HashMap<String, Integer>[] relevantPostsForAllQueries = ranker.loadPostingListsForAllQueries(queriesToRanker);
         HashMap<String, Integer> docLengths = ranker.getAllDocsLengthsForQueriesGroup(relevantPostsForAllQueries);
-        allQueriestResults = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber, docLengths);// doc1 0.8  doc2 0.1 ...
+        Map<String, Double>[] allQueriestResults = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber, docLengths);// doc1 0.8  doc2 0.1 ...
 
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.

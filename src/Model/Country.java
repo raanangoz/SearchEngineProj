@@ -11,6 +11,7 @@ public class Country {
     private String Population;
     private static int numberofcity = 0;
     private static HashMap<String, String> cityDocList = new HashMap<>();
+    private static HashMap<String, String> languageDocList = new HashMap<>();
     private static HashMap<String, String> cityDocLocation = new HashMap<>();
 
     public Country(JSONObject information) {
