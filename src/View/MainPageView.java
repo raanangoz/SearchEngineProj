@@ -24,12 +24,14 @@ public class MainPageView implements Initializable {
     public Button reset_b; //reset button
     public Button load_b; //load dictionary button
     public Button showdic_b; //show dictionary button
+    public Button get_entities;
     public CheckBox stemming_option; //stemming checkbox
     public CheckBox semantic_option; //semantic checkbox
     public TextField work_path; //text field for working path
     public TextField save_path; //text field for saving path
     public TextField query_path; //query path
     public TextField query_text; //query text
+    public TextField entities_text; //entities text
     public SplitMenuButton splitMenuButton; //language menu
     public SplitMenuButton cityMenu; //language menu
 
@@ -335,6 +337,17 @@ public class MainPageView implements Initializable {
 //            cityMenu.getItems().remove(0,5);
             cityMenu.getItems().addAll(allCityList);
             doAlert("Sucsses", "Loaded city files");
+        } catch (IOException e) {
+            doAlert("Error", "city file does not exist");
+        }
+    }
+
+    public void get_Entities(ActionEvent actionEvent) {
+        try {
+            HashMap<String,String> allEntities = controller.getEntities(save_path.getText());
+            String entity_text = entities_text.getText();
+            String Entities = allEntities.get(entity_text);
+            System.out.println("hello");
         } catch (IOException e) {
             doAlert("Error", "city file does not exist");
         }

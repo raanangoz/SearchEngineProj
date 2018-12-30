@@ -79,4 +79,8 @@ public class Controller {
     public void writeEntitiesToDisk(String workPath, String savePath) {
         model.writeEntitiesToDisk(workPath,savePath);
     }
+
+    public HashMap<String,String> getEntities(String savePath) throws IOException {
+        return model.getEntities(savePath);
+    }
 }

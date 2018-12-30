@@ -250,4 +250,19 @@ public class Model {
     public void writeEntitiesToDisk(String workPath, String savePath) {
         readFile.p.getIndexer().writeEntitiesToDisk(savePath);
     }
+
+    public HashMap<String,String> getEntities(String savePath) throws IOException {
+        this.savePath = savePath;
+        File fromFile = new File(savePath + "\\docsEntities.txt");
+        BufferedReader br = null;
+        br = new BufferedReader(new FileReader(fromFile));
+        HashMap<String,String> AllEntities = new HashMap<>();
+        String st;
+        while ((st = br.readLine()) != null) {
+            String word[] = st.split("->");
+            AllEntities.put(word[0].replaceAll("\\s",""),word[1]);
+        }
+        br.close();
+        return AllEntities;
+    }
 }
