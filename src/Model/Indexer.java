@@ -273,9 +273,32 @@ public class Indexer {
         writeAvgDocsSize(savePath);
         writeEachDocSizeToDisc(savePath);
         writeNumberOfDocs(savePath);
+        writeLangaugeToDisk(savePath);
 
 
     }
+
+    private void writeLangaugeToDisk(String savePath) {
+        HashMap<String, String> writeLanguage = Country.getLanguageDoc();
+        File file;
+        FileWriter fw;
+        BufferedWriter bw;
+        file = new File(savePath + "\\Language.txt");
+        try {
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            for (Map.Entry<String, String> entry : writeLanguage.entrySet()) {
+                String writeMe = entry.getKey();
+                bw.write(writeMe);
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
 
     private void writeEachDocSizeToDisc(String savePath) {
         Map<Doc, List<Integer>> docDetails = (HashMap<Doc, List<Integer>>) Parse.getMaxtfandterm();

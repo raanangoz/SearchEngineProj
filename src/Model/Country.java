@@ -23,9 +23,20 @@ public class Country {
 
     }
 
-    public static void clear(){
+    public static void clear() {
         cityDocList.clear();
         cityDocList.clear();
+    }
+
+    public static void setLanguageList(String docLangauge, String docNo) {
+        if (languageDocList.containsKey(docLangauge))
+            languageDocList.put(docLangauge, languageDocList.get(docLangauge) + " " + docNo);
+        else if (!docLangauge.equals("") && !docLangauge.equals(" "))
+            languageDocList.put(docLangauge, docNo);
+    }
+
+    public static HashMap<String, String> getLanguageDoc() {
+        return languageDocList;
     }
 
     private String ConvertPop(String population) {

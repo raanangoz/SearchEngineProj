@@ -32,11 +32,13 @@ public class MainPageView implements Initializable {
     public TextField query_path; //query path
     public TextField query_text; //query text
     public TextField entities_text; //entities text
-    public SplitMenuButton splitMenuButton; //language menu
+    public SplitMenuButton LangaugeButton; //language menu
     public SplitMenuButton cityMenu; //language menu
 
     List<CheckMenuItem> allCityList = new ArrayList<>(); //list of citys
+    List<CheckMenuItem> languageDocList = new ArrayList<>(); //list of citys
     public boolean checkRunAgain = false;
+    public boolean checkRunAgain2 = false;
     public Menu menu;
     protected boolean checkbox_stemming = false; //start checkbox as false, if marked change to true
     protected boolean checkbox_semantic = false; //start checkbox as false, if marked change to true
@@ -132,7 +134,9 @@ public class MainPageView implements Initializable {
                 controller.writeEntitiesToDisk(workPath, savePath);
 
                 HashMap<String, String> countryDocsList = controller.getCountryList();
+                HashMap<String, String> languageDocList = controller.getlanguageDocList();
                 city_pick(countryDocsList);
+                language_pick(languageDocList);
 
                 int coutIndexed = controller.getNumberOfIndexed();
                 int uniqterms = controller.getDicSize();
@@ -305,13 +309,23 @@ public class MainPageView implements Initializable {
         }
     }
 
+
+    public void language_pick(HashMap<String, String> languageList) {
+        for (Map.Entry<String, String> entry : languageList.entrySet())
+            languageDocList.add(new CheckMenuItem(entry.getKey()));
+        if (checkRunAgain2 == false)
+            LangaugeButton.getItems().addAll(languageDocList);
+        checkRunAgain2 = true;
+//        if((CheckMenuItem)cityMenu.getItems().get(1))
+    }
+
     public void city_pick(HashMap<String, String> cityListDoc) {
         for (Map.Entry<String, String> entry : cityListDoc.entrySet())
             allCityList.add(new CheckMenuItem(entry.getKey()));
         if (checkRunAgain == false)
             cityMenu.getItems().addAll(allCityList);
         checkRunAgain = true;
-//        if((CheckMenuItem)cityMenu.getItems().get(1))
+//        if((CheckMenuItem)cityMcity_pickenu.getItems().get(1))
     }
 
     //return selected countrys
@@ -321,8 +335,8 @@ public class MainPageView implements Initializable {
             if (allCountryList.get(i).isSelected() == true)
                 selectedCountrys.add(allCountryList.get(i).getText());
         }
-        for (int i = 0; i < selectedCountrys.size(); i++)
-            System.out.println(selectedCountrys.get(i));
+//        for (int i = 0; i < selectedCountrys.size(); i++)
+//            System.out.println(selectedCountrys.get(i));
         return selectedCountrys;
     }
 
@@ -345,16 +359,32 @@ public class MainPageView implements Initializable {
 
     public void get_Entities(ActionEvent actionEvent) {
         try {
-            HashMap<String,String> allEntities = controller.getEntities(save_path.getText());
+            HashMap<String, String> allEntities = controller.getEntities(save_path.getText());
             String entity_text = entities_text.getText();
             String Entities = allEntities.get(entity_text);
             String words[] = Entities.split("@");
-            Entities="";
-            for (int i=0; i<words.length; i++)
-                Entities+=words[i]+ " \n";
+            Entities = "";
+            for (int i = 0; i < words.length; i++)
+                Entities += words[i] + " \n";
             doAlert("Entities", Entities);
         } catch (IOException e) {
             doAlert("Error", "city file does not exist");
+        }
+    }
+
+    public void load_lanugage(ActionEvent actionEvent) {
+        try {
+            List<String> selectedLang = controller.loadLang(save_path.getText());
+            languageDocList.clear();
+            for (int i = 0; i < selectedLang.size(); i++)
+                languageDocList.add(new CheckMenuItem(selectedLang.get(i)));
+            LangaugeButton.getItems().removeAll();
+            LangaugeButton.getItems().clear();
+//            cityMenu.getItems().remove(0,5);
+            LangaugeButton.getItems().addAll(languageDocList);
+            doAlert("Sucsses", "Loaded language files");
+        } catch (IOException e) {
+            doAlert("Error", "language file does not exist");
         }
     }
 }

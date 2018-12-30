@@ -250,18 +250,36 @@ public class Model {
         readFile.p.getIndexer().writeEntitiesToDisk(savePath);
     }
 
-    public HashMap<String,String> getEntities(String savePath) throws IOException {
+    public HashMap<String, String> getEntities(String savePath) throws IOException {
         this.savePath = savePath;
         File fromFile = new File(savePath + "\\docsEntities.txt");
         BufferedReader br = null;
         br = new BufferedReader(new FileReader(fromFile));
-        HashMap<String,String> AllEntities = new HashMap<>();
+        HashMap<String, String> AllEntities = new HashMap<>();
         String st;
         while ((st = br.readLine()) != null) {
             String word[] = st.split("->");
-            AllEntities.put(word[0].replaceAll("\\s",""),word[1]);
+            AllEntities.put(word[0].replaceAll("\\s", ""), word[1]);
         }
         br.close();
         return AllEntities;
+    }
+
+    public HashMap<String, String> getlanguageDocList() {
+        return Country.getLanguageDoc();
+    }
+
+    public List<String> loadLang(String savePath) throws IOException {
+        this.savePath = savePath;
+        File fromFile = new File(savePath + "\\Language.txt");
+        BufferedReader br = null;
+        br = new BufferedReader(new FileReader(fromFile));
+        List<String> AllLanguageList = new LinkedList<>();
+        String st;
+        while ((st = br.readLine()) != null) {
+            AllLanguageList.add(st);
+        }
+        br.close();
+        return AllLanguageList;
     }
 }

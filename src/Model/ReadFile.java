@@ -65,6 +65,7 @@ public class ReadFile {
         StringBuilder DocDate = new StringBuilder();
         StringBuilder DocHT = new StringBuilder();
         StringBuilder DocCountry = new StringBuilder();
+        StringBuilder DocLanguage = new StringBuilder();
 //        System.out.println(f);
         //go over each doc, and separate to doc/text and send to parser
         try (BufferedReader br = new BufferedReader(new FileReader(f.getAbsolutePath()))) {
@@ -75,6 +76,7 @@ public class ReadFile {
                     DocText = new StringBuilder();
                     DocHT = new StringBuilder();
                     DocNum = new StringBuilder();
+                    DocLanguage = new StringBuilder();
                     DocCountry = new StringBuilder();
                 }
                 if (st.equals("<TEXT>")) {
@@ -85,12 +87,24 @@ public class ReadFile {
                             if (wordLine.length > 3)
                                 DocCountry.append(wordLine[2]);
                         }
+                        if (st.startsWith("Language: <F")) {
+                            String Language = st;
+                            String[] wordLine = Language.split("\\s+");
+                            if (wordLine.length > 4)
+                                DocLanguage.append(wordLine[3]);
+                        }
                         DocText.append(st + " ");
                     }
                 }
                 if (st.equals("<HT>")) {
                     while (((st = br.readLine()) != null) && (!st.equals("</HT>")))
                         DocHT.append(st);
+                }
+                if (st.startsWith("Language: <F")) {
+                    String Language = st;
+                    String[] wordLine = Language.split("\\s+");
+                    if (wordLine.length > 4)
+                        DocLanguage.append(wordLine[4]);
                 }
 
                 if (st.startsWith("<F P=104>")) {
@@ -136,7 +150,9 @@ public class ReadFile {
                     Doc splitDoc = new Doc(DocHT.toString(), DocText.toString(), DocNum.toString());
                     if (DocCountry.toString() != null && !DocCountry.toString().equals("")) {
                         splitDoc.setDocCountry(DocCountry.toString());
+                        splitDoc.setDocLanguage(DocLanguage.toString());
                         Country.setCityDocsList(splitDoc.getCity(), splitDoc.getDocNo());
+                        Country.setLanguageList(splitDoc.getDocLangauge(),splitDoc.getDocNo());
                     }
                     DocCountry = null;
                     p.parse(splitDoc);

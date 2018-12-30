@@ -59,9 +59,9 @@
 
         <Button fx:id="run_query" layoutX="336.0" layoutY="251.0" mnemonicParsing="false" onAction="#run_query" text="Run Query" />
         <Button fx:id="run_query_file" layoutX="401.0" layoutY="295.0" mnemonicParsing="false" onAction="#run_query_file" text="Run Query File" />
-        <SplitMenuButton fx:id="cityMenu" layoutX="276.0" layoutY="211.0" mnemonicParsing="false" text="City's" />
-        <Button fx:id="load_city" layoutX="373.0" layoutY="211.0" mnemonicParsing="false" onAction="#load_cities" text="Load Cities" />
-        <SplitMenuButton layoutX="149.0" layoutY="211.0" mnemonicParsing="false" text="Language">
+        <SplitMenuButton fx:id="cityMenu" layoutX="336.0" layoutY="211.0" mnemonicParsing="false" text="City's" />
+        <Button fx:id="load_city" layoutX="413.0" layoutY="211.0" mnemonicParsing="false" onAction="#load_cities" text="Load Cities" />
+        <SplitMenuButton fx:id="LangaugeButton" layoutX="109.0" layoutY="211.0" mnemonicParsing="false" text="Language">
             <items>
                 <MenuItem mnemonicParsing="false" text="English" />
             </items>
@@ -70,5 +70,6 @@
       <Button fx:id="get_entities" layoutX="412.0" layoutY="354.0" mnemonicParsing="false" onAction="#get_Entities" text="Load Entities" />
       <TextField fx:id="entities_text" layoutX="282.0" layoutY="354.0" prefHeight="25.0" prefWidth="121.0" promptText="Enter Doc Number" />
       <Label layoutX="305.0" layoutY="332.0" text="Doc Number" />
+      <Button fx:id="load_city1" layoutX="211.0" layoutY="211.0" mnemonicParsing="false" onAction="#load_lanugage" text="Load Language" />
     </children>
 </AnchorPane>
