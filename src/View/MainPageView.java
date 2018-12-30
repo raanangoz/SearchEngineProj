@@ -340,6 +340,7 @@ public class MainPageView implements Initializable {
         } catch (IOException e) {
             doAlert("Error", "city file does not exist");
         }
+        
     }
 
     public void get_Entities(ActionEvent actionEvent) {
