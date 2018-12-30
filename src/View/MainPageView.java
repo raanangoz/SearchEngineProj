@@ -368,7 +368,7 @@ public class MainPageView implements Initializable {
                 Entities += words[i] + " \n";
             doAlert("Entities", Entities);
         } catch (IOException e) {
-            doAlert("Error", "city file does not exist");
+            doAlert("Error", "docEntities file does not exist");
         } catch (RuntimeException e) {
             doAlert("Error", "Error");
         }
