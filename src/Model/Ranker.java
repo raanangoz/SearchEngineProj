@@ -141,38 +141,36 @@ public class Ranker {
      * @return
      */
     public Map<String, Double>[] applyBM25Algorithm(Map<String, Integer>[] postsOfAllQueriesTerms, double avgDL, int docsNumber, HashMap<String, Integer> docsLength) {//docsNumber - 470000
-        double k1 = 2;//TODO a number between 1.2 to 2 to our choice.
-        double b = 0.67;
+        double k1 = 1.4;//TODO a number between 1.2 to 2 to our choice.
+        double b = 0.25;
         double IDF = 0;
         Map<String, Double>[] results = new HashMap[queriesToRanker.size()];//each cell contains map of docno and docvalue
 
         for (int i = 0; i < results.length; i++) {
-            Map<String, Double> docsAndValues = new HashMap<>();
+            Map<String, Double> docsAndValuesOfQuery = new HashMap<>();
             results[i] = new HashMap<>();
             Query q = queriesToRanker.get(i);
             Map<String, Integer> terms = q.getTerms();
             for (Map.Entry<String, Integer> entry : terms.entrySet()) {
                 String term = entry.getKey();//we have a term, now rate it's docs.
-//                for (int k = 0; k < postsOfAllQueriesTerms.length; k++) {
                 int k = correctCellDictionary(term);
-//                if (postsOfAllQueriesTerms[k].containsKey(term) && postsOfAllQueriesTerms[k].get(term) > 0) {
-//                    int DF;
-//
-//                }
                 //postOfAllQueriesTerm[k] is the posting list for the term. now rate docs.
                 for (String docNo : postsOfAllQueriesTerms[k].keySet()) {
                     if (docsAfterFilterCities.contains(docNo) || docsAfterFilterCities.size() == 0) {
                         if (postsOfAllQueriesTerms[k].get(docNo) != -1) {
                             if (LoadedDictionary.getDictionary()[k].containsKey(term)) {
                                 int DF = LoadedDictionary.getDictionary()[k].get(term);
-                                IDF = Math.log((docsNumber - DF + 0.5) / (DF + 0.5)) / Math.log(2);
+                                IDF = Math.log((docsNumber - DF + 0.5) / (DF + 0.5));
                                 int TF = postsOfAllQueriesTerms[k].get(docNo);
                                 if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
                                     int DL = docsLength.get(docNo);
-                                    double docRelevance = IDF * ((TF * (k1 + 1)) / (TF + k1 * (1 - b + b * DL / avgDL)));
-                                    if (docsAndValues.containsKey(docNo))
-                                        docsAndValues.put(docNo, docsAndValues.get(docNo) + docRelevance);//update docrelevance because 2 terms of query existed on this doc.
-                                    else docsAndValues.put(docNo, docRelevance);
+                                    double docRelevance = IDF * ((TF * (k1 + 1)) / (TF +( k1 * (1 - b + (b * DL / avgDL)))));
+                                    if (docsAndValuesOfQuery.containsKey(docNo)) {
+
+                                        docsAndValuesOfQuery.put(docNo, docsAndValuesOfQuery.get(docNo) + docRelevance);//update docrelevance because 2 terms of query existed on this doc.
+
+                                    }
+                                    else docsAndValuesOfQuery.put(docNo, docRelevance);
                                 }
                             }
                         }
@@ -180,16 +178,10 @@ public class Ranker {
                     }
                 }
 
-
                 //sum all docs values for this query and save 50 highest and return for this query.
-                results[i].putAll(docsAndValues);
             }
-
-
+            results[i].putAll(docsAndValuesOfQuery);
             //now next doc of same term.
-
-
-
         }
         return results;
     }
