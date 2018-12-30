@@ -369,6 +369,8 @@ public class MainPageView implements Initializable {
             doAlert("Entities", Entities);
         } catch (IOException e) {
             doAlert("Error", "city file does not exist");
+        } catch (RuntimeException e) {
+            doAlert("Error", "Error");
         }
     }
 
@@ -385,6 +387,9 @@ public class MainPageView implements Initializable {
             doAlert("Sucsses", "Loaded language files");
         } catch (IOException e) {
             doAlert("Error", "language file does not exist");
+        } catch (RuntimeException e) {
+            doAlert("Error", "file does not exthist");
         }
     }
+
 }
