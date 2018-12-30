@@ -347,7 +347,11 @@ public class MainPageView implements Initializable {
             HashMap<String,String> allEntities = controller.getEntities(save_path.getText());
             String entity_text = entities_text.getText();
             String Entities = allEntities.get(entity_text);
-            System.out.println("hello");
+            String words[] = Entities.split("@");
+            Entities="";
+            for (int i=0; i<words.length; i++)
+                Entities+=words[i]+ " \n";
+            doAlert("Entities", Entities);
         } catch (IOException e) {
             doAlert("Error", "city file does not exist");
         }
