@@ -177,12 +177,8 @@ public class Parse {
                     if (term != null) {
                         addToTerms(first + term);
                         i++;
-
                     }
-
-
                     //Dates
-
                     else if ((month = isMonth(second)) != null) {//14 may -> 05-14
                         if (first.length() < 3) {
                             addToTerms(month + "-" + first);
@@ -193,10 +189,32 @@ public class Parse {
                             }
                             */
                     } else {
-                        addToTerms(first);
+                        String temp = first.replaceAll(",","");
+                        try {
+                            double x = (Double.parseDouble(temp));
+                            if(x<1000)
+                                addToTerms(temp);
+                            else if (x > 999 && x < 1000000)
+                                addToTerms(x/1000+"K");
+                            else if (x>=1000000 && x <= 999999999)
+                                addToTerms(x/1000000+"M");
+                            else
+                                addToTerms(x/1000000000+"M");
+                        }
+                        catch(Exception e){
+
+                            addToTerms(first);
+                        }
                     }
+
+
+//                   TODO CHECK IF THE CODE EVER ENETERED THIS LINE:
+//                    else{
+//                        addToTerms(first);
+//                    }
                 } else if (isFloat(first)) {
                     first = changeFloatToTerm(first);
+
                     addToTerms(first);
 
                 } else if ((length = isLength(first)) != null) {
@@ -310,6 +328,7 @@ public class Parse {
     }
 
     private String changeFloatToTerm(String first) {
+        first=first.replaceAll(",","");
         if (first.length() > 4) {
             if (first.charAt(0) == '.' || first.charAt(1) == '.' || first.charAt(2) == '.' || first.charAt(3) == '.') {
                 return first;
@@ -330,10 +349,11 @@ public class Parse {
     }
 
     private boolean isFloat(String first) {
+        first=first.replaceAll(",","");
         int countPoints = 0;
         for (int i = 0; i < first.length(); i++) {
             if (!((first.charAt(i) >= '0') && first.charAt(i) <= '9'))
-                if (!(first.charAt(i) == '.')) {
+                if (!(first.charAt(i) == '.' )) {
                     return false;
                 } else
                     countPoints++;
@@ -411,10 +431,11 @@ public class Parse {
         }
         //first is $number
         else {
-            if (isInteger(first.substring(1)))
-                first = first.substring(1);
-            else if (isFloat(first.substring(1)))
-                first = first.substring(1);
+            first = first.replaceAll("-", " ");
+//            if (isInteger(first.substring(1)))
+            first = first.substring(1);
+//            else if (isFloat(first.substring(1)))
+//                first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
                 addToTerms(first + num + "Dollars");
                 i++;
@@ -424,7 +445,7 @@ public class Parse {
                 i++;
                 return true;
             } else {
-                addToTerms(first + "Dollars");
+                addToTerms(first + " Dollars");
                 return true;
             }
         }
