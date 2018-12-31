@@ -187,7 +187,6 @@ public class Model {
 
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
-        //TODO SHOULD BE able to save ANYWHERE THAT USER CHOOSE by the instructions
         if (tosave == true) {
             File toFile = new File(savefolder + "\\results.txt");
             BufferedWriter bw = null;

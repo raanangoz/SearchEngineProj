@@ -240,6 +240,21 @@ public class Parse {
                 addToTerms(first.substring(begin));
                 addToTerms(first);
 
+            }
+            else if (containsMakaf(first) != null) {
+                ArrayList<Integer> positions;
+                positions = containsMakaf(first);
+                int begin = 0;
+                int end = 0;
+                for (int i = 0; i < positions.size(); i++) {
+                    end = positions.get(i);
+                    addToTerms(first.substring(begin, end));
+                    begin = end + 1;
+                }
+
+                addToTerms(first.substring(begin));
+                addToTerms(first);
+
             } else
                 addToTerms(first);
 
@@ -249,6 +264,17 @@ public class Parse {
 
             }
         }
+    }
+
+    private ArrayList<Integer> containsMakaf(String first) {
+        ArrayList<Integer> positions = new ArrayList<>();
+        for (int i = 1; i < first.length() - 1; i++) {
+            if (first.charAt(i) == '-')
+                positions.add(i);
+        }
+        if (positions.size() != 0)
+            return positions;
+        return null;
     }
 
     private ArrayList<Integer> containsSlash(String first) {
@@ -387,7 +413,7 @@ public class Parse {
         else {
             if (isInteger(first.substring(1)))
                 first = first.substring(1);
-            if (isFloat(first.substring(1)))
+            else if (isFloat(first.substring(1)))
                 first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
                 addToTerms(first + num + "Dollars");
@@ -547,9 +573,9 @@ public class Parse {
         if (word.equals("Million") || word.equals("million"))
             return " M ";
         else if (word.equals("Billion") || word.equals("billion"))
-            return ",000 M ";
+            return "000 M ";
         else if (word.equals("Trillion") || word.equals("trillion"))
-            return ",000,000 M ";
+            return "000000 M ";
         return null;
     }
 

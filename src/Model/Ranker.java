@@ -141,7 +141,7 @@ public class Ranker {
      * @return
      */
     public Map<String, Double>[] applyBM25Algorithm(Map<String, Integer>[] postsOfAllQueriesTerms, double avgDL, int docsNumber, HashMap<String, Integer> docsLength) {//docsNumber - 470000
-        double k1 = 1.4;//TODO a number between 1.2 to 2 to our choice.
+        double k1 = 1.35;
         double b = 0.25;
         double IDF = 0;
         Map<String, Double>[] results = new HashMap[queriesToRanker.size()];//each cell contains map of docno and docvalue
