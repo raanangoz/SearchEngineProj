@@ -95,8 +95,9 @@ public class Parse {
 
         for (i = 0; i < words.length; i++) {
 
-            words[i] = words[i].replaceAll(pat, "");
+            words[i] = words[i].replaceAll(pat, " ");
 
+            
             while (words[i].length() > 0 && (!((words[i].charAt(0) >= '0' && words[i].charAt(0) <= '9') || (words[i].charAt(0) >= 'a' && words[i].charAt(0) <= 'z')
                     || (words[i].charAt(0) >= 'A' && words[i].charAt(0) <= 'Z') || words[i].charAt(0) == '$')))
                 words[i] = words[i].substring(1);
