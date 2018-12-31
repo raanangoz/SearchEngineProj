@@ -247,14 +247,15 @@ public class Indexer {
                 String key = entry.getKey();
                 String oldValueOfLowerCase;
                 String oldValueOfUpperCase;
-                if (key.charAt(0) >= 'A' && key.charAt(0) <= 'Z')
-                    if (merged.containsKey(key.toLowerCase())) {
-                        oldValueOfLowerCase = merged.get(key.toLowerCase());
-                        //merged.remove(key.toLowerCase());
-                        oldValueOfUpperCase = merged.get(key);
-                        // merged.remove(key);
-                        mergeUpAndLow.put(key.toLowerCase(), oldValueOfUpperCase + oldValueOfLowerCase);
-                    }
+                if(key.length()>0)
+                    if (key.charAt(0) >= 'A' && key.charAt(0) <= 'Z')
+                        if (merged.containsKey(key.toLowerCase())) {
+                            oldValueOfLowerCase = merged.get(key.toLowerCase());
+                            //merged.remove(key.toLowerCase());
+                            oldValueOfUpperCase = merged.get(key);
+                            // merged.remove(key);
+                            mergeUpAndLow.put(key.toLowerCase(), oldValueOfUpperCase + oldValueOfLowerCase);
+                        }
             }
             for (Map.Entry<String, String> entry : mergeUpAndLow.entrySet()) {
                 merged.remove(entry.getKey().toUpperCase());
@@ -528,74 +529,74 @@ public class Indexer {
     }
 
 
-public class PostingList {
-    int DF;
-    LinkedHashMap<Doc, Integer> posts;
-    //String address;
-    int totalOccurrences;
-    String stemmedWord;
+    public class PostingList {
+        int DF;
+        LinkedHashMap<Doc, Integer> posts;
+        //String address;
+        int totalOccurrences;
+        String stemmedWord;
 
-    public String getStemmedWord() {
-        return stemmedWord;
-    }
-
-    public void setStemmedWord(String stemmedWord) {
-        this.stemmedWord = stemmedWord;
-    }
-
-    private PostingList(String newTerm) {
-        DF = 0;
-        posts = new LinkedHashMap<>();
-        //address = "posts/Posting" + newTerm.charAt(0);
-        totalOccurrences = 0;
-        stemmedWord = null;
-
-    }
-
-    public void add(Doc doc, int tf) {
-        posts.put(doc, tf);
-    }
-
-    public int getDF() {
-        return this.DF;
-    }
-
-    public void increaseDF() {
-        this.DF++;
-    }
-
-    public void setDF(int df) {
-        this.DF = df;
-    }
-
-    public LinkedHashMap<Doc, Integer> getPosts() {
-        return posts;
-    }
-
-    public int getTotalOccurrences() {
-        return totalOccurrences;
-    }
-
-    public void setTotalOccurrences(int totalOccurrences) {
-        this.totalOccurrences += totalOccurrences;
-    }
-
-    @Override
-    public String toString() {
-        String ans = "";
-        for (Map.Entry<Doc, Integer> entry : posts.entrySet()) {
-            String key = entry.getKey().getDocNo();
-            Integer value = entry.getValue();
-            ans += key + " " + value + " ";
+        public String getStemmedWord() {
+            return stemmedWord;
         }
 
-        return ans;
-    }
+        public void setStemmedWord(String stemmedWord) {
+            this.stemmedWord = stemmedWord;
+        }
 
-    public void clearPosts() {
-        this.posts.clear();
+        private PostingList(String newTerm) {
+            DF = 0;
+            posts = new LinkedHashMap<>();
+            //address = "posts/Posting" + newTerm.charAt(0);
+            totalOccurrences = 0;
+            stemmedWord = null;
+
+        }
+
+        public void add(Doc doc, int tf) {
+            posts.put(doc, tf);
+        }
+
+        public int getDF() {
+            return this.DF;
+        }
+
+        public void increaseDF() {
+            this.DF++;
+        }
+
+        public void setDF(int df) {
+            this.DF = df;
+        }
+
+        public LinkedHashMap<Doc, Integer> getPosts() {
+            return posts;
+        }
+
+        public int getTotalOccurrences() {
+            return totalOccurrences;
+        }
+
+        public void setTotalOccurrences(int totalOccurrences) {
+            this.totalOccurrences += totalOccurrences;
+        }
+
+        @Override
+        public String toString() {
+            String ans = "";
+            for (Map.Entry<Doc, Integer> entry : posts.entrySet()) {
+                String key = entry.getKey().getDocNo();
+                Integer value = entry.getValue();
+                ans += key + " " + value + " ";
+            }
+
+            return ans;
+        }
+
+        public void clearPosts() {
+            this.posts.clear();
+        }
     }
-}
 }
 
 class CustomizedHashMap implements Comparator<Map.Entry<String, LinkedList<String>>> {

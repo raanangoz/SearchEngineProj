@@ -30,6 +30,7 @@ public class Parse {
         i = 0;
         finishedDoc = false;
         stopWords = new HashSet<>();
+        stopWordsFunc(this.savepath);
         this.workpath = workPath;
         this.savepath = savePath;
         stemResult = new HashMap<>();
@@ -74,30 +75,23 @@ public class Parse {
 
 
     public void parse(Doc currentDoc) {
-        stopWordsFunc(this.savepath);
         terms = new LinkedHashMap[27];
         for (int i = 0; i < terms.length; i++)
             terms[i] = new LinkedHashMap();
-
         String first = "";
         String second = "";
         String third = "";
         String fourth = "";
         String month = null;
         String length = null;
-        String[] words = currentDoc.getText().split("\\s+|--+");
-
         String charToDel = "~`!@#^&*(){}|+=[]';:?";
         charToDel += '"';
         String pat = "[" + Pattern.quote(charToDel) + "]";
+        String removedChars = currentDoc.getText().replaceAll(pat, " ");
+        String[] words = removedChars.split("\\s+|--+");
         int count = 0;
         String cityName = currentDoc.getCity();
-
         for (i = 0; i < words.length; i++) {
-
-            words[i] = words[i].replaceAll(pat, " ");
-
-            
             while (words[i].length() > 0 && (!((words[i].charAt(0) >= '0' && words[i].charAt(0) <= '9') || (words[i].charAt(0) >= 'a' && words[i].charAt(0) <= 'z')
                     || (words[i].charAt(0) >= 'A' && words[i].charAt(0) <= 'Z') || words[i].charAt(0) == '$')))
                 words[i] = words[i].substring(1);
@@ -209,11 +203,8 @@ public class Parse {
                     }
 
 
-//                   TODO CHECK IF THE CODE EVER ENETERED THIS LINE:
-//                    else{
-//                        addToTerms(first);
-//                    }
-                } else if (isFloat(first)) {
+                }
+                else if (isFloat(first)) {
                     first = changeFloatToTerm(first);
 
                     addToTerms(first);
@@ -438,7 +429,7 @@ public class Parse {
 //            else if (isFloat(first.substring(1)))
 //                first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
-                addToTerms(first + num + "Dollars");
+                addToTerms(first + " Dollars");
                 i++;
                 return true;
             } else if ((num = wordToMillions(second)) != null) {

@@ -50,15 +50,16 @@ public class Searcher {
         String fourth = "";
         String month = null;
         String length = null;
-        String[] words = queryText.split("\\s+");
         String charToDel = "~`!@#^&*(){}|+=[]';:?";
         charToDel += '"';
         String pat = "[" + Pattern.quote(charToDel) + "]";
+        String removeChars = queryText.replaceAll(pat," ");
+        String[] words = removeChars.split("\\s+");
         int count = 0;
 
 
         for (i = 0; i < words.length; i++) {
-            words[i] = words[i].replaceAll(pat, " ");
+
             while (words[i].length() > 0 && (!((words[i].charAt(0) >= '0' && words[i].charAt(0) <= '9') || (words[i].charAt(0) >= 'a' && words[i].charAt(0) <= 'z')
                     || (words[i].charAt(0) >= 'A' && words[i].charAt(0) <= 'Z') || words[i].charAt(0) == '$')))
                 words[i] = words[i].substring(1);
@@ -93,7 +94,6 @@ public class Searcher {
                 return q;
                 // TODO: 21/12/2018 fix here to send to new indexer  Itzik
             }
-
             if (containDigit(words[i])) {
                 if (first.charAt(0) == '$' ||
                         second.equals("dollars") || second.equals("Dollars") ||
@@ -103,17 +103,14 @@ public class Searcher {
                 } else if (first.charAt(first.length() - 1) == '%' ||
                         (second.equals("percent") || second.equals("percentage"))) {
                     parseToPercents(first, second);
-                } else if (isInteger(first)) {
+                }
+                else if (isInteger(first)) {
                     String term = wordToNumber(second);
                     if (term != null) {
                         addToTerms(first + term);
                         i++;
-
                     }
-
-
                     //Dates
-
                     else if ((month = isMonth(second)) != null) {//14 may -> 05-14
                         if (first.length() < 3) {
                             addToTerms(month + "-" + first);
@@ -124,10 +121,28 @@ public class Searcher {
                             }
                             */
                     } else {
-                        addToTerms(first);
+                        String temp = first.replaceAll(",","");
+                        try {
+                            double x = (Double.parseDouble(temp));
+                            if(x<1000)
+                                addToTerms(temp);
+                            else if (x > 999 && x < 1000000)
+                                addToTerms(x/1000+"K");
+                            else if (x>=1000000 && x <= 999999999)
+                                addToTerms(x/1000000+"M");
+                            else
+                                addToTerms(x/1000000000+"M");
+                        }
+                        catch(Exception e){
+
+                            addToTerms(first);
+                        }
                     }
-                } else if (isFloat(first)) {
+
+                }
+                else if (isFloat(first)) {
                     first = changeFloatToTerm(first);
+
                     addToTerms(first);
 
                 } else if ((length = isLength(first)) != null) {
@@ -171,14 +186,39 @@ public class Searcher {
                 addToTerms(first.substring(begin));
                 addToTerms(first);
 
-            } else {
+            }
+            else if (containsMakaf(first) != null) {
+                ArrayList<Integer> positions;
+                positions = containsMakaf(first);
+                int begin = 0;
+                int end = 0;
+                for (int i = 0; i < positions.size(); i++) {
+                    end = positions.get(i);
+                    addToTerms(first.substring(begin, end));
+                    begin = end + 1;
+                }
+
+                addToTerms(first.substring(begin));
+                addToTerms(first);
+
+            }
+            else {
                 addToTerms(first);
             }
         }
         return q;
 
     }
-
+    private ArrayList<Integer> containsMakaf(String first) {
+        ArrayList<Integer> positions = new ArrayList<>();
+        for (int i = 1; i < first.length() - 1; i++) {
+            if (first.charAt(i) == '-')
+                positions.add(i);
+        }
+        if (positions.size() != 0)
+            return positions;
+        return null;
+    }
 
     private ArrayList<Integer> containsSlash(String first) {
         ArrayList<Integer> positions = new ArrayList<>();
@@ -314,12 +354,13 @@ public class Searcher {
         }
         //first is $number
         else {
-            if (isInteger(first.substring(1)))
-                first = first.substring(1);
-            if (isFloat(first.substring(1)))
-                first = first.substring(1);
+            first = first.replaceAll("-", " ");
+//            if (isInteger(first.substring(1)))
+            first = first.substring(1);
+//            else if (isFloat(first.substring(1)))
+//                first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
-                addToTerms(first + num + "Dollars");
+                addToTerms(first + " Dollars");
                 i++;
                 return true;
             } else if ((num = wordToMillions(second)) != null) {
@@ -327,7 +368,7 @@ public class Searcher {
                 i++;
                 return true;
             } else {
-                addToTerms(first + "Dollars");
+                addToTerms(first + " Dollars");
                 return true;
             }
         }
@@ -451,9 +492,9 @@ public class Searcher {
         if (word.equals("Million") || word.equals("million"))
             return " M ";
         else if (word.equals("Billion") || word.equals("billion"))
-            return ",000 M ";
+            return "000 M ";
         else if (word.equals("Trillion") || word.equals("trillion"))
-            return ",000,000 M ";
+            return "000000 M ";
         return null;
     }
 
