@@ -57,8 +57,6 @@ public class Model {
         //read corpus files from folder
         this.readFile = new ReadFile(workPath, savePath, checkbox_value);
         readFile.listf(workPath + "\\corpus");
-//        System.out.println("total number of docs that parsed: " + readFile.getNumberOfParsedDocs());
-//        System.out.println("city with most shows: " + readFile.p.cityname + " number of appearance " + readFile.p.maxcount);
 
     }
 

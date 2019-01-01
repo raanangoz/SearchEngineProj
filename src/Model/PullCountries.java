@@ -45,30 +45,13 @@ public class PullCountries {
             while ((input = bufferedReader.readLine()) != null)
                 answer.append(input);
             bufferedReader.close();
-            //System.out.println(answer.toString());
             connection.disconnect();
-        }
-        catch (ProtocolException e) {
+        } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public static void main(String[]args) throws IOException {
-        DatamuseQuery test = new DatamuseQuery();
-        String x = test.findSimilar("vehicle");
-        System.out.println(x);
-
-        JSONArray array = new JSONArray(x);
-
-        for(int i=0; i<array.length(); i++) {
-            JSONObject jsonObj = array.getJSONObject(i);
-            System.out.println(jsonObj.getString("word"));
-            System.out.println(jsonObj.getInt("score"));
-//            System.out.println(jsonObj.getString("score"));
-        }
-        pullinfos("jerusalem");
     }
 }

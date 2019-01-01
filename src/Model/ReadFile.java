@@ -66,7 +66,6 @@ public class ReadFile {
         StringBuilder DocHT = new StringBuilder();
         StringBuilder DocCountry = new StringBuilder();
         StringBuilder DocLanguage = new StringBuilder();
-//        System.out.println(f);
         //go over each doc, and separate to doc/text and send to parser
         try (BufferedReader br = new BufferedReader(new FileReader(f.getAbsolutePath()))) {
             String st;
@@ -81,12 +80,7 @@ public class ReadFile {
                 }
                 if (st.equals("<TEXT>")) {
                     while (((st = br.readLine()) != null) && (!st.equals("</TEXT>"))) {
-                        if (st.startsWith("<F P=104>")) {
-                            String CountrysWholeText = st;
-                            String[] wordLine = CountrysWholeText.split("\\s+");
-                            if (wordLine.length > 3)
-                                DocCountry.append(wordLine[2]);
-                        }
+                        fp104Code(DocCountry, st);
                         if (st.startsWith("Language: <F")) {
                             String Language = st;
                             String[] wordLine = Language.split("\\s+");
@@ -107,12 +101,7 @@ public class ReadFile {
                         DocLanguage.append(wordLine[4]);
                 }
 
-                if (st.startsWith("<F P=104>")) {
-                    String CountrysWholeText = st;
-                    String[] wordLine = CountrysWholeText.split("\\s+");
-                    if (wordLine.length > 3)
-                        DocCountry.append(wordLine[2]);
-                }
+                fp104Code(DocCountry, st);
 
                 if (st.startsWith("<DOCNO>")) {
                     int j;
@@ -152,7 +141,7 @@ public class ReadFile {
                         splitDoc.setDocCountry(DocCountry.toString());
                         splitDoc.setDocLanguage(DocLanguage.toString());
                         Country.setCityDocsList(splitDoc.getCity(), splitDoc.getDocNo());
-                        Country.setLanguageList(splitDoc.getDocLangauge(),splitDoc.getDocNo());
+                        Country.setLanguageList(splitDoc.getDocLangauge(), splitDoc.getDocNo());
                     }
                     DocCountry = null;
                     p.parse(splitDoc);
@@ -164,10 +153,16 @@ public class ReadFile {
         }
     }
 
+    private void fp104Code(StringBuilder docCountry, String st) {
+        if (st.startsWith("<F P=104>")) {
+            String CountrysWholeText = st;
+            String[] wordLine = CountrysWholeText.split("\\s+");
+            if (wordLine.length > 3)
+                docCountry.append(wordLine[2]);
+        }
+    }
+
     public static void updatefileIndex() {
         fileIndex++;
     }
 }
-
-
-

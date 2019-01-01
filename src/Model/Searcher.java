@@ -36,12 +36,11 @@ public class Searcher {
             }
             textFile.close();
         } catch (FileNotFoundException e) {
-//            System.out.println("can't find stopword file (parse class code) - put stopword file inside corpus folder");
         }
     }
 
     public Query parse(Query q, boolean stemming) {
-        this.stemmer=stemming;
+        this.stemmer = stemming;
         stopWordsFunc(this.workpath);
         this.queryText = q.getQueryTitle();
         termsQuery = new HashMap<>();
@@ -54,7 +53,7 @@ public class Searcher {
         String charToDel = "~`!@#^&*(){}|+=[]';:?";
         charToDel += '"';
         String pat = "[" + Pattern.quote(charToDel) + "]";
-        String removeChars = queryText.replaceAll(pat," ");
+        String removeChars = queryText.replaceAll(pat, " ");
         String[] words = removeChars.split("\\s+");
         int count = 0;
 
@@ -121,31 +120,26 @@ public class Searcher {
                             addToTerms(month + "-" + first);
                             i++;
 
-                        } /*else {
-                                addToTerms(first);
-                            }
-                            */
+                        }
                     } else {
-                        String temp = first.replaceAll(",","");
+                        String temp = first.replaceAll(",", "");
                         try {
                             double x = (Double.parseDouble(temp));
-                            if(x<1000)
+                            if (x < 1000)
                                 addToTerms(temp);
                             else if (x > 999 && x < 1000000)
-                                addToTerms(x/1000+"K");
-                            else if (x>=1000000 && x <= 999999999)
-                                addToTerms(x/1000000+"M");
+                                addToTerms(x / 1000 + "K");
+                            else if (x >= 1000000 && x <= 999999999)
+                                addToTerms(x / 1000000 + "M");
                             else
-                                addToTerms(x/1000000000+"M");
+                                addToTerms(x / 1000000000 + "M");
+                        } catch (Exception e) {
+
+                            addToTerms(first);
                         }
-                        catch(Exception e){
-
-                        addToTerms(first);
-                    }
                     }
 
-                }
-                else if (isFloat(first)) {
+                } else if (isFloat(first)) {
                     first = changeFloatToTerm(first);
                     addToTerms(first);
 
@@ -190,8 +184,7 @@ public class Searcher {
                 addToTerms(first.substring(begin));
                 addToTerms(first);
 
-            }
-            else if (containsMakaf(first) != null) {
+            } else if (containsMakaf(first) != null) {
                 ArrayList<Integer> positions;
                 positions = containsMakaf(first);
                 int begin = 0;
@@ -205,14 +198,14 @@ public class Searcher {
                 addToTerms(first.substring(begin));
                 addToTerms(first);
 
-            }
-            else {
+            } else {
                 addToTerms(first);
             }
         }
         return q;
 
     }
+
     private ArrayList<Integer> containsMakaf(String first) {
         ArrayList<Integer> positions = new ArrayList<>();
         for (int i = 1; i < first.length() - 1; i++) {
@@ -250,9 +243,7 @@ public class Searcher {
                 if (first.charAt(i) == '-')
                     return first.substring(0, i) + "-" + "cm";
             }
-
         }
-
         return null;
     }
 
@@ -288,10 +279,6 @@ public class Searcher {
         if (countPoints != 1)
             return false;
         return true;
-    }
-
-    private void saveTermsOnDoc(Doc currentDoc) {
-//        currentDoc.setDocTerms(this.termsQuery);
     }
 
     private boolean parseToPercents(String first, String second) {
@@ -337,12 +324,6 @@ public class Searcher {
                         return true;
                     }
                     //like 150 million
-                    /*else {
-                        num = wordToNumber(second);
-                        addToTerms(first + num);
-                        i++;
-                    }
-                    */
 
                 } else if (second.equals("dollars") || second.equals("Dollars"))
                     addToTerms(first + " Dollars");
@@ -359,10 +340,7 @@ public class Searcher {
         //first is $number
         else {
             first = first.replaceAll("-", " ");
-//            if (isInteger(first.substring(1)))
-                first = first.substring(1);
-//            else if (isFloat(first.substring(1)))
-//                first = first.substring(1);
+            first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
                 addToTerms(first + " Dollars");
                 i++;

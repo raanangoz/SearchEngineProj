@@ -180,8 +180,6 @@ public class MainPageView implements Initializable {
                 doAlert("Error", "Save Path does not have Dictionary file");
             } else
                 controller.showDic(savePath);
-        } catch (SearcherException e) {
-            AlertLoadDic();
         } catch (RuntimeException e) {
             doAlert("Fail", "Dictionary does not exist");
         } catch (IOException e) {

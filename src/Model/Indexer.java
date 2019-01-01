@@ -104,7 +104,6 @@ public class Indexer {
         String[] words;
         String term = "";
         int DF = 0;
-        //int TF=0;
         while ((st = br.readLine()) != null) {
             term = "";
             words = st.split(" ");
@@ -114,7 +113,6 @@ public class Indexer {
 
             }
             DF = Integer.parseInt(words[i + 1]);
-            //TF = Integer.parseInt(words[i + 3]);
 
 
             int location = correctCellDictionary(term);
@@ -166,7 +164,7 @@ public class Indexer {
     }
 
     public void mergePartialPosting(String workPath, String savePath, Boolean stemmiming) {
-        this.stemmiming=stemmiming;
+        this.stemmiming = stemmiming;
 
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 
@@ -224,15 +222,13 @@ public class Indexer {
                 String key = entry.getKey();
                 String oldValueOfLowerCase;
                 String oldValueOfUpperCase;
-                if(key.length()>0)
-                if (key.charAt(0) >= 'A' && key.charAt(0) <= 'Z')
-                    if (merged.containsKey(key.toLowerCase())) {
-                        oldValueOfLowerCase = merged.get(key.toLowerCase());
-                        //merged.remove(key.toLowerCase());
-                        oldValueOfUpperCase = merged.get(key);
-                        // merged.remove(key);
-                        mergeUpAndLow.put(key.toLowerCase(), oldValueOfUpperCase + oldValueOfLowerCase);
-                    }
+                if (key.length() > 0)
+                    if (key.charAt(0) >= 'A' && key.charAt(0) <= 'Z')
+                        if (merged.containsKey(key.toLowerCase())) {
+                            oldValueOfLowerCase = merged.get(key.toLowerCase());
+                            oldValueOfUpperCase = merged.get(key);
+                            mergeUpAndLow.put(key.toLowerCase(), oldValueOfUpperCase + oldValueOfLowerCase);
+                        }
             }
             for (Map.Entry<String, String> entry : mergeUpAndLow.entrySet()) {
                 merged.remove(entry.getKey().toUpperCase());
@@ -336,7 +332,6 @@ public class Indexer {
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println(sum);
     }
 
     private void writeCitysToDisk(String savePath) {
@@ -519,8 +514,7 @@ public class Indexer {
             bw.close();
             fw.close();
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }

@@ -26,7 +26,7 @@ public class Controller {
         return model.getQResult();
     }
 
-    public void mergePartialPosting(String workPath, String savePath) throws SearcherException, IOException {
+    public void mergePartialPosting(String workPath, String savePath) {
         model.mergePartialPosting(workPath, savePath);
     }
 
@@ -38,7 +38,7 @@ public class Controller {
         model.resetButton(savePath);
     }
 
-    public void showDic(String savePath) throws SearcherException, IOException {
+    public void showDic(String savePath) throws IOException {
         model.showDic(savePath);
     }
 

@@ -1,8 +1,10 @@
 package Model;
 
 import java.io.Serializable;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Doc implements Serializable {
 
@@ -25,7 +27,7 @@ public class Doc implements Serializable {
         this.docTerms = new LinkedHashMap[27];
         this.city = "";
         this.documentLength = 0;
-        this.docLangauge="";
+        this.docLangauge = "";
 
 
     }
@@ -108,8 +110,6 @@ public class Doc implements Serializable {
         return numberOfDifferentWords;
     }
 
-
-
     public void setDocumentLength() {
         int ans = 0;
         for (LinkedHashMap<String, Integer> x : docTerms) {
@@ -131,8 +131,6 @@ public class Doc implements Serializable {
         this.city = docCity;
     }
 
-
-
     public void setMostFrequentTermValue() {
         int max = 0;
         for (LinkedHashMap<String, Integer> x : docTerms) {
@@ -150,9 +148,5 @@ public class Doc implements Serializable {
         }
         this.mostFrequentTermValue = max;
     }
-
-
-
-
-}
 //</editor-fold>
+}

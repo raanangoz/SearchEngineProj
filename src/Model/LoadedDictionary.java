@@ -1,7 +1,6 @@
 package Model;
 
 import Model.Excpetions.SearcherException;
-import Model.Excpetions.SuccessException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,17 +25,16 @@ public class LoadedDictionary {
 
     public void loadDic() throws SearcherException, IOException {
         String path;
-        if (this.stemmimng==false)
-            path = savePath+ "\\Dictionary.txt";
+        if (this.stemmimng == false)
+            path = savePath + "\\Dictionary.txt";
         else
-            path = savePath+ "\\DictionaryS.txt";
+            path = savePath + "\\DictionaryS.txt";
         File fromFile = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(fromFile));
         String st;
         String[] words;
         String term = "";
         int DF = 0;
-        //int TF=0;
         while ((st = br.readLine()) != null) {
             term = "";
             words = st.split(" ");
@@ -47,16 +45,12 @@ public class LoadedDictionary {
             }
             term = term.substring(0, term.length() - 1);
             DF = Integer.parseInt(words[i + 1]);
-            //TF = Integer.parseInt(words[i + 3]);
-
 
             int location = correctCellDictionary(term);
             dictionary[location].put(term, DF);
 
         }//while
         br.close();
-//        throw new SuccessException();
-
     }
 
     private int correctCellDictionary(String termToFind) {

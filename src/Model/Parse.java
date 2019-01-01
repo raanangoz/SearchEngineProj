@@ -18,7 +18,7 @@ public class Parse {
     private static Map<String, List<Integer>> maxtfandterm = new HashMap<String, List<Integer>>();
     private Map<String, String> stemResult;
     private String cityname = "";
-    private boolean onetime2=true;
+    private boolean onetime2 = true;
     private int maxcount = 0;
     // all docs until decide to move to disk
 
@@ -62,19 +62,16 @@ public class Parse {
                 stopWords.add(newStopWord);
                 stopWords.add(newStopWord.substring(0, 1).toUpperCase() + newStopWord.substring(1));
             }
-
             textFile.close();
-
         } catch (FileNotFoundException e) {
-//            System.out.println("can't find stopword file (parse class code) - put stopword file inside corpus folder");
         }
     }
 
 
     public void parse(Doc currentDoc) {
-        if (onetime2==true) {
+        if (onetime2 == true) {
             stopWordsFunc(this.savepath);
-            onetime2=false;
+            onetime2 = false;
         }
         terms = new LinkedHashMap[27];
         for (int i = 0; i < terms.length; i++)
@@ -168,17 +165,13 @@ public class Parse {
                     parseToPercents(first, second);
                 }
 
-
                 //parse normal numbers
                 else if (isInteger(first)) {
                     String term = wordToNumber(second);
                     if (term != null) {
                         addToTerms(first + term);
                         i++;
-
                     }
-
-
                     //Dates
 
                     else if ((month = isMonth(second)) != null) {//14 may -> 05-14
@@ -186,32 +179,27 @@ public class Parse {
                             addToTerms(month + "-" + first);
                             i++;
 
-                        } /*else {
-                                addToTerms(first);
-                            }
-                            */
+                        }
                     } else {
-                        String temp = first.replaceAll(",","");
+                        String temp = first.replaceAll(",", "");
                         try {
                             double x = (Double.parseDouble(temp));
-                            if(x<1000)
+                            if (x < 1000)
                                 addToTerms(temp);
                             else if (x > 999 && x < 1000000)
-                                addToTerms(x/1000+"K");
-                            else if (x>=1000000 && x <= 999999999)
-                                addToTerms(x/1000000+"M");
+                                addToTerms(x / 1000 + "K");
+                            else if (x >= 1000000 && x <= 999999999)
+                                addToTerms(x / 1000000 + "M");
                             else
-                                addToTerms(x/1000000000+"M");
+                                addToTerms(x / 1000000000 + "M");
+                        } catch (Exception e) {
+
+                            addToTerms(first);
                         }
-                        catch(Exception e){
-
-                        addToTerms(first);
-                    }
                     }
 
 
-                }
-                else if (isFloat(first)) {
+                } else if (isFloat(first)) {
                     first = changeFloatToTerm(first);
                     addToTerms(first);
 
@@ -256,8 +244,7 @@ public class Parse {
                 addToTerms(first.substring(begin));
                 addToTerms(first);
 
-            }
-            else if (containsMakaf(first) != null) {
+            } else if (containsMakaf(first) != null) {
                 ArrayList<Integer> positions;
                 positions = containsMakaf(first);
                 int begin = 0;
@@ -319,14 +306,12 @@ public class Parse {
                 if (first.charAt(i) == '-')
                     return first.substring(0, i) + "-" + "cm";
             }
-
         }
-
         return null;
     }
 
     private String changeFloatToTerm(String first) {
-        first=first.replaceAll(",","");
+        first = first.replaceAll(",", "");
         if (first.length() > 4) {
             if (first.charAt(0) == '.' || first.charAt(1) == '.' || first.charAt(2) == '.' || first.charAt(3) == '.') {
                 return first;
@@ -347,7 +332,7 @@ public class Parse {
     }
 
     private boolean isFloat(String first) {
-        first=first.replaceAll(",","");
+        first = first.replaceAll(",", "");
         int countPoints = 0;
         for (int i = 0; i < first.length(); i++) {
             if (!((first.charAt(i) >= '0') && first.charAt(i) <= '9'))
@@ -359,10 +344,6 @@ public class Parse {
         if (countPoints != 1)
             return false;
         return true;
-    }
-
-    private void saveTermsOnDoc(Doc currentDoc) {
-//        currentDoc.setDocTerms(this.terms);
     }
 
     private boolean parseToPercents(String first, String second) {
@@ -408,13 +389,6 @@ public class Parse {
                         return true;
                     }
                     //like 150 million
-                    /*else {
-                        num = wordToNumber(second);
-                        addToTerms(first + num);
-                        i++;
-                    }
-                    */
-
                 } else if (second.equals("dollars") || second.equals("Dollars"))
                     addToTerms(first + " Dollars");
                 else {
@@ -430,10 +404,7 @@ public class Parse {
         //first is $number
         else {
             first = first.replaceAll("-", " ");
-//            if (isInteger(first.substring(1)))
-                first = first.substring(1);
-//            else if (isFloat(first.substring(1)))
-//                first = first.substring(1);
+            first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
                 addToTerms(first + " Dollars");
                 i++;
@@ -587,8 +558,6 @@ public class Parse {
      * @return
      */
     private static String translateWordToMillion(String word) {
-        //if (word.equals("Thousand")||word.equals("thousand"))
-        //    return ",000";
         if (word.equals("Million") || word.equals("million"))
             return " M ";
         else if (word.equals("Billion") || word.equals("billion"))

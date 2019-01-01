@@ -26,7 +26,6 @@ public class Query implements Serializable {
         this.queryDesc = queryDesc;
         this.queryNarr = queryNarr;
         this.terms = new HashMap<>();
-
     }
 
     public void addTerms(Map<String, Integer> newTerms) {
@@ -73,10 +72,9 @@ public class Query implements Serializable {
         this.queryNarr = queryNarr;
     }
 
-    public void removeTerm(Map.Entry<String,Integer> s) {
-        if(terms.containsKey(s.getKey()))
+    public void removeTerm(Map.Entry<String, Integer> s) {
+        if (terms.containsKey(s.getKey()))
             terms.remove(s);
     }
     //</editor-fold>
-
 }

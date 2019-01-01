@@ -1,9 +1,9 @@
 /*
-* Copyright © 2015 S.J. Blair <https://github.com/sjblair>
-* This work is free. You can redistribute it and/or modify it under the
-* terms of the Do What The Fuck You Want To Public License, Version 2,
-* as published by Sam Hocevar. See the COPYING file for more details.
-*/
+ * Copyright © 2015 S.J. Blair <https://github.com/sjblair>
+ * This work is free. You can redistribute it and/or modify it under the
+ * terms of the Do What The Fuck You Want To Public License, Version 2,
+ * as published by Sam Hocevar. See the COPYING file for more details.
+ */
 
 package Model;
 
@@ -28,41 +28,45 @@ public class DatamuseQuery {
 
     /**
      * Returns a list of similar words to the word/phrase supplied.
+     *
      * @param word A word of phrase.
      * @return A list of similar words.
      */
     public String findSimilar(String word) {
         String s = word.replaceAll(" ", "+");
-        return getJSON("http://api.datamuse.com/words?rd="+s);
+        return getJSON("http://api.datamuse.com/words?rd=" + s);
     }
 
     /**
      * Returns a list of similar words to the word/phrase supplied beginning with the specified letter(s).
-     * @param word A word or phrase.
+     *
+     * @param word        A word or phrase.
      * @param startLetter The letter(s) the similar words should begin with.
      * @return A list of similar words.
      */
     public String findSimilarStartsWith(String word, String startLetter) {
         String s = word.replaceAll(" ", "+");
-        return getJSON("http://api.datamuse.com/words?rd="+s+"&sp="+startLetter+"*");
+        return getJSON("http://api.datamuse.com/words?rd=" + s + "&sp=" + startLetter + "*");
     }
 
     /**
      * Returns a list of similar words to the word/phrase supplied ending with the specified letter(s).
-     * @param word A word or phrase.
+     *
+     * @param word      A word or phrase.
      * @param endLetter The letter(s) the similar words should end with.
      * @return A list of similar words.
      */
     public String findSimilarEndsWith(String word, String endLetter) {
         String s = word.replaceAll(" ", "+");
-        return getJSON("http://api.datamuse.com/words?rd="+s+"&sp=*"+endLetter);
+        return getJSON("http://api.datamuse.com/words?rd=" + s + "&sp=*" + endLetter);
     }
 
     /**
      * Returns a list of words beginning and ending with the specified letters and with the specified number of letters
      * in between.
-     * @param startLetter The letter(s) the similar words should start with.
-     * @param endLetter The letter(s) the similar words should end with.
+     *
+     * @param startLetter   The letter(s) the similar words should start with.
+     * @param endLetter     The letter(s) the similar words should end with.
      * @param numberMissing The number of letters between the start and end letters
      * @return A list of matching words.
      */
@@ -77,8 +81,9 @@ public class DatamuseQuery {
     /**
      * Returns a list of words beginning and ending with the specified letters and with an unspecified number of letters
      * in between.
+     *
      * @param startLetter The letter(s) the similar words should start with.
-     * @param endLetter The letter(s) the similar words should end with.
+     * @param endLetter   The letter(s) the similar words should end with.
      * @return A list of matching words.
      */
     public String wordsStartingWithEndingWith(String startLetter, String endLetter) {
@@ -87,6 +92,7 @@ public class DatamuseQuery {
 
     /**
      * Find words which sound the same as the specified word/phrase when spoken.
+     *
      * @param word A word or phrase.
      * @return A list of words/phrases which sound similiar when spoken.
      */
@@ -97,6 +103,7 @@ public class DatamuseQuery {
 
     /**
      * Find words which are spelt the same as the specified word/phrase.
+     *
      * @param word A word or phrase.
      * @return A list of words/phrases which are spelt similar.
      */
@@ -108,6 +115,7 @@ public class DatamuseQuery {
     /**
      * Returns suggestions for what the user may be typing based on what they have typed so far. Useful for
      * autocomplete on forms.
+     *
      * @param word The current word or phrase.
      * @return Suggestions of what the user may be typing.
      */
@@ -118,6 +126,7 @@ public class DatamuseQuery {
 
     /**
      * Query a URL for their source code.
+     *
      * @param url The page's URL.
      * @return The source code.
      */
