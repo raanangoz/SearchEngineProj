@@ -147,7 +147,7 @@ public class Ranker {
      */
     public Map<String, Double> applyBM25Algorithm(List<Map<String, Integer>> allPostsForOneQuery, double avgDL, int docsNumber, HashMap<String, Integer> docsLength) {//docsNumber - 470000
         double k1 = 1.35;
-        double b = 0.25;
+        double b = 0.3;
         double IDF = 0;
         String term = "1";
         Map<String, Double> docsAndValuesOfQuery = new HashMap<>();
