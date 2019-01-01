@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="500.0" maxWidth="800.0" minHeight="500.0" minWidth="500.0" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainPageView">
+<AnchorPane maxHeight="500.0" maxWidth="800.0" minHeight="500.0" minWidth="500.0" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainPageView">
     <children>
         <ImageView fitHeight="500.0" fitWidth="500.0" pickOnBounds="true">
             <image>
@@ -30,19 +30,19 @@
         <Button fx:id="Browse_w" layoutX="337.0" layoutY="101.0" mnemonicParsing="false" onAction="#Browse_working" text="Browse" />
         <Button fx:id="Browse_s" layoutX="337.0" layoutY="160.0" mnemonicParsing="false" onAction="#Browse_saving" text="Browse" />
 
-        <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments\corpus" />
-        <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Desktop\Part2\with" />
+        <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />
+        <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />
 
         <!--<TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />-->
         <!--<TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />-->
 
         <CheckBox fx:id="stemming_option" layoutX="14.0" layoutY="206.0" mnemonicParsing="false" onAction="#checkBox_stemmimg" text="Stemmimg" />
-        <Button fx:id="parse_b" layoutX="65.0" layoutY="414.0" mnemonicParsing="false" onAction="#parse" prefHeight="56.0" prefWidth="121.0" text="Parse">
+        <Button fx:id="parse_b" layoutX="15.0" layoutY="414.0" mnemonicParsing="false" onAction="#parse" prefHeight="56.0" prefWidth="121.0" text="Parse">
             <font>
                 <Font size="26.0" />
             </font>
         </Button>
-        <Button fx:id="reset_b" layoutX="264.0" layoutY="414.0" mnemonicParsing="false" onAction="#reset" text="Reset Button">
+        <Button fx:id="reset_b" layoutX="154.0" layoutY="414.0" mnemonicParsing="false" onAction="#reset" text="Reset Button">
             <font>
                 <Font size="26.0" />
             </font>
@@ -55,7 +55,7 @@
         <TextField fx:id="query_text" layoutX="12.0" layoutY="251.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter Query Text" />
 
         <!--<TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\queries.txt" />-->
-        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\Raanan\Downloads\semester5\IR\Assignments\2\queries.txt" />
+        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\queries.txt" />
 
         <Button fx:id="run_query" layoutX="336.0" layoutY="251.0" mnemonicParsing="false" onAction="#run_query" text="Run Query" />
         <Button fx:id="run_query_file" layoutX="401.0" layoutY="295.0" mnemonicParsing="false" onAction="#run_query_file" text="Run Query File" />
@@ -71,5 +71,6 @@
       <TextField fx:id="entities_text" layoutX="282.0" layoutY="354.0" prefHeight="25.0" prefWidth="121.0" promptText="Enter Doc Number" />
       <Label layoutX="305.0" layoutY="332.0" text="Doc Number" />
       <Button fx:id="load_city1" layoutX="211.0" layoutY="211.0" mnemonicParsing="false" onAction="#load_lanugage" text="Load Language" />
+      <Button fx:id="showQR" layoutX="364.0" layoutY="418.0" mnemonicParsing="false" onAction="#newwindow" prefHeight="43.0" prefWidth="121.0" text="Show Query Result" />
     </children>
 </AnchorPane>

@@ -4,11 +4,17 @@ import Controller.Controller;
 import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -24,6 +30,7 @@ public class MainPageView implements Initializable {
     public Button reset_b; //reset button
     public Button load_b; //load dictionary button
     public Button showdic_b; //show dictionary button
+    public Button showQR;
     public Button get_entities;
     public CheckBox stemming_option; //stemming checkbox
     public CheckBox semantic_option; //semantic checkbox
@@ -179,7 +186,7 @@ public class MainPageView implements Initializable {
             } else
                 controller.showDic(savePath);
         } catch (SearcherException e) {
-            doAlert("Success", e.getMessage());
+            AlertLoadDic();
         } catch (RuntimeException e) {
             doAlert("Fail", "Dictionary does not exist");
         } catch (IOException e) {
@@ -237,7 +244,9 @@ public class MainPageView implements Initializable {
                 } else {
                     tosave = false;
                 }
-                AlertLoadDic();
+                boolean check = AlertLoadDic();
+                if (check==false)
+                    throw new IOException();
                 controller.runQueryString(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities, tosave, saveFolder);
                 if (tosave == true) {
                     doAlert("Done", "Query ran successfully.\n Open results.txt file to see them.");
@@ -260,13 +269,14 @@ public class MainPageView implements Initializable {
         String savePath = save_path.getText();
         if (savePath.equals("") || workPath.equals("") || query_path.equals("")) {
             doAlert("Error", "Please select a folder in save and work path");
-        } else {
-            AlertLoadDic();
         }
         List<String> chosenCities = getCountryForSearch(allCityList);
         boolean tosave;
         String saveFolder = "";
         try {
+            boolean check = AlertLoadDic();
+            if (check==false)
+                throw new IOException();
             Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save the results?",
                     ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alertConfirm.showAndWait();
@@ -389,6 +399,23 @@ public class MainPageView implements Initializable {
             doAlert("Error", "language file does not exist");
         } catch (RuntimeException e) {
             doAlert("Error", "file does not exthist");
+        }
+    }
+
+    public void newwindow(ActionEvent actionEvent){
+        Stage s = (Stage) showQR.getScene().getWindow();
+//        s.close();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("QR.fxml"));
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setTitle("Query Result");
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

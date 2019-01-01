@@ -15,6 +15,7 @@ public class Model {
 
     private String savePath;
     private String workPath;
+    private String savefolder="";
     private boolean stemmimng = false;
 
     private static Model singleton = null;
@@ -156,6 +157,7 @@ public class Model {
                          boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder, ArrayList<Query> queriesToRanker) throws IOException, BadPathException {
 
         ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
+        this.savefolder= savefolder;
         this.savePath = savePath;
         this.workPath = workPath;
         this.stemmimng = checkbox_value;
@@ -318,5 +320,20 @@ public class Model {
         }
         br.close();
         return AllLanguageList;
+    }
+
+    public List<String> getQResult() throws BadPathException, IOException {
+        if (savefolder=="")
+            throw new BadPathException();
+        File fromFile = new File(savefolder + "\\results.txt");
+        BufferedReader br = null;
+        br = new BufferedReader(new FileReader(fromFile));
+        List<String> LinesFromResult = new LinkedList<>();
+        String st;
+        while ((st = br.readLine()) != null) {
+            LinesFromResult.add(st);
+        }
+        br.close();
+        return LinesFromResult;
     }
 }
