@@ -154,13 +154,15 @@ public class Ranker {
             for (Map.Entry<String, Integer> entry : terms.entrySet()) {
                 String term = entry.getKey();//we have a term, now rate it's docs.
                 int k = correctCellDictionary(term);
-                //postOfAllQueriesTerm[k] is the posting list for the term. now rate docs.
-                for (String docNo : postsOfAllQueriesTerms[k].keySet()) {
-                    if (docsAfterFilterCities.contains(docNo) || docsAfterFilterCities.size() == 0) {
-                        if (postsOfAllQueriesTerms[k].get(docNo) != -1) {
-                            if (LoadedDictionary.getDictionary()[k].containsKey(term)) {
-                                int DF = LoadedDictionary.getDictionary()[k].get(term);
-                                IDF = Math.log((docsNumber - DF + 0.5) / (DF + 0.5));
+                if (LoadedDictionary.getDictionary()[k].containsKey(term)) {
+                    int DF = LoadedDictionary.getDictionary()[k].get(term);
+                    IDF = Math.log((docsNumber - DF + 0.5) / (DF + 0.5));
+                    //postOfAllQueriesTerm[k] is the posting list for the term. now rate docs.
+                    for (String docNo : postsOfAllQueriesTerms[k].keySet()) {
+                        if (docsAfterFilterCities.contains(docNo) || docsAfterFilterCities.size() == 0) {
+                            if (postsOfAllQueriesTerms[k].get(docNo) != -1) {
+
+
                                 int TF = postsOfAllQueriesTerms[k].get(docNo);
                                 if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
                                     int DL = docsLength.get(docNo);
