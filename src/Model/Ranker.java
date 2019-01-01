@@ -161,8 +161,6 @@ public class Ranker {
                     for (String docNo : postsOfAllQueriesTerms[k].keySet()) {
                         if (docsAfterFilterCities.contains(docNo) || docsAfterFilterCities.size() == 0) {
                             if (postsOfAllQueriesTerms[k].get(docNo) != -1) {
-
-
                                 int TF = postsOfAllQueriesTerms[k].get(docNo);
                                 if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
                                     int DL = docsLength.get(docNo);
@@ -238,9 +236,9 @@ public class Ranker {
         }
 
         HashMap<String, Integer>[] allPosts = new HashMap[termsOfAllQueries.length];//[0]:  gas -1 fbis3 5 fbis4 6...
-        int m = 0;//allposts[m] contains random posting list of a term.
+        //allposts[i] contains random posting list of a term.
         for (int i = 0; i < 27; i++) {//iterate the terms
-            allPosts[m] = new HashMap<>();
+            allPosts[i] = new HashMap<>();
             int numOfPostingListsFoundForGroup = 0;//2 terms start with e, we want to open posting list e once.
             String st;
             File file = new File(Model.getInstance().getSavePath() + "\\Posting " + i + ".txt");
@@ -258,7 +256,7 @@ public class Ranker {
                                 postingList.put(term, -1);//plaster to recognize the term.
                                 numOfPostingListsFoundForGroup++;
 
-                                allPosts[m].putAll(postingList);
+                                allPosts[i].putAll(postingList);
                             }
                         }
                     }
@@ -270,7 +268,7 @@ public class Ranker {
             } catch (Exception e) {
 
             }
-            m++;
+
         }
         return allPosts;
     }

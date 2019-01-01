@@ -132,7 +132,8 @@ public class Model {
             if (savefolder.length() < 1)
                 throw new BadPathException();
         }
-        ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile, checkbox_value);
+        ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile, false);//TODO false
+
         runQuery(workPath, savePath, checkbox_semantic, checkbox_value, chosenCities, tosave, savefolder, queriesToRanker);
     }
 
@@ -161,17 +162,43 @@ public class Model {
         this.readQuery = read;
         if (checkbox_semantic == true) {
             Map<String, Integer> tempTerms;
-            Map<String, Integer> termsToAdd = new HashMap<>();
             for (Query q : queriesToRanker) {
+                Map<String, Integer> termsToAddToQuery = new HashMap<>();
                 tempTerms = q.getTerms();
                 for (Map.Entry<String, Integer> s : tempTerms.entrySet()) {
                     List<String> seManticTerms = findsimiliar(s.getKey()); //TODO OBVIOUSLY ITS NOT GOING TO WORK BECAUSE IT IS NOT BEING STEMMED , STEMMED HAPPENED ONLY TO THE TITLE!!!!!!!!!!!!
                     for (String newTerm : seManticTerms) {
-                        termsToAdd.put(newTerm, 1);
-
+                        if(Character.isUpperCase(s.getKey().charAt(0)))
+                            newTerm=newTerm.toUpperCase();
+                        termsToAddToQuery.put(newTerm, 1);
                     }
                 }
-                q.addTerms(termsToAdd);
+                q.addTerms(termsToAddToQuery);
+            }
+
+
+            Stemmer stemmer = new Stemmer();
+
+            for (Query q : queriesToRanker) {
+                Map<String, Integer> termsToStem = new HashMap<>();
+                tempTerms = q.getTerms();
+                for (Map.Entry<String, Integer> s : tempTerms.entrySet()) {
+                    String termToStem = s.getKey();
+                    boolean check = false;
+                    if (termToStem.charAt(0) >= 'A' && termToStem.charAt(0) <= 'Z') {
+                        termToStem = termToStem.toLowerCase();
+                        check = true;
+                    }
+                    stemmer.add(termToStem.toCharArray(), termToStem.length());
+                    stemmer.stem();
+                    termToStem = stemmer.toString();
+                    if (check == true)
+                        termToStem = termToStem.toUpperCase();
+                    q.removeTerm(s);
+                    termsToStem.put(termToStem,1);
+
+                }
+                q.addTerms(termsToStem);
             }
         }
 
@@ -217,7 +244,7 @@ public class Model {
         DatamuseQuery getData = new DatamuseQuery();
         String allData = getData.findSimilar(key);
         JSONArray array = new JSONArray(allData);
-        for (int i = 0; i < array.length() && i < 1; i++) {
+        for (int i = 0; i < array.length() && i < 10; i++) {
             JSONObject jsonObj = array.getJSONObject(i);
             String word = (jsonObj.getString("word"));
 //            int score = (jsonObj.getInt("score"));

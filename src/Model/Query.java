@@ -72,6 +72,11 @@ public class Query implements Serializable {
     public void setQueryNarr(String queryNarr) {
         this.queryNarr = queryNarr;
     }
+
+    public void removeTerm(Map.Entry<String,Integer> s) {
+        if(terms.containsKey(s.getKey()))
+            terms.remove(s);
+    }
     //</editor-fold>
 
 }
