@@ -179,7 +179,7 @@ public class MainPageView implements Initializable {
             } else
                 controller.showDic(savePath);
         } catch (SearcherException e) {
-            doAlert("Success", e.getMessage());
+            AlertLoadDic();
         } catch (RuntimeException e) {
             doAlert("Fail", "Dictionary does not exist");
         } catch (IOException e) {
@@ -237,7 +237,9 @@ public class MainPageView implements Initializable {
                 } else {
                     tosave = false;
                 }
-                AlertLoadDic();
+                boolean check = AlertLoadDic();
+                if (check==false)
+                    throw new IOException();
                 controller.runQueryString(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities, tosave, saveFolder);
                 if (tosave == true) {
                     doAlert("Done", "Query ran successfully.\n Open results.txt file to see them.");
@@ -260,13 +262,14 @@ public class MainPageView implements Initializable {
         String savePath = save_path.getText();
         if (savePath.equals("") || workPath.equals("") || query_path.equals("")) {
             doAlert("Error", "Please select a folder in save and work path");
-        } else {
-            AlertLoadDic();
         }
         List<String> chosenCities = getCountryForSearch(allCityList);
         boolean tosave;
         String saveFolder = "";
         try {
+            boolean check = AlertLoadDic();
+            if (check==false)
+                throw new IOException();
             Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save the results?",
                     ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alertConfirm.showAndWait();

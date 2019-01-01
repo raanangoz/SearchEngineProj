@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="500.0" maxWidth="800.0" minHeight="500.0" minWidth="500.0" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainPageView">
+<AnchorPane maxHeight="500.0" maxWidth="800.0" minHeight="500.0" minWidth="500.0" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainPageView">
     <children>
         <ImageView fitHeight="500.0" fitWidth="500.0" pickOnBounds="true">
             <image>
@@ -30,8 +30,8 @@
         <Button fx:id="Browse_w" layoutX="337.0" layoutY="101.0" mnemonicParsing="false" onAction="#Browse_working" text="Browse" />
         <Button fx:id="Browse_s" layoutX="337.0" layoutY="160.0" mnemonicParsing="false" onAction="#Browse_saving" text="Browse" />
 
-        <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="d:\documents\users\itzikd\Downloads\BigCorupus" />
-        <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="d:\documents\users\itzikd\Downloads\BigCorupus\output" />
+        <TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />
+        <TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />
 
         <!--<TextField fx:id="work_path" layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter path to working direct" text="C:\Users\itzik\Desktop\IR\TestFolder" />-->
         <!--<TextField fx:id="save_path" layoutX="14.0" layoutY="160.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\output" />-->
@@ -55,7 +55,7 @@
         <TextField fx:id="query_text" layoutX="12.0" layoutY="251.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter Query Text" />
 
         <!--<TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\queries.txt" />-->
-        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="d:\documents\users\itzikd\Downloads\queries.txt" />
+        <TextField fx:id="query_path" layoutX="12.0" layoutY="295.0" prefHeight="25.0" prefWidth="318.0" promptText="Enter saveing path for posting file" text="C:\Users\itzik\Desktop\IR\TestFolder\queries.txt" />
 
         <Button fx:id="run_query" layoutX="336.0" layoutY="251.0" mnemonicParsing="false" onAction="#run_query" text="Run Query" />
         <Button fx:id="run_query_file" layoutX="401.0" layoutY="295.0" mnemonicParsing="false" onAction="#run_query_file" text="Run Query File" />
