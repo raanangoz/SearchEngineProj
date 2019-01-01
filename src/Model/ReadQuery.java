@@ -17,11 +17,11 @@ public class ReadQuery {
 
     public Query ParseQueryString(String queryText) {
         Query q = new Query("", queryText, "", "");
-        q = pq.parse(q);
+        q = pq.parse(q,false);//TODO WE EVER USE THIS FUNCTION? the false is plaster.
         return q;
     }
 
-    public ArrayList<Query> ParseQueryFile(File f) throws IOException {
+    public ArrayList<Query> ParseQueryFile(File f, boolean stemming) throws IOException {
         ArrayList<Query> queries = new ArrayList<>();
         StringBuilder QueryTitle = new StringBuilder();
         BufferedReader br = null;
@@ -39,7 +39,7 @@ public class ReadQuery {
                 ParseMe = st;
             } else if (st.equals("</top>")) {
                 Query q = new Query(queryNum, ParseMe.substring(8), queryDesc, "");
-                q = pq.parse(q);
+                q = pq.parse(q, stemming);
                 queries.add(q);
             } else if (st.startsWith("<num>")) {
                 String[] words = st.split(" ");

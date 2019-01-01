@@ -15,9 +15,10 @@ public class Parse {
     private static HashSet<String> stopWords;
     private String workpath;
     private String savepath;
-    private static Map<Doc, List<Integer>> maxtfandterm = new HashMap<Doc, List<Integer>>();
+    private static Map<String, List<Integer>> maxtfandterm = new HashMap<String, List<Integer>>();
     private Map<String, String> stemResult;
     private String cityname = "";
+    private boolean onetime2=true;
     private int maxcount = 0;
     // all docs until decide to move to disk
 
@@ -30,7 +31,6 @@ public class Parse {
         i = 0;
         finishedDoc = false;
         stopWords = new HashSet<>();
-        stopWordsFunc(this.savepath);
         this.workpath = workPath;
         this.savepath = savePath;
         stemResult = new HashMap<>();
@@ -45,13 +45,10 @@ public class Parse {
         TfandUniq.add(currentDoc.getMostFrequentTermValue());
         TfandUniq.add(currentDoc.getNumberOfDifferentWords());
         TfandUniq.add(currentDoc.getDocumentLength());
-        maxtfandterm.put(currentDoc, TfandUniq);
-    }
-    public static Set<Doc> getAllDocsParsed(){
-        return maxtfandterm.keySet();
+        maxtfandterm.put(currentDoc.getDocNo(), TfandUniq);
     }
 
-    public static Map<Doc, List<Integer>> getMaxtfandterm() {
+    public static Map<String, List<Integer>> getMaxtfandterm() {
         return maxtfandterm;
     }
 
@@ -75,9 +72,14 @@ public class Parse {
 
 
     public void parse(Doc currentDoc) {
+        if (onetime2==true) {
+            stopWordsFunc(this.savepath);
+            onetime2=false;
+        }
         terms = new LinkedHashMap[27];
         for (int i = 0; i < terms.length; i++)
             terms[i] = new LinkedHashMap();
+
         String first = "";
         String second = "";
         String third = "";
@@ -91,6 +93,7 @@ public class Parse {
         String[] words = removedChars.split("\\s+|--+");
         int count = 0;
         String cityName = currentDoc.getCity();
+
         for (i = 0; i < words.length; i++) {
             while (words[i].length() > 0 && (!((words[i].charAt(0) >= '0' && words[i].charAt(0) <= '9') || (words[i].charAt(0) >= 'a' && words[i].charAt(0) <= 'z')
                     || (words[i].charAt(0) >= 'A' && words[i].charAt(0) <= 'Z') || words[i].charAt(0) == '$')))
@@ -172,8 +175,12 @@ public class Parse {
                     if (term != null) {
                         addToTerms(first + term);
                         i++;
+
                     }
+
+
                     //Dates
+
                     else if ((month = isMonth(second)) != null) {//14 may -> 05-14
                         if (first.length() < 3) {
                             addToTerms(month + "-" + first);
@@ -198,15 +205,14 @@ public class Parse {
                         }
                         catch(Exception e){
 
-                            addToTerms(first);
-                        }
+                        addToTerms(first);
+                    }
                     }
 
 
                 }
                 else if (isFloat(first)) {
                     first = changeFloatToTerm(first);
-
                     addToTerms(first);
 
                 } else if ((length = isLength(first)) != null) {
@@ -345,7 +351,7 @@ public class Parse {
         int countPoints = 0;
         for (int i = 0; i < first.length(); i++) {
             if (!((first.charAt(i) >= '0') && first.charAt(i) <= '9'))
-                if (!(first.charAt(i) == '.' )) {
+                if (!(first.charAt(i) == '.')) {
                     return false;
                 } else
                     countPoints++;
@@ -425,7 +431,7 @@ public class Parse {
         else {
             first = first.replaceAll("-", " ");
 //            if (isInteger(first.substring(1)))
-            first = first.substring(1);
+                first = first.substring(1);
 //            else if (isFloat(first.substring(1)))
 //                first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
@@ -437,7 +443,7 @@ public class Parse {
                 i++;
                 return true;
             } else {
-                addToTerms(first + " Dollars");
+                addToTerms(first + "Dollars");
                 return true;
             }
         }
