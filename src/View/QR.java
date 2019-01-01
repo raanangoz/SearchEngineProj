@@ -53,10 +53,13 @@ public class QR implements Initializable {
                     words = Qresult.get(i).split("\\s");
                     if (lastowrd.equals(words[0])) {
                         ConnectedDocs += words[2] + " | ";
-                    } else
-                        list.getItems().add(words[0] + " --> " + ConnectedDocs);
+                    } else {
+                        list.getItems().add(lastowrd + " --> " + ConnectedDocs);
+                        ConnectedDocs=words[2] + " | ";
+                    }
                     lastowrd = words[0];
                 }
+                list.getItems().add(lastowrd + " --> " + ConnectedDocs);
             }
         } catch (IOException e) {
             doAlert("Error", "Problem O.O");
