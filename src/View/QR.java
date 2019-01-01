@@ -23,7 +23,11 @@ public class QR implements Initializable {
         start();
     }
 
-
+    /**
+     * @param title      - text to put in alert title
+     * @param headerText - text to put in alert body
+     *                   function to create alerts
+     */
     public void doAlert(String title, String headerText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -31,13 +35,20 @@ public class QR implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * function to create list view of querys and what docs they have
+     */
+
     public void start() {
         try {
+            //get results in string
             List<String> Qresult = controller.getQResult();
+            //make sure its not empty
             if (Qresult.size() > 0) {
                 String[] words = Qresult.get(0).split("\\s");
                 String lastowrd = words[0];
                 String ConnectedDocs = "";
+                //do it nicly with Q-->doc|doc|doc
                 for (int i = 0; i < Qresult.size(); i++) {
                     words = Qresult.get(i).split("\\s");
                     if (lastowrd.equals(words[0])) {
@@ -47,14 +58,10 @@ public class QR implements Initializable {
                     lastowrd = words[0];
                 }
             }
-
         } catch (IOException e) {
             doAlert("Error", "Problem O.O");
         } catch (BadPathException e) {
             doAlert("Error", "Problem with path, please make sure you ran the\nQuery file and saved it somewhere");
         }
-
     }
-
-
 }
