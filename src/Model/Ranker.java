@@ -118,76 +118,78 @@ public class Ranker {
     }
 */
 
-    /*
+
     public HashMap<String, Integer> getAllDocSize() throws IOException {
-        String savePath = Model.getInstance().getSavePath();
-        File fromFile = new File(savePath + "\\EachDocSize.txt");
-        BufferedReader br = new BufferedReader(new FileReader(fromFile));
+        HashMap<String, Integer> docLengths = new HashMap<>();
         String st;
-        Map<String, Integer> eachDocSize = new HashMap<String, Integer>();
-        while ((st = br.readLine()) != null) {
-            String[] words = st.split(" ");
-            eachDocSize.put(words[0], Integer.parseInt(words[2]));
+        File file = new File(Model.getInstance().getSavePath() + "\\EachDocSize.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        try {
+            while ((st = br.readLine()) != null) {
+                String[] line = st.split(" ");
+                int DL = Integer.parseInt(line[1]);
+                docLengths.put(line[0], DL);
+            }
+            br.close();
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        return (HashMap<String, Integer>) eachDocSize;
+        return docLengths;
     }
-*/
+
 
     /**
      * FQID IS ARRAY OF TERMS ( string,tf)! OF ONE QUERY.
      * the terms arent here, but only their posting lists.
      *
-     * @param postsOfAllQueriesTerms: all postings of all terms that appeared on all queries.
+     * @param allPostsForOneQuery: all postings of all terms that appeared on a query.
      * @return
      */
-    public Map<String, Double>[] applyBM25Algorithm(Map<String, Integer>[] postsOfAllQueriesTerms, double avgDL, int docsNumber, HashMap<String, Integer> docsLength) {//docsNumber - 470000
+    public Map<String, Double> applyBM25Algorithm(List<Map<String, Integer>> allPostsForOneQuery, double avgDL, int docsNumber, HashMap<String, Integer> docsLength) {//docsNumber - 470000
         double k1 = 1.35;
         double b = 0.25;
         double IDF = 0;
-        Map<String, Double>[] results = new HashMap[queriesToRanker.size()];//each cell contains map of docno and docvalue
+        String term = "1";
+        Map<String, Double> docsAndValuesOfQuery = new HashMap<>();
+        for (Map<String, Integer> postsOfOneTerm : allPostsForOneQuery) {
+            for (Map.Entry<String, Integer> entry : postsOfOneTerm.entrySet()) {
+                if (entry.getValue() == -1) {
+                    term = entry.getKey();
+                    break;
+                }
+            }
+            int k = correctCellDictionary(term);
+            if (LoadedDictionary.getDictionary()[k].containsKey(term)) {
+                int DF = LoadedDictionary.getDictionary()[k].get(term);
+                IDF = Math.log((docsNumber - DF + 0.5) / (DF + 0.5));
+                for (String docNo : postsOfOneTerm.keySet()) {
+                    if (docsAfterFilterCities.contains(docNo) || docsAfterFilterCities.size() == 0) {
+                        if (postsOfOneTerm.get(docNo) != -1) {
+                            int TF = postsOfOneTerm.get(docNo);
+                            if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
+                                int DL = docsLength.get(docNo);
+                                double docRelevance = IDF * ((TF * (k1 + 1)) / (TF + (k1 * (1 - b + (b * DL / avgDL)))));
+                                if (docsAndValuesOfQuery.containsKey(docNo)) {
 
-        for (int i = 0; i < results.length; i++) {
-            Map<String, Double> docsAndValuesOfQuery = new HashMap<>();
-            results[i] = new HashMap<>();
-            Query q = queriesToRanker.get(i);
-            Map<String, Integer> terms = q.getTerms();
-            for (Map.Entry<String, Integer> entry : terms.entrySet()) {
-                String term = entry.getKey();//we have a term, now rate it's docs.
-                int k = correctCellDictionary(term);
-                if (LoadedDictionary.getDictionary()[k].containsKey(term)) {
-                    int DF = LoadedDictionary.getDictionary()[k].get(term);
-                    IDF = Math.log((docsNumber - DF + 0.5) / (DF + 0.5));
-                    //postOfAllQueriesTerm[k] is the posting list for the term. now rate docs.
-                    for (String docNo : postsOfAllQueriesTerms[k].keySet()) {
-                        if (docsAfterFilterCities.contains(docNo) || docsAfterFilterCities.size() == 0) {
-                            if (postsOfAllQueriesTerms[k].get(docNo) != -1) {
-                                int TF = postsOfAllQueriesTerms[k].get(docNo);
-                                if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
-                                    int DL = docsLength.get(docNo);
-                                    double docRelevance = IDF * ((TF * (k1 + 1)) / (TF +( k1 * (1 - b + (b * DL / avgDL)))));
-                                    if (docsAndValuesOfQuery.containsKey(docNo)) {
+                                    docsAndValuesOfQuery.put(docNo, docsAndValuesOfQuery.get(docNo) + docRelevance);//update docrelevance because 2 terms of query existed on this doc.
 
-                                        docsAndValuesOfQuery.put(docNo, docsAndValuesOfQuery.get(docNo) + docRelevance);//update docrelevance because 2 terms of query existed on this doc.
-
-                                    }
-                                    else docsAndValuesOfQuery.put(docNo, docRelevance);
-                                }
+                                } else docsAndValuesOfQuery.put(docNo, docRelevance);
                             }
                         }
-
                     }
-                }
 
-                //sum all docs values for this query and save 50 highest and return for this query.
+                }
             }
-            results[i].putAll(docsAndValuesOfQuery);
-            //now next doc of same term.
+
+            //sum all docs values for this query and save 50 highest and return for this query.
         }
-        return results;
+        //now next doc of same term.
+
+        return docsAndValuesOfQuery;
     }
 
 
-    public double getAverageDocumentLength () {
+    public double getAverageDocumentLength() {
         BufferedReader br;
         double answer = 0;
         String st = "";
@@ -204,7 +206,7 @@ public class Ranker {
         return answer;
     }
 
-    public int getTotalDocumentsNumber () {
+    public int getTotalDocumentsNumber() {
         BufferedReader br;
         int answer = 0;
         String st = "";
@@ -221,31 +223,28 @@ public class Ranker {
         return answer;
     }
 
-    public HashMap<String, Integer>[] loadPostingListsForAllQueries (ArrayList < Query > queriesToRanker) {
-        List<String>[] termsOfAllQueries = new LinkedList[27];//each cell contains only terms starting with same char.
-        for (int i = 0; i < termsOfAllQueries.length; i++)
-            termsOfAllQueries[i] = new LinkedList<>();
-        for (Query q : queriesToRanker) {
-            Map<String, Integer> terms = q.getTerms();
-            for (Map.Entry<String, Integer> entry : terms.entrySet()) {
-                String term = entry.getKey();
-                int where = correctCellDictionary(term);
-                termsOfAllQueries[where].add(term);
-            }
+    public List<Map<String, Integer>> loadPostingListsForSingleQuery(Query q) {
+        /*Map<String, Integer> terms = q.getTerms();
+        for (Map.Entry<String, Integer> entry : terms.entrySet()) {
+            String term = entry.getKey();
+            int where = correctCellDictionary(term);
+            termsOfSingleQuery[where].add(term);
+        }*/
+        List<Map<String, Integer>> allPosts = new LinkedList<>();
+        // allposts: first link contains: term:   Map(docNo, tf.  docNo, tf...)
+//                   second link contains: ...
+        //number of links is at max the number of terms in the query q. maybe lower if term not found in dic.
+        Map<String, Integer> terms = q.getTerms();
 
-        }
-
-        HashMap<String, Integer>[] allPosts = new HashMap[termsOfAllQueries.length];//[0]:  gas -1 fbis3 5 fbis4 6...
-        //allposts[i] contains random posting list of a term.
-        for (int i = 0; i < 27; i++) {//iterate the terms
-            allPosts[i] = new HashMap<>();
-            int numOfPostingListsFoundForGroup = 0;//2 terms start with e, we want to open posting list e once.
-            String st;
-            File file = new File(Model.getInstance().getSavePath() + "\\Posting " + i + ".txt");
-            try {
-                BufferedReader fr = new BufferedReader(new FileReader(file));
-                while ((st = fr.readLine()) != null) {//read all lines that might contain term's posts
-                    for (String term : termsOfAllQueries[i]) {//terms in same group
+        for (String term : terms.keySet()) {
+            int where = correctCellDictionary(term);
+            if (LoadedDictionary.getDictionary()[where].containsKey(term)) {
+                int numOfPostingListsFoundForGroup = 0;//2 terms start with e, we want to open posting list e once.
+                String st;
+                File file = new File(Model.getInstance().getSavePath() + "\\Posting " + where + ".txt");
+                try {
+                    BufferedReader fr = new BufferedReader(new FileReader(file));
+                    while ((st = fr.readLine()) != null) {//read all lines that might contain term's posts
                         if (st.startsWith(term)) {
                             String[] words = st.split("\\s+");
                             if (words[0].equals(term)) {
@@ -255,75 +254,35 @@ public class Ranker {
                                 }
                                 postingList.put(term, -1);//plaster to recognize the term.
                                 numOfPostingListsFoundForGroup++;
-
-                                allPosts[i].putAll(postingList);
+                                allPosts.add(postingList);
                             }
                         }
+                        if (numOfPostingListsFoundForGroup == q.getTerms().size())
+                            break;//dont read more lines , all postings of this group are in memory.
                     }
-                    if (numOfPostingListsFoundForGroup == termsOfAllQueries[i].size())
-                        break;//dont read more lines , all postings of this group are in memory.
-                }
-                fr.close();
+                    fr.close();
+                } catch (Exception e) {
 
-            } catch (Exception e) {
+                }
 
             }
-
         }
         return allPosts;
     }
 
-
-    public HashMap<String, Integer> getAllDocsLengthsForQueriesGroup (Map < String, Integer >[]termsAndPostings){
-        HashMap<String, Integer> docLengths = new HashMap<>();
-        String st;
-        BufferedReader br;
-        File file = new File(Model.getInstance().getSavePath() + "\\EachDocSize.txt");
-        try {
-            br = new BufferedReader(new FileReader(file));
-            Set<String> allDocNo = new HashSet<>();
-            for (int i = 0; i < termsAndPostings.length; i++) {
-                if (null != termsAndPostings[i])
-                    for (String docNo : termsAndPostings[i].keySet()) {
-                        allDocNo.add(docNo);
-                    }
-            }
-            while ((st = br.readLine()) != null) {
-                String[] line = st.split(" ");
-                if (allDocNo.contains(line[0])) {
-                    int DL = Integer.parseInt(line[1]);
-                    docLengths.put(line[0], DL);
-                    allDocNo.remove(line[0]);
-//                    break;
-                }
-            }
-            br.close();
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return docLengths;
-    }
-
-    public List<String>[] get50relevant (Map < String, Double >[]allQueriestResults){
+    public LinkedList<String> get50relevant(Map<String, Double> allQueriestResults) {
 //TODO I DONT THINK THE 50 RETURNED ARE SORTED FROM HIGHEST TO LOWEST, BUT THEY ARE THE BEST 50.
-        List<String>[] finalResult = new LinkedList[allQueriestResults.length];
+        LinkedList<String> finalResult = new LinkedList<>();
 
-        for (int i = 0; i < allQueriestResults.length; i++) {
-            finalResult[i] = new LinkedList<>();
-            List<Map.Entry<String, Double>> greatest = findGreatest(allQueriestResults[i], 50);
-            for (Map.Entry<String, Double> entry : greatest) {
-
-                finalResult[i].add(entry.getKey());
-            }
+        List<Map.Entry<String, Double>> greatest = findGreatest(allQueriestResults, 50);
+        for (Map.Entry<String, Double> entry : greatest) {
+            finalResult.add(entry.getKey());
         }
-
 
         return finalResult;
     }
-
-    private static <String, Double extends Comparable<? super Double>>List<Map.Entry<String, Double>>
-    findGreatest(Map < String, Double > map, int n){
+    private static <String, Double extends Comparable<? super Double>> List<Map.Entry<String, Double>>
+    findGreatest(Map<String, Double> map, int n) {
         Comparator<? super Map.Entry<String, Double>> comparator =
                 new Comparator<Map.Entry<String, Double>>() {
                     @Override

@@ -206,21 +206,32 @@ public class Model {
         ranker.filterDocsByCities();
         int docsNumber = ranker.getTotalDocumentsNumber();
         double avgDL = ranker.getAverageDocumentLength();
-        // [docNo, grade], [docNo, grade],  [docNo, grade],  [docNo, grade],
-        //sorted
-        HashMap<String, Integer>[] relevantPostsForAllQueries = ranker.loadPostingListsForAllQueries(queriesToRanker);
-        HashMap<String, Integer> docLengths = ranker.getAllDocsLengthsForQueriesGroup(relevantPostsForAllQueries);
-        Map<String, Double>[] allQueriestResults = ranker.applyBM25Algorithm(relevantPostsForAllQueries, avgDL, docsNumber, docLengths);// doc1 0.8  doc2 0.1 ...
+        HashMap<String, Integer> alldocsofcorpus = ranker.getAllDocSize();
+        Map<String, Double>[] allQueriestResults = new HashMap[queriesToRanker.size()];
+        int k = 0 ;
+        LinkedList<String>[] fiftyRelevantDocsOfAllQueries = new LinkedList[queriesToRanker.size()] ;
+        for(Query q: queriesToRanker) {
+            fiftyRelevantDocsOfAllQueries[k] = new LinkedList<>();
+            allQueriestResults[k]=new HashMap<>();
+            List<Map<String, Integer>> relevantPostsForSingleQuery = ranker.loadPostingListsForSingleQuery(q);//to get posts of a term on this query,
+            allQueriestResults[k] = ranker.applyBM25Algorithm(relevantPostsForSingleQuery, avgDL, docsNumber, alldocsofcorpus);
+            LinkedList<String>fiftyRelevantDocs = ranker.get50relevant(allQueriestResults[k]);
+            fiftyRelevantDocsOfAllQueries[k]=fiftyRelevantDocs;
+            k++;
+        }
 
+        // doc1 0.8  doc2 0.1 ...
+
+        //TODO CHECK CASES THAT A QUERY DIDNT RETURN ANYTHING.
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
-        List<String>[] fiftyRelevantDocs = ranker.get50relevant(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
+         // each cell of array contains sorted docs from most relevant to least.
         if (tosave == true) {
             File toFile = new File(savefolder + "\\results.txt");
             BufferedWriter bw = null;
             bw = new BufferedWriter(new FileWriter(toFile));
-            for (int i = 0; i < fiftyRelevantDocs.length; i++) {
+            for (int i = 0; i < fiftyRelevantDocsOfAllQueries.length; i++) {
                 String queryNum = queriesToRanker.get(i).getQueryNum();
-                for (String docNo : fiftyRelevantDocs[i]) {
+                for (String docNo : fiftyRelevantDocsOfAllQueries[i]) {
                     bw.write(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
                     bw.newLine();
 //                System.out.println(queryNum + "\t" + "0\t" + docNo + "\t 1 \t 12.23 \t mt");
@@ -244,7 +255,7 @@ public class Model {
         DatamuseQuery getData = new DatamuseQuery();
         String allData = getData.findSimilar(key);
         JSONArray array = new JSONArray(allData);
-        for (int i = 0; i < array.length() && i < 10; i++) {
+        for (int i = 0; i < array.length() && i < 3; i++) {
             JSONObject jsonObj = array.getJSONObject(i);
             String word = (jsonObj.getString("word"));
 //            int score = (jsonObj.getInt("score"));
