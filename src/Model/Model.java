@@ -162,13 +162,13 @@ public class Model {
         this.workPath = workPath;
         this.stemmimng = checkbox_value;
         this.readQuery = read;
-        if (checkbox_semantic == true) {
+        if (checkbox_value == true) {
             Map<String, Integer> tempTerms;
             for (Query q : queriesToRanker) {
                 Map<String, Integer> termsToAddToQuery = new HashMap<>();
                 tempTerms = q.getTerms();
                 for (Map.Entry<String, Integer> s : tempTerms.entrySet()) {
-                    List<String> seManticTerms = findsimiliar(s.getKey()); //TODO OBVIOUSLY ITS NOT GOING TO WORK BECAUSE IT IS NOT BEING STEMMED , STEMMED HAPPENED ONLY TO THE TITLE!!!!!!!!!!!!
+                    List<String> seManticTerms = findsimiliar(s.getKey(),checkbox_semantic); //TODO OBVIOUSLY ITS NOT GOING TO WORK BECAUSE IT IS NOT BEING STEMMED , STEMMED HAPPENED ONLY TO THE TITLE!!!!!!!!!!!!
                     for (String newTerm : seManticTerms) {
                         if(Character.isUpperCase(s.getKey().charAt(0)))
                             newTerm=newTerm.toUpperCase();
@@ -252,12 +252,17 @@ public class Model {
     }
 
 
-    private List<String> findsimiliar(String key) {
+    private List<String> findsimiliar(String key, boolean semantics) {
+
+        int x=0;
+        if(semantics==true)
+            x=1;
+
         List<String> Final = new LinkedList<>();
         DatamuseQuery getData = new DatamuseQuery();
         String allData = getData.findSimilar(key);
         JSONArray array = new JSONArray(allData);
-        for (int i = 0; i < array.length() && i < 3; i++) {
+        for (int i = 0; i < array.length() && i < x; i++) {
             JSONObject jsonObj = array.getJSONObject(i);
             String word = (jsonObj.getString("word"));
 //            int score = (jsonObj.getInt("score"));
