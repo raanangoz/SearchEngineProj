@@ -398,7 +398,7 @@ public class Indexer {
         if (this.stemmiming == false)
             filename = "Posting " + index + ".txt";
         else
-            filename = "Posting " + index + "S.txt";
+            filename = "Posting " + index + ".txt";
         file = new File(filename);
         try {
             fw = new FileWriter(savepath + "\\" + file);
@@ -431,7 +431,7 @@ public class Indexer {
         if (this.stemmiming == false)
             filename = savePath + "\\Dictionary.txt";
         else
-            filename = savePath + "\\DictionaryS.txt";
+            filename = savePath + "\\Dictionary.txt";
 //        for (int i = 0; i < dictionary.length; i++) {
         file = new File(filename);
         try {

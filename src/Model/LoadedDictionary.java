@@ -28,7 +28,7 @@ public class LoadedDictionary {
         if (this.stemmimng == false)
             path = savePath + "\\Dictionary.txt";
         else
-            path = savePath + "\\DictionaryS.txt";
+            path = savePath + "\\Dictionary.txt";
         File fromFile = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(fromFile));
         String st;

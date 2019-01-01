@@ -14,7 +14,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -131,6 +130,14 @@ public class MainPageView implements Initializable {
             if (savePath.equals("") || workPath.equals("")) {
                 doAlert("Error", "Please select a folder");
             } else {
+                if (checkbox_stemming == false) {
+                    new File(savePath + "\\without").mkdirs();
+                    savePath = savePath + "\\without";
+                } else {
+                    new File(savePath + "\\with").mkdirs();
+                    savePath = savePath + "\\with";
+                }
+
                 double t = System.currentTimeMillis();
                 controller.parse(workPath, savePath, checkbox_stemming);
                 controller.writeLastDocsToDisk(savePath);
@@ -165,8 +172,16 @@ public class MainPageView implements Initializable {
             String savePath = save_path.getText();
             if (savePath.equals("")) {
                 doAlert("Error", "Please select a folder in save and work path");
-            } else
+            } else {
+                if (checkbox_stemming == false) {
+                    new File(savePath + "\\without").mkdirs();
+                    savePath = savePath + "\\without";
+                } else {
+                    new File(savePath + "\\with").mkdirs();
+                    savePath = savePath + "\\with";
+                }
                 controller.resetButton(savePath);
+            }
         } catch (SearcherException e) {
             doAlert("Done", "Reset Succsefully");
         }
@@ -178,8 +193,16 @@ public class MainPageView implements Initializable {
             String savePath = save_path.getText();
             if (savePath.equals("")) {
                 doAlert("Error", "Save Path does not have Dictionary file");
-            } else
-                controller.showDic(savePath);
+            } else {
+                if (checkbox_stemming == false) {
+                    new File(savePath + "\\without").mkdirs();
+                    savePath = savePath + "\\without";
+                } else {
+                    new File(savePath + "\\with").mkdirs();
+                    savePath = savePath + "\\with";
+                }
+                controller.showDic(savePath,checkbox_stemming);
+            }
         } catch (RuntimeException e) {
             doAlert("Fail", "Dictionary does not exist");
         } catch (IOException e) {
@@ -222,6 +245,14 @@ public class MainPageView implements Initializable {
             doAlert("Error", "Please select a folder in save and work path");
         } else {
             try {
+                if (checkbox_stemming == false) {
+                    new File(savePath + "\\without").mkdirs();
+
+                    savePath = savePath + "\\without";
+                } else {
+                    new File(savePath + "\\with").mkdirs();
+                    savePath = savePath + "\\with";
+                }
                 List<String> chosenCities = getCountryForSearch(allCityList);
                 boolean tosave;
                 String saveFolder = "";
@@ -238,7 +269,7 @@ public class MainPageView implements Initializable {
                     tosave = false;
                 }
                 boolean check = AlertLoadDic();
-                if (check==false)
+                if (check == false)
                     throw new IOException();
                 controller.runQueryString(queryText, workPath, savePath, checkbox_semantic, checkbox_stemming, chosenCities, tosave, saveFolder);
                 if (tosave == true) {
@@ -267,8 +298,15 @@ public class MainPageView implements Initializable {
         boolean tosave;
         String saveFolder = "";
         try {
+            if (checkbox_stemming == false) {
+                new File(savePath + "\\without").mkdirs();
+                savePath = savePath + "\\without";
+            } else {
+                new File(savePath + "\\with").mkdirs();
+                savePath = savePath + "\\with";
+            }
             boolean check = AlertLoadDic();
-            if (check==false)
+            if (check == false)
                 throw new IOException();
             Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save the results?",
                     ButtonType.YES, ButtonType.NO);
@@ -299,7 +337,15 @@ public class MainPageView implements Initializable {
 
     private boolean AlertLoadDic() {
         try {
-            controller.loadDic(save_path.getText());
+            String savePath = this.save_path.getText();
+            if (checkbox_stemming == false) {
+                new File(savePath + "\\without").mkdirs();
+                savePath = savePath + "\\without";
+            } else {
+                new File(savePath + "\\with").mkdirs();
+                savePath = savePath + "\\with";
+            }
+            controller.loadDic(savePath,checkbox_stemming);
             return true;
 
         } catch (SearcherException e) {
@@ -343,7 +389,15 @@ public class MainPageView implements Initializable {
 
     public void load_cities(ActionEvent actionEvent) {
         try {
-            List<String> selectedCountrys = controller.loadCity(save_path.getText());
+            String savePath = save_path.getText();
+            if (checkbox_stemming == false) {
+                new File(savePath + "\\without").mkdirs();
+                savePath = savePath + "\\without";
+            } else {
+                new File(savePath + "\\with").mkdirs();
+                savePath = savePath + "\\with";
+            }
+            List<String> selectedCountrys = controller.loadCity(savePath);
             allCityList.clear();
             for (int i = 0; i < selectedCountrys.size(); i++)
                 allCityList.add(new CheckMenuItem(selectedCountrys.get(i)));
@@ -360,7 +414,15 @@ public class MainPageView implements Initializable {
 
     public void get_Entities(ActionEvent actionEvent) {
         try {
-            HashMap<String, String> allEntities = controller.getEntities(save_path.getText());
+            String savePath = save_path.getText();
+            if (checkbox_stemming == false) {
+                new File(savePath + "\\without").mkdirs();
+                savePath = savePath + "\\without";
+            } else {
+                new File(savePath + "\\with").mkdirs();
+                savePath = savePath + "\\with";
+            }
+            HashMap<String, String> allEntities = controller.getEntities(savePath);
             String entity_text = entities_text.getText();
             String Entities = allEntities.get(entity_text);
             String words[] = Entities.split("@");
@@ -377,7 +439,15 @@ public class MainPageView implements Initializable {
 
     public void load_lanugage(ActionEvent actionEvent) {
         try {
-            List<String> selectedLang = controller.loadLang(save_path.getText());
+            String savePath = save_path.getText();
+            if (checkbox_stemming == false) {
+                new File(savePath + "\\without").mkdirs();
+                savePath = savePath + "\\without";
+            } else {
+                new File(savePath + "\\with").mkdirs();
+                savePath = savePath + "\\with";
+            }
+            List<String> selectedLang = controller.loadLang(savePath);
             languageDocList.clear();
             for (int i = 0; i < selectedLang.size(); i++)
                 languageDocList.add(new CheckMenuItem(selectedLang.get(i)));
@@ -393,7 +463,7 @@ public class MainPageView implements Initializable {
         }
     }
 
-    public void newwindow(ActionEvent actionEvent){
+    public void newwindow(ActionEvent actionEvent) {
         Stage s = (Stage) showQR.getScene().getWindow();
 //        s.close();
         try {

@@ -38,12 +38,12 @@ public class Controller {
         model.resetButton(savePath);
     }
 
-    public void showDic(String savePath) throws IOException {
-        model.showDic(savePath);
+    public void showDic(String savePath,Boolean checkbox_stemming) throws IOException {
+        model.showDic(savePath,checkbox_stemming);
     }
 
-    public void loadDic(String savePath) throws SearcherException, IOException {
-        model.loadDic(savePath);
+    public void loadDic(String savePath, boolean checkbox_stemming) throws SearcherException, IOException {
+        model.loadDic(savePath,checkbox_stemming);
     }
 
     public void merg_func(String workPath, String savePath) {

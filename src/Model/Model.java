@@ -3,6 +3,7 @@ package Model;
 import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 import Model.Excpetions.SuccessException;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -76,6 +77,7 @@ public class Model {
             if (file.getName().endsWith(".txt"))
                 file.delete();
         }
+        // TODO: 01/01/2019  delte with and without folder  Itzik
         Country.clear();
         readFile.p.getIndexer().cleardic();
         throw new SuccessException();
@@ -83,19 +85,20 @@ public class Model {
 //        Parse.clearData();
     }
 
-    public void showDic(String savePath) throws IOException {
+    public void showDic(String savePath, Boolean checkbox_stemming) throws IOException {
         this.savePath = savePath;
+        this.stemmimng=checkbox_stemming;
         File fromFile;
         if (this.stemmimng == false)
             fromFile = new File(savePath + "\\Dictionary.txt");
         else
-            fromFile = new File(savePath + "\\DictionaryS.txt");
+            fromFile = new File(savePath + "\\Dictionary.txt");
         Desktop.getDesktop().open(fromFile);
 
     }
 
-    public void loadDic(String savePath) throws IOException, SearcherException {
-
+    public void loadDic(String savePath, boolean checkbox_stemming) throws IOException, SearcherException {
+        this.stemmimng=checkbox_stemming;
         this.savePath = savePath;
         LoadedDictionary loadedDictionary = new LoadedDictionary(savePath, this.stemmimng);
         loadedDictionary.loadDic();
