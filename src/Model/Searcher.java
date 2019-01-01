@@ -40,7 +40,8 @@ public class Searcher {
         }
     }
 
-    public Query parse(Query q) {
+    public Query parse(Query q, boolean stemming) {
+        this.stemmer=stemming;
         stopWordsFunc(this.workpath);
         this.queryText = q.getQueryTitle();
         termsQuery = new HashMap<>();
@@ -94,6 +95,7 @@ public class Searcher {
                 return q;
                 // TODO: 21/12/2018 fix here to send to new indexer  Itzik
             }
+
             if (containDigit(words[i])) {
                 if (first.charAt(0) == '$' ||
                         second.equals("dollars") || second.equals("Dollars") ||
@@ -103,14 +105,17 @@ public class Searcher {
                 } else if (first.charAt(first.length() - 1) == '%' ||
                         (second.equals("percent") || second.equals("percentage"))) {
                     parseToPercents(first, second);
-                }
-                else if (isInteger(first)) {
+                } else if (isInteger(first)) {
                     String term = wordToNumber(second);
                     if (term != null) {
                         addToTerms(first + term);
                         i++;
+
                     }
+
+
                     //Dates
+
                     else if ((month = isMonth(second)) != null) {//14 may -> 05-14
                         if (first.length() < 3) {
                             addToTerms(month + "-" + first);
@@ -135,14 +140,13 @@ public class Searcher {
                         }
                         catch(Exception e){
 
-                            addToTerms(first);
-                        }
+                        addToTerms(first);
+                    }
                     }
 
                 }
                 else if (isFloat(first)) {
                     first = changeFloatToTerm(first);
-
                     addToTerms(first);
 
                 } else if ((length = isLength(first)) != null) {
@@ -356,7 +360,7 @@ public class Searcher {
         else {
             first = first.replaceAll("-", " ");
 //            if (isInteger(first.substring(1)))
-            first = first.substring(1);
+                first = first.substring(1);
 //            else if (isFloat(first.substring(1)))
 //                first = first.substring(1);
             if (second.equals("thousand") || second.equals("Thousand")) {
@@ -368,7 +372,7 @@ public class Searcher {
                 i++;
                 return true;
             } else {
-                addToTerms(first + " Dollars");
+                addToTerms(first + "Dollars");
                 return true;
             }
         }

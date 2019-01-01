@@ -46,7 +46,7 @@ public class Model {
     public void mergePartialPosting(String workPath, String savePath) {
         this.savePath = savePath;
         this.workPath = workPath;
-        this.readFile.p.getIndexer().mergePartialPosting(workPath, savePath, this.stemmimng);
+        this.readFile.p.getIndexer().mergePartialPosting(workPath, savePath, stemmimng);
     }
 
     public void parse(String workPath, String savePath, boolean checkbox_value) throws SearcherException, IOException {
@@ -106,7 +106,7 @@ public class Model {
         this.savePath = savePath;
         this.workPath = workPath;
 
-        readFile.p.getIndexer().mergePartialPosting(workPath, savePath, this.stemmimng);
+        readFile.p.getIndexer().mergePartialPosting(workPath, savePath, stemmimng);
     }
 
     public void writeLastDocsToDisk(String savePath) {
@@ -132,7 +132,7 @@ public class Model {
             if (savefolder.length() < 1)
                 throw new BadPathException();
         }
-        ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile);
+        ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile, checkbox_value);
         runQuery(workPath, savePath, checkbox_semantic, checkbox_value, chosenCities, tosave, savefolder, queriesToRanker);
     }
 
@@ -165,7 +165,7 @@ public class Model {
             for (Query q : queriesToRanker) {
                 tempTerms = q.getTerms();
                 for (Map.Entry<String, Integer> s : tempTerms.entrySet()) {
-                    List<String> seManticTerms = findsimiliar(s.getKey());
+                    List<String> seManticTerms = findsimiliar(s.getKey()); //TODO OBVIOUSLY ITS NOT GOING TO WORK BECAUSE IT IS NOT BEING STEMMED , STEMMED HAPPENED ONLY TO THE TITLE!!!!!!!!!!!!
                     for (String newTerm : seManticTerms) {
                         termsToAdd.put(newTerm, 1);
 
@@ -217,7 +217,7 @@ public class Model {
         DatamuseQuery getData = new DatamuseQuery();
         String allData = getData.findSimilar(key);
         JSONArray array = new JSONArray(allData);
-        for (int i = 0; i < array.length() && i < 5; i++) {
+        for (int i = 0; i < array.length() && i < 1; i++) {
             JSONObject jsonObj = array.getJSONObject(i);
             String word = (jsonObj.getString("word"));
 //            int score = (jsonObj.getInt("score"));

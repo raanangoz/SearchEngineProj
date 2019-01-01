@@ -11,9 +11,11 @@ public class Indexer {
     private int postingCounter;
     private HashMap<String, PostingList>[] dictionary;
     private boolean stemmiming = false;
+    private Map<String, List<String>> dominantEntities;
 
     public Indexer() {
         postingCounter = 0;
+        dominantEntities = new HashMap<>();
         dictionary = new HashMap[27];
         for (int i = 0; i < dictionary.length; i++)
             dictionary[i] = new HashMap<>();
@@ -41,48 +43,23 @@ public class Indexer {
         currentDoc.setNumberOfDifferentWords();
         currentDoc.setMostFrequentTermValue();
         currentDoc.setDocumentLength();
-        currentDoc.saveEntities();
+        saveEntities(currentDoc);
         Parse.saveTFandUniq(currentDoc);
         updateDictionary(currentDoc, terms);
+
         if ((ReadFile.getFileIndex() % 10 == 0) && (onetime == true)) {
-
-
             writeToDiskAlgorithm(savepath);
         }
         if ((ReadFile.getFileIndex() % 10) - 1 == 0 && ReadFile.getFileIndex() != 1)
             onetime = true;
     }
 
+
     private void writeToDiskAlgorithm(String savepath) {
         writePartialPostToDisk(savepath);
         deletePostingFromMemory();
         onetime = false;
     }
-
-    public void writeEntitiesToDisk(String savePath) {
-        try {
-            File tofile =  new File(savePath + "\\docsEntities.txt");
-            FileWriter fw = new FileWriter(tofile);
-            BufferedWriter bw = new BufferedWriter(fw);
-            Set <Doc> letsWriteEntitiesToDiskLMAO = Parse.getAllDocsParsed();
-            for (Doc d:letsWriteEntitiesToDiskLMAO) {
-                List<Map.Entry<String, Integer>> docDominantEntities = d.getDocDominantEntities();
-                bw.write(d.getDocNo() + " -> ");
-                for (Map.Entry<String, Integer> entry : docDominantEntities) {
-                    bw.write(entry.getKey()+"@");
-
-                }
-                bw.newLine();
-
-            }
-            bw.close();
-            fw.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
-
 
     private void deletePostingFromMemory() {
         for (int i = 0; i < dictionary.length; i++) {
@@ -120,36 +97,36 @@ public class Indexer {
         }
     }
 
-//    public void loadDic(String savePath) throws SearcherException, IOException {
-//        File fromFile = new File(savePath + "\\Dictionary.txt");
-//        BufferedReader br = new BufferedReader(new FileReader(fromFile));
-//        String st;
-//        String[] words;
-//        String term = "";
-//        int DF = 0;
-//        //int TF=0;
-//        while ((st = br.readLine()) != null) {
-//            term = "";
-//            words = st.split(" ");
-//            int i;
-//            for (i = 0; i < words.length && !words[i].equals("DF"); i++) {
-//                term += (words[i]);
-//
-//            }
-//            DF = Integer.parseInt(words[i + 1]);
-//            //TF = Integer.parseInt(words[i + 3]);
-//
-//
-//            int location = correctCellDictionary(term);
-//            PostingList p = new PostingList(term);
-//            p.setDF(DF);
-//            dictionary[location].put(term, p);
-//
-//        }//while
-//        br.close();
-//        throw new SuccessException();
-//
-//    }
+    public void loadDic(String savePath) throws SearcherException, IOException {
+        File fromFile = new File(savePath + "\\Dictionary.txt");
+        BufferedReader br = new BufferedReader(new FileReader(fromFile));
+        String st;
+        String[] words;
+        String term = "";
+        int DF = 0;
+        //int TF=0;
+        while ((st = br.readLine()) != null) {
+            term = "";
+            words = st.split(" ");
+            int i;
+            for (i = 0; i < words.length && !words[i].equals("DF"); i++) {
+                term += (words[i]);
+
+            }
+            DF = Integer.parseInt(words[i + 1]);
+            //TF = Integer.parseInt(words[i + 3]);
+
+
+            int location = correctCellDictionary(term);
+            PostingList p = new PostingList(term);
+            p.setDF(DF);
+            dictionary[location].put(term, p);
+
+        }//while
+        br.close();
+        throw new SuccessException();
+
+    }
 
     private int correctCellDictionary(String termToFind) {
 
@@ -248,25 +225,23 @@ public class Indexer {
                 String oldValueOfLowerCase;
                 String oldValueOfUpperCase;
                 if(key.length()>0)
-                    if (key.charAt(0) >= 'A' && key.charAt(0) <= 'Z')
-                        if (merged.containsKey(key.toLowerCase())) {
-                            oldValueOfLowerCase = merged.get(key.toLowerCase());
-                            //merged.remove(key.toLowerCase());
-                            oldValueOfUpperCase = merged.get(key);
-                            // merged.remove(key);
-                            mergeUpAndLow.put(key.toLowerCase(), oldValueOfUpperCase + oldValueOfLowerCase);
-                        }
+                if (key.charAt(0) >= 'A' && key.charAt(0) <= 'Z')
+                    if (merged.containsKey(key.toLowerCase())) {
+                        oldValueOfLowerCase = merged.get(key.toLowerCase());
+                        //merged.remove(key.toLowerCase());
+                        oldValueOfUpperCase = merged.get(key);
+                        // merged.remove(key);
+                        mergeUpAndLow.put(key.toLowerCase(), oldValueOfUpperCase + oldValueOfLowerCase);
+                    }
             }
             for (Map.Entry<String, String> entry : mergeUpAndLow.entrySet()) {
                 merged.remove(entry.getKey().toUpperCase());
                 merged.put(entry.getKey(), entry.getValue());
             }
-
             writeFinalPosting(merged, i, savePath);
             list.clear();
 
         }
-
         deletePostFiles(savePath);
         writeDicToDisk(savePath);
         writeCitysToDisk(savePath);
@@ -302,7 +277,7 @@ public class Indexer {
 
 
     private void writeEachDocSizeToDisc(String savePath) {
-        Map<Doc, List<Integer>> docDetails = (HashMap<Doc, List<Integer>>) Parse.getMaxtfandterm();
+        Map<String, List<Integer>> docDetails = (HashMap<String, List<Integer>>) Parse.getMaxtfandterm();
         File file;
         FileWriter fw;
         BufferedWriter bw;
@@ -310,8 +285,8 @@ public class Indexer {
         try {
             fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
-            for (Map.Entry<Doc, List<Integer>> entry : docDetails.entrySet()) {
-                bw.write(entry.getKey().getDocNo().toString() + " " + entry.getValue().get(2));
+            for (Map.Entry<String, List<Integer>> entry : docDetails.entrySet()) {
+                bw.write(entry.getKey().toString() + " " + entry.getValue().get(2));
                 bw.write("\n");
             }
             bw.close();
@@ -331,7 +306,7 @@ public class Indexer {
             fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
             int number = ReadFile.getNumberOfParsedDocs();
-            String write = ""+number;
+            String write = "" + number;
             bw.write(write);
             bw.close();
             fw.close();
@@ -341,9 +316,9 @@ public class Indexer {
     }
 
     private void writeAvgDocsSize(String savePath) {
-        Map<Doc, List<Integer>> docDetails = (HashMap<Doc, List<Integer>>) Parse.getMaxtfandterm();
+        Map<String, List<Integer>> docDetails = (HashMap<String, List<Integer>>) Parse.getMaxtfandterm();
         double sum = 0;
-        for (Map.Entry<Doc, List<Integer>> entry : docDetails.entrySet()) {
+        for (Map.Entry<String, List<Integer>> entry : docDetails.entrySet()) {
             sum += entry.getValue().get(2);
         }
         File file;
@@ -353,8 +328,8 @@ public class Indexer {
         try {
             fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
-            sum=sum/ReadFile.getNumberOfParsedDocs();
-            String writeMe=""+sum;
+            sum = sum / ReadFile.getNumberOfParsedDocs();
+            String writeMe = "" + sum;
             bw.write(writeMe);
             bw.close();
             fw.close();
@@ -528,8 +503,30 @@ public class Indexer {
         }
     }
 
+    public void writeEntitiesToDisk(String savePath) {
+        try {
+            File tofile = new File(savePath + "\\docsEntities.txt");
+            FileWriter fw = new FileWriter(tofile);
+            BufferedWriter bw = new BufferedWriter(fw);
+            //dominantEntities
+            for (Map.Entry<String, List<String>> entry : dominantEntities.entrySet()) {
+                String wordToWrite = entry.getKey() + " -> ";
+                for (int i = 0; i < entry.getValue().size(); i++)
+                    wordToWrite += entry.getValue().get(i) + "@";
+                bw.write(wordToWrite);
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
 
-    public class PostingList {
+        } catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
+
+    private class PostingList {
         int DF;
         LinkedHashMap<Doc, Integer> posts;
         //String address;
@@ -597,16 +594,67 @@ public class Indexer {
             this.posts.clear();
         }
     }
-}
 
-class CustomizedHashMap implements Comparator<Map.Entry<String, LinkedList<String>>> {
 
-    @Override
-    public int compare(Map.Entry<String, LinkedList<String>> o1, Map.Entry<String, LinkedList<String>> o2) {
-        if (o1.getKey().compareTo(o2.getKey()) > 0)
-            return 1;
-        else if (o1.getKey().compareTo(o2.getKey()) < 0)
-            return -1;
-        else return 0;
+    public void saveEntities(Doc currentDoc) {
+        int max = 0;
+        LinkedHashMap<String, Integer> docEntities = new LinkedHashMap<>();
+        for (int i = 0; i < currentDoc.getDocTerms().length; i++) {
+
+            Set<String> keys = currentDoc.getDocTerms()[i].keySet();
+            for (String k : keys) {
+                if (Character.isUpperCase(k.charAt(0))) {
+                    docEntities.put(k, currentDoc.getDocTerms()[i].get(k));
+                }
+
+            }
+        }
+        List<Map.Entry<String, Integer>> docDominantEntities = findGreatest(docEntities, 5);
+        List<String> theEntities = new LinkedList<>();
+
+        for (Map.Entry<String, Integer> x : docDominantEntities) {
+            theEntities.add(x.getKey());
+        }
+        dominantEntities.put(currentDoc.getDocNo(), theEntities);
+    }
+
+    class CustomizedHashMap implements Comparator<Map.Entry<String, LinkedList<String>>> {
+
+        @Override
+        public int compare(Map.Entry<String, LinkedList<String>> o1, Map.Entry<String, LinkedList<String>> o2) {
+            if (o1.getKey().compareTo(o2.getKey()) > 0)
+                return 1;
+            else if (o1.getKey().compareTo(o2.getKey()) < 0)
+                return -1;
+            else return 0;
+        }
+
+    }
+
+    private static <String, Double extends Comparable<? super Double>> List<Map.Entry<String, Double>>
+    findGreatest(Map<String, Double> map, int n) {
+        Comparator<? super Map.Entry<String, Double>> comparator =
+                new Comparator<Map.Entry<String, Double>>() {
+                    @Override
+                    public int compare(Map.Entry<String, Double> e0, Map.Entry<String, Double> e1) {
+                        Double v0 = e0.getValue();
+                        Double v1 = e1.getValue();
+                        return v0.compareTo(v1);
+                    }
+                };
+        PriorityQueue<Map.Entry<String, Double>> highest =
+                new PriorityQueue<Map.Entry<String, Double>>(n, comparator);
+        for (Map.Entry<String, Double> entry : map.entrySet()) {
+            highest.offer(entry);
+            while (highest.size() > n) {
+                highest.poll();
+            }
+        }
+
+        List<Map.Entry<String, Double>> result = new ArrayList<Map.Entry<String, Double>>();
+        while (highest.size() > 0) {
+            result.add(highest.poll());
+        }
+        return result;
     }
 }
