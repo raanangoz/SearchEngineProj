@@ -133,9 +133,6 @@ public class MainPageView implements Initializable {
             } else {
                 double t = System.currentTimeMillis();
                 controller.parse(workPath, savePath, checkbox_stemming);
-//                double y = System.currentTimeMillis() - t;
-//                System.out.println("total time to parse = " + ((y) / 1000) + " seconds");
-//                double l = System.currentTimeMillis();
                 controller.writeLastDocsToDisk(savePath);
                 controller.mergePartialPosting(workPath, savePath);
                 controller.writeEntitiesToDisk(workPath, savePath);
@@ -147,8 +144,6 @@ public class MainPageView implements Initializable {
 
                 int coutIndexed = controller.getNumberOfIndexed();
                 int uniqterms = controller.getDicSize();
-//                System.out.println("total time to merge = " + ((System.currentTimeMillis() - l) / 1000) + " seconds");
-//                System.out.println("total time to run program = " + ((System.currentTimeMillis() - t) / 1000) + " seconds");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Done");
                 alert.setHeaderText("total time to run program : " + ((System.currentTimeMillis() - t) / 1000) + " seconds. \n" +
@@ -345,8 +340,6 @@ public class MainPageView implements Initializable {
             if (allCountryList.get(i).isSelected() == true)
                 selectedCountrys.add(allCountryList.get(i).getText());
         }
-//        for (int i = 0; i < selectedCountrys.size(); i++)
-//            System.out.println(selectedCountrys.get(i));
         return selectedCountrys;
     }
 
