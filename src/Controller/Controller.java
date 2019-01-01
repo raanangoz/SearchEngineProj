@@ -22,6 +22,10 @@ public class Controller {
         return singleton;
     }
 
+    public List<String> getQResult() throws IOException, BadPathException {
+        return model.getQResult();
+    }
+
     public void mergePartialPosting(String workPath, String savePath) throws SearcherException, IOException {
         model.mergePartialPosting(workPath, savePath);
     }
