@@ -420,8 +420,8 @@ public class MainPageView implements Initializable {
             String Entities = allEntities.get(entity_text);
             String words[] = Entities.split("@");
             Entities = "";
-            for (int i = 0; i < words.length; i++)
-                Entities += words[i] + " \n";
+            for (int i = 0; i < words.length; i=i+2)
+                Entities += "Word: "+ words[i] + " Score: "+ words[i+1] + "\n";
             doAlert("Entities", Entities);
         } catch (IOException e) {
             doAlert("Error", "docEntities file does not exist");

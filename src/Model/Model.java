@@ -322,7 +322,7 @@ public class Model {
         String st;
         while ((st = br.readLine()) != null) {
             String word[] = st.split("->");
-            AllEntities.put(word[0].replaceAll("\\s", ""), word[1]);
+            AllEntities.put(word[0].replaceAll("\\s", ""), word[1] );
         }
         br.close();
         return AllEntities;
