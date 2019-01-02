@@ -173,13 +173,6 @@ public class MainPageView implements Initializable {
             if (savePath.equals("")) {
                 doAlert("Error", "Please select a folder in save and work path");
             } else {
-                if (checkbox_stemming == false) {
-                    new File(savePath + "\\without").mkdirs();
-                    savePath = savePath + "\\without";
-                } else {
-                    new File(savePath + "\\with").mkdirs();
-                    savePath = savePath + "\\with";
-                }
                 controller.resetButton(savePath);
             }
         } catch (SearcherException e) {

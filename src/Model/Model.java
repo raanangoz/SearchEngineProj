@@ -3,7 +3,6 @@ package Model;
 import Model.Excpetions.BadPathException;
 import Model.Excpetions.SearcherException;
 import Model.Excpetions.SuccessException;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,7 +15,7 @@ public class Model {
 
     private String savePath;
     private String workPath;
-    private String savefolder="";
+    private String savefolder = "";
     private boolean stemmimng = false;
 
     private static Model singleton = null;
@@ -61,23 +60,46 @@ public class Model {
 
     }
 
+    static public boolean deleteDirectory(File path,String savePath) {
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteDirectory(files[i],savePath);
+                } else {
+                        files[i].delete();
+                }
+            }
+        }
+        if (!path.getPath().equals(savePath))
+            return (path.delete());
+        return true;
+    }
+
 
     public void resetButton(String savePath) throws SearcherException {
         this.savePath = savePath;
         File directory = new File(savePath);
         if (!directory.exists())
             throw new BadPathException();
-        List<File> resultList = new ArrayList<File>();
-
-        // get all the files from a directory
-        File[] fList = directory.listFiles();
-        resultList.addAll(Arrays.asList(fList));
-
-        for (File file : fList) {
-            if (file.getName().endsWith(".txt"))
-                file.delete();
-        }
-        // TODO: 01/01/2019  delte with and without folder  Itzik
+        deleteDirectory(directory,savePath);
+//        List<File> resultList = new ArrayList<File>();
+//
+//        // get all the files from a directory
+//        File[] fList = directory.listFiles();
+//        resultList.addAll(Arrays.asList(fList));
+//
+//        for (File file : fList) {
+////            if (file.getName().endsWith(".txt"))
+//            if (!file.isDirectory())
+//                file.delete();
+//        }
+//        fList = directory.listFiles();
+//        resultList.addAll(Arrays.asList(fList));
+//
+//        for (File file : fList) {
+//            file.delete();
+//        }
         Country.clear();
         readFile.p.getIndexer().cleardic();
         throw new SuccessException();
@@ -87,7 +109,7 @@ public class Model {
 
     public void showDic(String savePath, Boolean checkbox_stemming) throws IOException {
         this.savePath = savePath;
-        this.stemmimng=checkbox_stemming;
+        this.stemmimng = checkbox_stemming;
         File fromFile;
         if (this.stemmimng == false)
             fromFile = new File(savePath + "\\Dictionary.txt");
@@ -98,7 +120,7 @@ public class Model {
     }
 
     public void loadDic(String savePath, boolean checkbox_stemming) throws IOException, SearcherException {
-        this.stemmimng=checkbox_stemming;
+        this.stemmimng = checkbox_stemming;
         this.savePath = savePath;
         LoadedDictionary loadedDictionary = new LoadedDictionary(savePath, this.stemmimng);
         loadedDictionary.loadDic();
@@ -158,7 +180,7 @@ public class Model {
                          boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder, ArrayList<Query> queriesToRanker) throws IOException, BadPathException {
 
         ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
-        this.savefolder= savefolder;
+        this.savefolder = savefolder;
         this.savePath = savePath;
         this.workPath = workPath;
         this.stemmimng = checkbox_value;
@@ -169,10 +191,10 @@ public class Model {
                 Map<String, Integer> termsToAddToQuery = new HashMap<>();
                 tempTerms = q.getTerms();
                 for (Map.Entry<String, Integer> s : tempTerms.entrySet()) {
-                    List<String> seManticTerms = findsimiliar(s.getKey(),checkbox_semantic); //TODO OBVIOUSLY ITS NOT GOING TO WORK BECAUSE IT IS NOT BEING STEMMED , STEMMED HAPPENED ONLY TO THE TITLE!!!!!!!!!!!!
+                    List<String> seManticTerms = findsimiliar(s.getKey(), checkbox_semantic); //TODO OBVIOUSLY ITS NOT GOING TO WORK BECAUSE IT IS NOT BEING STEMMED , STEMMED HAPPENED ONLY TO THE TITLE!!!!!!!!!!!!
                     for (String newTerm : seManticTerms) {
-                        if(Character.isUpperCase(s.getKey().charAt(0)))
-                            newTerm=newTerm.toUpperCase();
+                        if (Character.isUpperCase(s.getKey().charAt(0)))
+                            newTerm = newTerm.toUpperCase();
                         termsToAddToQuery.put(newTerm, 1);
                     }
                 }
@@ -198,7 +220,7 @@ public class Model {
                     if (check == true)
                         termToStem = termToStem.toUpperCase();
                     q.removeTerm(s);
-                    termsToStem.put(termToStem,1);
+                    termsToStem.put(termToStem, 1);
 
                 }
                 q.addTerms(termsToStem);
@@ -211,15 +233,15 @@ public class Model {
         double avgDL = ranker.getAverageDocumentLength();
         HashMap<String, Integer> alldocsofcorpus = ranker.getAllDocSize();
         Map<String, Double>[] allQueriestResults = new HashMap[queriesToRanker.size()];
-        int k = 0 ;
-        LinkedList<String>[] fiftyRelevantDocsOfAllQueries = new LinkedList[queriesToRanker.size()] ;
-        for(Query q: queriesToRanker) {
+        int k = 0;
+        LinkedList<String>[] fiftyRelevantDocsOfAllQueries = new LinkedList[queriesToRanker.size()];
+        for (Query q : queriesToRanker) {
             fiftyRelevantDocsOfAllQueries[k] = new LinkedList<>();
-            allQueriestResults[k]=new HashMap<>();
+            allQueriestResults[k] = new HashMap<>();
             List<Map<String, Integer>> relevantPostsForSingleQuery = ranker.loadPostingListsForSingleQuery(q);//to get posts of a term on this query,
             allQueriestResults[k] = ranker.applyBM25Algorithm(relevantPostsForSingleQuery, avgDL, docsNumber, alldocsofcorpus);
-            LinkedList<String>fiftyRelevantDocs = ranker.get50relevant(allQueriestResults[k]);
-            fiftyRelevantDocsOfAllQueries[k]=fiftyRelevantDocs;
+            LinkedList<String> fiftyRelevantDocs = ranker.get50relevant(allQueriestResults[k]);
+            fiftyRelevantDocsOfAllQueries[k] = fiftyRelevantDocs;
             k++;
         }
 
@@ -227,7 +249,7 @@ public class Model {
 
         //TODO CHECK CASES THAT A QUERY DIDNT RETURN ANYTHING.
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
-         // each cell of array contains sorted docs from most relevant to least.
+        // each cell of array contains sorted docs from most relevant to least.
         if (tosave == true) {
             File toFile = new File(savefolder + "\\results.txt");
             BufferedWriter bw = null;
@@ -255,9 +277,9 @@ public class Model {
 
     private List<String> findsimiliar(String key, boolean semantics) {
 
-        int x=0;
-        if(semantics==true)
-            x=1;
+        int x = 0;
+        if (semantics == true)
+            x = 1;
 
         List<String> Final = new LinkedList<>();
         DatamuseQuery getData = new DatamuseQuery();
@@ -329,7 +351,7 @@ public class Model {
     }
 
     public List<String> getQResult() throws BadPathException, IOException {
-        if (savefolder=="")
+        if (savefolder == "")
             throw new BadPathException();
         File fromFile = new File(savefolder + "\\results.txt");
         BufferedReader br = null;
