@@ -55,7 +55,7 @@ public class QR implements Initializable {
                         ConnectedDocs += words[2] + " | ";
                     } else {
                         list.getItems().add(lastowrd + " --> " + ConnectedDocs);
-                        ConnectedDocs=words[2] + " | ";
+                        ConnectedDocs = words[2] + " | ";
                     }
                     lastowrd = words[0];
                 }

@@ -278,6 +278,7 @@ public class Ranker {
 
         return finalResult;
     }
+
     private static <String, Double extends Comparable<? super Double>> List<Map.Entry<String, Double>>
     findGreatest(Map<String, Double> map, int n) {
         Comparator<? super Map.Entry<String, Double>> comparator =

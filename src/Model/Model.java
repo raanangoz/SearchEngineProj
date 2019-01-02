@@ -60,14 +60,14 @@ public class Model {
 
     }
 
-    static public boolean deleteDirectory(File path,String savePath) {
+    static public boolean deleteDirectory(File path, String savePath) {
         if (path.exists()) {
             File[] files = path.listFiles();
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isDirectory()) {
-                    deleteDirectory(files[i],savePath);
+                    deleteDirectory(files[i], savePath);
                 } else {
-                        files[i].delete();
+                    files[i].delete();
                 }
             }
         }
@@ -82,7 +82,7 @@ public class Model {
         File directory = new File(savePath);
         if (!directory.exists())
             throw new BadPathException();
-        deleteDirectory(directory,savePath);
+        deleteDirectory(directory, savePath);
 //        List<File> resultList = new ArrayList<File>();
 //
 //        // get all the files from a directory
@@ -144,6 +144,7 @@ public class Model {
     public int getDicSize() {
         return readFile.p.getIndexer().getDicSize();
     }
+
     public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder) throws IOException, BadPathException {
         File queryFile = new File(queryText);
         if (!queryFile.exists())

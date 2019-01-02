@@ -194,7 +194,7 @@ public class MainPageView implements Initializable {
                     new File(savePath + "\\with").mkdirs();
                     savePath = savePath + "\\with";
                 }
-                controller.showDic(savePath,checkbox_stemming);
+                controller.showDic(savePath, checkbox_stemming);
             }
         } catch (RuntimeException e) {
             doAlert("Fail", "Dictionary does not exist");
@@ -338,7 +338,7 @@ public class MainPageView implements Initializable {
                 new File(savePath + "\\with").mkdirs();
                 savePath = savePath + "\\with";
             }
-            controller.loadDic(savePath,checkbox_stemming);
+            controller.loadDic(savePath, checkbox_stemming);
             return true;
 
         } catch (SearcherException e) {
