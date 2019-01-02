@@ -11,7 +11,7 @@ public class Indexer {
     private int postingCounter;
     private HashMap<String, PostingList>[] dictionary;
     private boolean stemmiming = false;
-    private Map<String, List<String>> dominantEntities;
+    private Map<String, Map<String, Integer>> dominantEntities;
 
     public Indexer() {
         postingCounter = 0;
@@ -504,10 +504,10 @@ public class Indexer {
             FileWriter fw = new FileWriter(tofile);
             BufferedWriter bw = new BufferedWriter(fw);
             //dominantEntities
-            for (Map.Entry<String, List<String>> entry : dominantEntities.entrySet()) {
+            for (Map.Entry<String, Map<String,Integer>> entry : dominantEntities.entrySet()) {
                 String wordToWrite = entry.getKey() + " -> ";
-                for (int i = 0; i < entry.getValue().size(); i++)
-                    wordToWrite += entry.getValue().get(i) + "@";
+                for (Map.Entry<String,Integer> temp :entry.getValue().entrySet())
+                    wordToWrite += temp.getKey() + "@" + temp.getValue()+"@";
                 bw.write(wordToWrite);
                 bw.newLine();
             }
@@ -604,10 +604,10 @@ public class Indexer {
             }
         }
         List<Map.Entry<String, Integer>> docDominantEntities = findGreatest(docEntities, 5);
-        List<String> theEntities = new LinkedList<>();
+        Map<String,Integer> theEntities = new HashMap<>();
 
         for (Map.Entry<String, Integer> x : docDominantEntities) {
-            theEntities.add(x.getKey());
+            theEntities.put(x.getKey(),x.getValue());
         }
         dominantEntities.put(currentDoc.getDocNo(), theEntities);
     }
