@@ -92,7 +92,6 @@ public class Searcher {
 //                finishedParsingQ = false;
                 q.setTerms(termsQuery);
                 return q;
-                // TODO: 21/12/2018 fix here to send to new indexer  Itzik
             }
 
             if (containDigit(words[i])) {
@@ -420,9 +419,6 @@ public class Searcher {
                 int i = correctDictionaryCell(term);
                 String lowerTerm = term.toLowerCase();
                 if (LoadedDictionary.getDictionary()[i].get(lowerTerm) != null) {
-
-                    // TODO: 21/12/2018 Raanan needs to go over this, add to termlist  Raanan
-
                     if (termsQuery.get(lowerTerm) != null) {
                         c = termsQuery.get(lowerTerm);
                         termsQuery.put(lowerTerm, ++c);

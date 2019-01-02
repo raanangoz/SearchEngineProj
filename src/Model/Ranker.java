@@ -3,7 +3,6 @@ package Model;
 import java.io.*;
 import java.util.*;
 
-//TODO ALL SPLITS (" ") SHOULD BE ("//S+") BUT CHECK THAT IT WORK.
 public class Ranker {
     private HashSet<String> docsAfterFilterCities = new HashSet<>();
     private List<Query> queriesToRanker;
@@ -85,7 +84,6 @@ public class Ranker {
                                 docsForEachTerm[wordIndexInQuery] = new HashMap<>();
                                 docsForEachTerm[wordIndexInQuery].putAll(docsAndTF);
                             }
-                            //TODO maybe if should include this line too
                             docsForEachTerm[wordIndexInQuery].put(queryWord, -1);//PLASTER to save the term.
                             wordIndexInQuery++;
                             br.close();
@@ -271,7 +269,6 @@ public class Ranker {
     }
 
     public LinkedList<String> get50relevant(Map<String, Double> allQueriestResults) {
-//TODO I DONT THINK THE 50 RETURNED ARE SORTED FROM HIGHEST TO LOWEST, BUT THEY ARE THE BEST 50.
         LinkedList<String> finalResult = new LinkedList<>();
 
         List<Map.Entry<String, Double>> greatest = findGreatest(allQueriestResults, 50);

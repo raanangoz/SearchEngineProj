@@ -17,7 +17,7 @@ public class ReadQuery {
 
     public Query ParseQueryString(String queryText) {
         Query q = new Query("", queryText, "", "");
-        q = pq.parse(q, false);//TODO WE EVER USE THIS FUNCTION? the false is plaster.
+        q = pq.parse(q, false);
         return q;
     }
 

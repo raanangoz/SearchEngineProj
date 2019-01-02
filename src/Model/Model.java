@@ -144,10 +144,6 @@ public class Model {
     public int getDicSize() {
         return readFile.p.getIndexer().getDicSize();
     }
-
-
-    // TODO: 12/22/2018  queryText
-    // TODO: 12/23/2018  should have postings and dictionary on disk for stemmed/unstemmed.
     public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder) throws IOException, BadPathException {
         File queryFile = new File(queryText);
         if (!queryFile.exists())
@@ -156,7 +152,7 @@ public class Model {
             if (savefolder.length() < 1)
                 throw new BadPathException();
         }
-        ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile, false);//TODO false
+        ArrayList<Query> queriesToRanker = readQuery.ParseQueryFile(queryFile, false);
 
         runQuery(workPath, savePath, checkbox_semantic, checkbox_value, chosenCities, tosave, savefolder, queriesToRanker);
     }
@@ -191,7 +187,7 @@ public class Model {
                 Map<String, Integer> termsToAddToQuery = new HashMap<>();
                 tempTerms = q.getTerms();
                 for (Map.Entry<String, Integer> s : tempTerms.entrySet()) {
-                    List<String> seManticTerms = findsimiliar(s.getKey(), checkbox_semantic); //TODO OBVIOUSLY ITS NOT GOING TO WORK BECAUSE IT IS NOT BEING STEMMED , STEMMED HAPPENED ONLY TO THE TITLE!!!!!!!!!!!!
+                    List<String> seManticTerms = findsimiliar(s.getKey(), checkbox_semantic);
                     for (String newTerm : seManticTerms) {
                         if (Character.isUpperCase(s.getKey().charAt(0)))
                             newTerm = newTerm.toUpperCase();
@@ -247,7 +243,6 @@ public class Model {
 
         // doc1 0.8  doc2 0.1 ...
 
-        //TODO CHECK CASES THAT A QUERY DIDNT RETURN ANYTHING.
         //Map<String, Double>[]q= ranker.sortReturnedDocsByValue(allQueriestResults); // each cell of array contains sorted docs from most relevant to least.
         // each cell of array contains sorted docs from most relevant to least.
         if (tosave == true) {
