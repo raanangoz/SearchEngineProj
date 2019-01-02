@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A handler for making calls to the Datamuse RESTful API.
@@ -137,7 +138,7 @@ public class DatamuseQuery {
         try {
             datamuse = new URL(url);
             dc = datamuse.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(dc.getInputStream(), "UTF-8"));
+            BufferedReader in = new BufferedReader(new InputStreamReader(dc.getInputStream(), StandardCharsets.UTF_8));
             String inputLine;
             s = new StringBuilder();
             while ((inputLine = in.readLine()) != null)

@@ -23,7 +23,7 @@ public class LoadedDictionary {
         this.stemmimng = stemmimng;
     }
 
-    public void loadDic() throws SearcherException, IOException {
+    public void loadDic() throws IOException {
         String path;
         if (this.stemmimng == false)
             path = savePath + "\\Dictionary.txt";

@@ -50,7 +50,7 @@ public class Model {
         this.readFile.p.getIndexer().mergePartialPosting(workPath, savePath, stemmimng);
     }
 
-    public void parse(String workPath, String savePath, boolean checkbox_value) throws SearcherException, IOException {
+    public void parse(String workPath, String savePath, boolean checkbox_value) throws SearcherException {
         this.savePath = savePath;
         this.workPath = workPath;
         this.stemmimng = checkbox_value;
@@ -138,7 +138,7 @@ public class Model {
     }
 
     public int getNumberOfIndexed() {
-        return readFile.getNumberOfParsedDocs();
+        return ReadFile.getNumberOfParsedDocs();
     }
 
     public int getDicSize() {
@@ -174,7 +174,7 @@ public class Model {
 
 
     public void runQuery(String workPath, String savePath, boolean checkbox_semantic,
-                         boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder, ArrayList<Query> queriesToRanker) throws IOException, BadPathException {
+                         boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder, ArrayList<Query> queriesToRanker) throws IOException {
 
         ReadQuery read = new ReadQuery(workPath, savePath, checkbox_value);
         this.savefolder = savefolder;

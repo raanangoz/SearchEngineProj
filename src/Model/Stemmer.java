@@ -96,7 +96,7 @@ class Stemmer {
             case 'u':
                 return false;
             case 'y':
-                return (i == 0) ? true : !cons(i - 1);
+                return (i == 0) || !cons(i - 1);
             default:
                 return true;
         }
@@ -168,9 +168,8 @@ class Stemmer {
         if (i < 2 || !cons(i) || cons(i - 1) || !cons(i - 2)) return false;
         {
             int ch = b[i];
-            if (ch == 'w' || ch == 'x' || ch == 'y') return false;
+            return ch != 'w' && ch != 'x' && ch != 'y';
         }
-        return true;
     }
 
     private final boolean ends(String s) {

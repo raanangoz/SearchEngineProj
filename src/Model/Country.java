@@ -51,7 +51,7 @@ public class Country {
         Country_Name = countryName;
         Population = population;
         Currency = currency;
-        this.cityDocList = docs;
+        cityDocList = docs;
     }
 
     //<editor-fold desc="Getter and Setter">
