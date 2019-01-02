@@ -160,7 +160,7 @@ public class Ranker {
                     if (docsAfterFilterCities.contains(docNo) || docsAfterFilterCities.size() == 0) {
                         if (postsOfOneTerm.get(docNo) != -1) {
                             int TF = postsOfOneTerm.get(docNo);
-                            if (TF != -1) {//plaster because i insert the a term with value -1, and not only docNo-DF
+                            if (TF != -1) {
                                 int DL = docsLength.get(docNo);
                                 double docRelevance = IDF * ((TF * (k1 + 1)) / (TF + (k1 * (1 - b + (b * DL / avgDL)))));
                                 if (docsAndValuesOfQuery.containsKey(docNo)) {
@@ -254,7 +254,7 @@ public class Ranker {
                                 for (int k = 2; k < words.length; k += 2) {
                                     postingList.put(words[k], Integer.parseInt(words[k + 1]));
                                 }
-                                postingList.put(term, -1);//plaster to recognize the term.
+                                postingList.put(term, -1);
                                 numOfPostingListsFoundForGroup++;
                                 allPosts.add(postingList);
                             }
