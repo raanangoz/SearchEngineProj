@@ -12,20 +12,25 @@ public class Query implements Serializable {
     Map<String, Integer> terms;
 
 
-    public Map<String, Integer> getTerms() {
-        return terms;
-    }
-
-    public void setTerms(Map<String, Integer> terms) {
-        this.terms = terms;
-    }
-
     public Query(String queryNum, String queryTitle, String queryDesc, String queryNarr) {
         this.queryNum = queryNum;
         this.queryTitle = queryTitle;
         this.queryDesc = queryDesc;
         this.queryNarr = queryNarr;
         this.terms = new HashMap<>();
+    }
+
+    //<editor-fold desc="Getter and Setter">
+    public String getQueryNum() {
+        return queryNum;
+    }
+
+    public Map<String, Integer> getTerms() {
+        return terms;
+    }
+
+    public void setTerms(Map<String, Integer> terms) {
+        this.terms = terms;
     }
 
     public void addTerms(Map<String, Integer> newTerms) {
@@ -37,11 +42,6 @@ public class Query implements Serializable {
                 c = terms.get(s.getKey());
                 terms.put(s.getKey(), ++c);
             }
-    }
-
-    //<editor-fold desc="Getter and Setter">
-    public String getQueryNum() {
-        return queryNum;
     }
 
     public void setQueryNum(String queryNum) {

@@ -44,12 +44,26 @@ public class Model {
         return this.stemmimng;
     }
 
+    /**
+     * for testing
+     *
+     * @param workPath
+     * @param savePath
+     */
     public void mergePartialPosting(String workPath, String savePath) {
         this.savePath = savePath;
         this.workPath = workPath;
         this.readFile.p.getIndexer().mergePartialPosting(workPath, savePath, stemmimng);
     }
 
+    /**
+     * send to parse
+     *
+     * @param workPath       - path to corpus
+     * @param savePath       - path to save output
+     * @param checkbox_value - if stemming or not
+     * @throws SearcherException
+     */
     public void parse(String workPath, String savePath, boolean checkbox_value) throws SearcherException {
         this.savePath = savePath;
         this.workPath = workPath;
@@ -60,6 +74,13 @@ public class Model {
 
     }
 
+    /**
+     * delete all directory's
+     *
+     * @param path     - where to delete in recursion
+     * @param savePath - where to delete
+     * @return
+     */
     static public boolean deleteDirectory(File path, String savePath) {
         if (path.exists()) {
             File[] files = path.listFiles();
@@ -76,7 +97,12 @@ public class Model {
         return true;
     }
 
-
+    /**
+     * reset button
+     *
+     * @param savePath - where all files that need to be delte are.
+     * @throws SearcherException
+     */
     public void resetButton(String savePath) throws SearcherException {
         this.savePath = savePath;
         File directory = new File(savePath);
@@ -107,6 +133,13 @@ public class Model {
 //        Parse.clearData();
     }
 
+    /**
+     * show dictionary to user
+     *
+     * @param savePath
+     * @param checkbox_stemming
+     * @throws IOException
+     */
     public void showDic(String savePath, Boolean checkbox_stemming) throws IOException {
         this.savePath = savePath;
         this.stemmimng = checkbox_stemming;
@@ -119,6 +152,14 @@ public class Model {
 
     }
 
+    /**
+     * load dictionary to user from savepath
+     *
+     * @param savePath
+     * @param checkbox_stemming
+     * @throws IOException
+     * @throws SearcherException
+     */
     public void loadDic(String savePath, boolean checkbox_stemming) throws IOException, SearcherException {
         this.stemmimng = checkbox_stemming;
         this.savePath = savePath;
@@ -126,6 +167,12 @@ public class Model {
         loadedDictionary.loadDic();
     }
 
+    /**
+     * not used
+     *
+     * @param workPath
+     * @param savePath
+     */
     public void merg_func(String workPath, String savePath) {
         this.savePath = savePath;
         this.workPath = workPath;
@@ -141,10 +188,25 @@ public class Model {
         return ReadFile.getNumberOfParsedDocs();
     }
 
+
     public int getDicSize() {
         return readFile.p.getIndexer().getDicSize();
     }
 
+    /**
+     * run query file
+     *
+     * @param queryText         - text to serach
+     * @param workPath
+     * @param savePath
+     * @param checkbox_semantic
+     * @param checkbox_value
+     * @param chosenCities      - what citys are we seraching by in docs
+     * @param tosave            - to save or not the query answer
+     * @param savefolder        - where to save if user choose yes
+     * @throws IOException
+     * @throws BadPathException
+     */
     public void runQueryFile(String queryText, String workPath, String savePath, boolean checkbox_semantic, boolean checkbox_value, List<String> chosenCities, boolean tosave, String savefolder) throws IOException, BadPathException {
         File queryFile = new File(queryText);
         if (!queryFile.exists())
@@ -271,6 +333,13 @@ public class Model {
     }
 
 
+    /**
+     * find similar words for semantic
+     *
+     * @param key
+     * @param semantics
+     * @return
+     */
     private List<String> findsimiliar(String key, boolean semantics) {
 
         int x = 0;
@@ -294,6 +363,13 @@ public class Model {
         return Country.getDocs();
     }
 
+    /**
+     * load city file
+     *
+     * @param savePath
+     * @return
+     * @throws IOException
+     */
     public List<String> loadCity(String savePath) throws IOException {
         this.savePath = savePath;
 
@@ -313,6 +389,13 @@ public class Model {
         readFile.p.getIndexer().writeEntitiesToDisk(savePath);
     }
 
+    /**
+     * get entities from disk
+     *
+     * @param savePath
+     * @return
+     * @throws IOException
+     */
     public HashMap<String, String> getEntities(String savePath) throws IOException {
         this.savePath = savePath;
         File fromFile = new File(savePath + "\\docsEntities.txt");
@@ -322,16 +405,22 @@ public class Model {
         String st;
         while ((st = br.readLine()) != null) {
             String word[] = st.split("->");
-            AllEntities.put(word[0].replaceAll("\\s", ""), word[1] );
+            AllEntities.put(word[0].replaceAll("\\s", ""), word[1]);
         }
         br.close();
         return AllEntities;
     }
 
+
     public HashMap<String, String> getlanguageDocList() {
         return Country.getLanguageDoc();
     }
 
+    /**
+     * get language list from disk
+     *
+     * @return
+     */
     public List<String> loadLang(String savePath) throws IOException {
         this.savePath = savePath;
         File fromFile = new File(savePath + "\\Language.txt");
@@ -346,6 +435,12 @@ public class Model {
         return AllLanguageList;
     }
 
+    /**
+     * get query's result
+     * @return
+     * @throws BadPathException
+     * @throws IOException
+     */
     public List<String> getQResult() throws BadPathException, IOException {
         if (savefolder == "")
             throw new BadPathException();

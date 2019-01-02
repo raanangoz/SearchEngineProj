@@ -15,12 +15,24 @@ public class ReadQuery {
         pq = new Searcher(workPath, savePath, checkbox_value);
     }
 
+    /**
+     * parse query string
+     * @param queryText - text to parse
+     * @return Query structure after parse
+     */
     public Query ParseQueryString(String queryText) {
         Query q = new Query("", queryText, "", "");
         q = pq.parse(q, false);
         return q;
     }
 
+    /**
+     * parse query file
+     * @param f - file
+     * @param stemming - check if stemming button is true or false
+     * @return - Arraylist of queries after parsing all of them
+     * @throws IOException
+     */
     public ArrayList<Query> ParseQueryFile(File f, boolean stemming) throws IOException {
         ArrayList<Query> queries = new ArrayList<>();
         StringBuilder QueryTitle = new StringBuilder();

@@ -23,6 +23,10 @@ public class LoadedDictionary {
         this.stemmimng = stemmimng;
     }
 
+    /**
+     * load dictionary
+     * @throws IOException
+     */
     public void loadDic() throws IOException {
         String path;
         if (this.stemmimng == false)

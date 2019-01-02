@@ -23,11 +23,19 @@ public class Country {
 
     }
 
+    /**
+     * clear Lists
+     */
     public static void clear() {
         cityDocList.clear();
         cityDocList.clear();
     }
 
+    /**
+     * convert population to K\M\B
+     * @param population - number of people in city
+     * @return parsed population nuber
+     */
     private String ConvertPop(String population) {
         String word = population;
         String newword = "";

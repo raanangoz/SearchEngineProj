@@ -25,6 +25,11 @@ public class PullCountries {
         }
     }
 
+    /**
+     * get country by searching its capital city
+     * @param capitalCityName
+     * @return country name in string
+     */
     public Country getCountryByCapital(String capitalCityName) {
         return Countries.get(capitalCityName);
     }

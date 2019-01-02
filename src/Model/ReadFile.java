@@ -33,6 +33,12 @@ public class ReadFile {
         return fileIndex;
     }
 
+    /**
+     * get all files in folder
+     * @param directoryName - path to search
+     * @return list of all the files
+     * @throws SearcherException
+     */
     public List<File> listf(String directoryName) throws SearcherException {
         File directory = new File(directoryName);
         if (!directory.exists())
@@ -58,7 +64,10 @@ public class ReadFile {
         return resultList;
     }
 
-
+    /**
+     * send all the docs to parsing 1 by 1
+     * @param f - file
+     */
     public void sendDocParse(File f) {
         StringBuilder DocNum = new StringBuilder();
         StringBuilder DocText = new StringBuilder();

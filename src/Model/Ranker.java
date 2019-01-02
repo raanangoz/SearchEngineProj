@@ -13,7 +13,9 @@ public class Ranker {
         this.chosenCities = chosenCities;
     }
 
-
+    /**
+     * filter the docs by the cities from Country
+     */
     public void filterDocsByCities() {
         //TODO ALSO FOR FP 104
         try {
@@ -84,7 +86,7 @@ public class Ranker {
                                 docsForEachTerm[wordIndexInQuery] = new HashMap<>();
                                 docsForEachTerm[wordIndexInQuery].putAll(docsAndTF);
                             }
-                            docsForEachTerm[wordIndexInQuery].put(queryWord, -1);//PLASTER to save the term.
+                            docsForEachTerm[wordIndexInQuery].put(queryWord, -1);
                             wordIndexInQuery++;
                             br.close();
                             docsAndTF.clear();
@@ -105,18 +107,12 @@ public class Ranker {
         return docsForEachTerm;
     }
 
-    //get doc size
-    /*
-    public double getDocSize() throws IOException {
-        String savePath = Model.getInstance().getSavePath();
-        File fromFile = new File(savePath + "\\CorpusAvgDocLength.txt");
-        BufferedReader br = new BufferedReader(new FileReader(fromFile));
-        String size = br.readLine();
-        return Double.parseDouble(size);
-    }
-*/
 
-
+    /**
+     * get all doc size function
+     * @return size of each doc in hashmap
+     * @throws IOException
+     */
     public HashMap<String, Integer> getAllDocSize() throws IOException {
         HashMap<String, Integer> docLengths = new HashMap<>();
         String st;
@@ -186,7 +182,10 @@ public class Ranker {
         return docsAndValuesOfQuery;
     }
 
-
+    /**
+     * get average document length
+     * @return - double number with the size of length
+     */
     public double getAverageDocumentLength() {
         BufferedReader br;
         double answer = 0;
@@ -204,6 +203,10 @@ public class Ranker {
         return answer;
     }
 
+    /**
+     * get total document number in corpus
+     * @return
+     */
     public int getTotalDocumentsNumber() {
         BufferedReader br;
         int answer = 0;
@@ -220,6 +223,7 @@ public class Ranker {
         }
         return answer;
     }
+
 
     public List<Map<String, Integer>> loadPostingListsForSingleQuery(Query q) {
         /*Map<String, Integer> terms = q.getTerms();
@@ -268,6 +272,11 @@ public class Ranker {
         return allPosts;
     }
 
+    /**
+     * get 40 relevant query's
+     * @param allQueriestResults
+     * @return list with the relevant
+     */
     public LinkedList<String> get50relevant(Map<String, Double> allQueriestResults) {
         LinkedList<String> finalResult = new LinkedList<>();
 

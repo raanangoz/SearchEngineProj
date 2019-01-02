@@ -40,6 +40,10 @@ public class Parse {
         return this.indexer;
     }
 
+    /**
+     * save info for each doc
+     * @param currentDoc
+     */
     public static void saveTFandUniq(Doc currentDoc) {
         List<Integer> TfandUniq = new ArrayList<Integer>();
         TfandUniq.add(currentDoc.getMostFrequentTermValue());
@@ -52,6 +56,10 @@ public class Parse {
         return maxtfandterm;
     }
 
+    /**
+     * load stop words to app
+     * @param workpath
+     */
     void stopWordsFunc(String workpath) {
         try {
             Scanner textFile = new Scanner(new File(this.workpath + "\\corpus\\stop_words.txt"));
@@ -67,7 +75,10 @@ public class Parse {
         }
     }
 
-
+    /**
+     * parse doc
+     * @param currentDoc
+     */
     public void parse(Doc currentDoc) {
         if (onetime2 == true) {
             stopWordsFunc(this.savepath);

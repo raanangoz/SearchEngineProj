@@ -36,7 +36,7 @@ public class QR implements Initializable {
     }
 
     /**
-     * function to create list view of querys and what docs they have
+     * function to create list view of query's and what docs they have
      */
 
     public void start() {

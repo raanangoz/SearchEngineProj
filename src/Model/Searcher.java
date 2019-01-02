@@ -25,6 +25,10 @@ public class Searcher {
 
     }
 
+    /**
+     * load stop words function
+     * @param workpath - where function file is
+     */
     public void stopWordsFunc(String workpath) {
         try {
             Scanner textFile = new Scanner(new File(this.workpath + "\\corpus\\stop_words.txt"));
@@ -39,6 +43,12 @@ public class Searcher {
         }
     }
 
+    /**
+     * parse query function
+     * @param q
+     * @param stemming
+     * @return
+     */
     public Query parse(Query q, boolean stemming) {
         this.stemmer = stemming;
         stopWordsFunc(this.workpath);
