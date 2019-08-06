@@ -1,0 +1,19 @@
+this is a serach engine we have built to go over a corpus of documents and get specific words from it, in can filter by stopwords, language, country
+
+in order to run, download JAR file
+
+java -jar SE.jar
+
+corpus files:
+https://www.dropbox.com/s/w4nhnvgul9fvoac/corpus.zip?dl=0
+
+Stopword example
+//file name
+stopwords.txt
+//inside file
+tried
+tries
+truly
+try
+trying
+twice
