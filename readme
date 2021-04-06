@@ -1,4 +1,15 @@
-this is a serach engine we have built to go over a corpus of documents and get specific words from it, in can filter by stopwords, language, country
+In this project we (Itzik and me) implemented a search-engine, based on a huge local corpus that contains tons of documents.
+When a user search for a text, our goal is to return the most relevant documents to his query.
+We had to preprocess the data in advance(ignore stop-words, use a stemmer, parse the documents, and much more).
+In general, in order to return fast and accrurate results, the method is:
+For each word, calculate it's TF (term frequency) in the document:
+When a document contains many duplications of the same word - might be relevant to a query with this word.
+Calculate the DF (document frequency) too:
+a document that contains a rare term(one that appeared in a few documents), is likely to be relevant to a user-query in which this word appeared.
+use some formulas (like the BM25) to rate the documents - and return the most rated ones.
+
+We spread the pre-processing resources between several files,
+and bring to the main program memory only the necessary files, because amount of data is huge. 
 
 in order to run, download JAR file
 
@@ -7,13 +18,4 @@ java -jar SE.jar
 corpus files:
 https://www.dropbox.com/s/w4nhnvgul9fvoac/corpus.zip?dl=0
 
-Stopword example
-//file name
-stopwords.txt
-//inside file
-tried
-tries
-truly
-try
-trying
-twice
+
